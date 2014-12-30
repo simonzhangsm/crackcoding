@@ -1,0 +1,55 @@
+DELTA
+SVNENDREP
+id: 1-5.0.r5/17
+type: file
+count: 0
+text: 5 0 4 0 d41d8cd98f00b204e9800998ecf8427e da39a3ee5e6b4b0d3255bfef95601890afd80709 4-4/_3
+cpath: /trunk/chapInterval.tex
+copyroot: 0 /
+
+PLAIN
+K 16
+chapInterval.tex
+V 16
+file 1-5.0.r5/17
+K 12
+zhongwen.tex
+V 17
+file 1-4.0.r4/144
+END
+ENDREP
+id: 0-1.0.r5/296
+type: dir
+pred: 0-1.0.r4/380
+count: 2
+text: 5 194 89 89 2271744477a7a02016ee970f8afedb6a
+cpath: /trunk
+copyroot: 0 /
+
+PLAIN
+K 8
+branches
+V 14
+dir 0-2.0.r2/0
+K 4
+tags
+V 14
+dir 0-3.0.r3/0
+K 5
+trunk
+V 16
+dir 0-1.0.r5/296
+END
+ENDREP
+id: 0.0.r5/542
+type: dir
+pred: 0.0.r4/624
+count: 5
+text: 5 431 98 98 a2ddaca0eb8d77d41f26e2b016304e0d
+cpath: /
+copyroot: 0 /
+
+_1.0.t4-4 add-file true false /trunk/chapInterval.tex
+
+
+542 668

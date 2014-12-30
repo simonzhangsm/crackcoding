@@ -1,0 +1,41 @@
+\chapter{编程技巧}
+较大的数组放在main函数外，作为全局变量，这样可以防止栈溢出，因为栈的大小是有限制的。
+如果能够预估栈，队列的上限，则不要用\fn{stack, queue}，使用数组来模拟，这样速度最快。
+输入数据一般放在全局变量，且在运行过程中不要修改这些变量。
+
+
+在判断两个浮点数 (i.e., 
+float/double) 
+a和b是否相等时，不应该用\fn{a==b}，而是判断二者之差的绝对值\fn{fabs(a-b)}是否小于某个阀值 
+\fn{$\epsilon$=1e-9}。
+
+判断一个整数是否是为奇数，用\fn{x \% 2 != 0}或\fn{x \& 1 != 0}，不要用\fn{x \% 2 == 
+1}，因为x可能是负数。
+
+用\fn{char}的值作为数组下标（例如，统计字符串中每个字符出现的次数），要考虑到\fn{char}可能是负数。有的人考虑到了，先强制转型为\fn{unsigned
+ int}再用作下标，这仍然是错的。正确的做法是，先强制转型为\fn{unsigned char}，再用作下标。这涉及C++整型提升的规则，就不详述了。
+
+以下是关于STL基于《Effective STL》的使用技巧。
+
+\subsubsection{vector和string优先于动态分配的数组}
+首先，在性能上，由于\fn{vector}能够保证连续内存，因此一旦分配了后，它的性能跟原始数组相当；
+
+其次，如果用new，意味着你要确保后面进行了delete，一旦忘记了，就会出现BUG，且这样需要都写一行delete，代码不够短；
+
+再次，声明多维数组的话，只能一个一个new，例如：
+\begin{Code}
+	int** ary = new int*[row_num];
+	for(int i = 0; i < row_num; ++i)
+		ary[i] = new int[col_num];
+\end{Code}
+
+用vector的话一行代码搞定，
+\begin{Code}
+	vector<vector<int> > ary(row_num, vector<int>(col_num, 0));
+\end{Code}
+
+\subsubsection{使用reserve来避免不必要的重新分配}
+\subsubsection{用empty来代替检查size()是否为0}
+\subsubsection{确保new|delete和malloc|free的成对出现, 
+使用智能指针shared_ptr和unique_ptr，替代auto_ptr容器}
+\subsubsection{用distance和advance把const_iterator转化成iterator}

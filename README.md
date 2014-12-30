@@ -1,8 +1,6 @@
 #ACM Cheat Sheet
 -----------------
 ##PDF下载
-<a href="https://github.com/soulmachine/acm-cheat-sheet/blob/master/C/%E6%89%8B%E5%86%99%E4%BB%A3%E7%A0%81%E5%BF%85%E5%A4%87%E6%89%8B%E5%86%8C(C%E7%89%88).pdf?raw=true">ACM Cheat Sheet(C).pdf</a>
-
 <a href="https://github.com/soulmachine/acm-cheat-sheet/blob/master/C++/%E6%89%8B%E5%86%99%E4%BB%A3%E7%A0%81%E5%BF%85%E5%A4%87%E6%89%8B%E5%86%8C(C++%E7%89%88).pdf?raw=true">ACM Cheat Sheet(C++).pdf</a>
 
 C 文件夹下是C版，内容一摸一样，代码是用纯C写的，
@@ -69,13 +67,3 @@ Java 文件夹下是Java版，内容一摸一样，代码是用Java写的
 
     在下方的窗口可以看到TeXstudio正在使用的编译命令是`xelatex -synctex=1 -interaction=nonstopmode "ACM-cheat-sheet".tex`
 1. 懒人版镜像。如果不想进行上面繁琐的安装过程，我做好了一个Ubuntu VMware虚拟机镜像，已经装好了TexLive 2013, TexStudio和字体(详细的安装日志见压缩包注释)，开箱即用，下载地址 <http://pan.baidu.com/s/1eQEFLHw>。
-
-##如何贡献代码
-编译通过后，就具备了完整的LaTeX编译环境了。
-
-本书模板已经写好了，基本上不需要很多LaTeX知识就可以动手了。
-
-欢迎给本书添加内容或纠正错误，在自己本地编译成PDF，预览没问题后，就可以发pull request过来了。
-
-##北美求职微博群
-我和我的小伙伴们在这里：<http://q.weibo.com/1312378>

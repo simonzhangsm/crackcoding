@@ -8,7 +8,7 @@
 1. Java 文件夹下是Java版
 
 ##编译环境
-1. 安装Tex Live 2013 <http://www.tug.org/texlive/>。注：TexLive适用于Windows/Unix/Linux/MacOS.
+1. 安装Tex Live <http://www.tug.org/texlive/>。注：TexLive适用于Windows/Unix/Linux/MacOS.
 1. 安装字体。这个LaTex模板总共使用了9个字体，下载地址 <http://pan.baidu.com/s/1gdefYiJ> ，有的字体Windows自带了，有的字体Ubuntu自带了，但都不全，还是一次性安装完所有字体比较方便。
 1. 安装TeXstudio <http://texstudio.sourceforge.net/>
 1. (可选)启动Tex Live Manager，更新所有已安装的软件包。

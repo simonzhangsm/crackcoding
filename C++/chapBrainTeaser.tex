@@ -1,0 +1,192 @@
+\chapter{Brain Teaser}
+
+\subsection{Exponent Grows}
+An bacteria grows at the speed that it will double its volume per minute. If you put it in a jar, it will fill the jar in one hour. how long will it take to fill a half of the jar?
+
+\subsubsection{解题思路}
+$2^{60}=jar==>\frac{2^{60}}{2}=\frac{jar}{2}$
+
+\subsection{Pizzas}
+If one and a half teenagers, eat one and a half pizzas in one and a half days, how many pizzas can 9 teenagers eat in 3 days?
+
+\subsubsection{解题思路}
+->1.5 teenagers eat 1.5 pizzas in 1.5 days
+
+=>1.5 teenagers eat 3 pizzas in 3 days
+
+=>3 teenagers eat 3 pizzas in 6 days
+
+=>9 teenagers eat 3 pizzas in 18 days
+
+\subsection{Lights}
+There is a two storey home. We have three switch on the first floor and three rooms on the second floor. You can go upstairs only once and can touch switches only one. How will 
+you find out which switch is for what room?
+
+\subsubsection{解题思路}
+1. turn on one switch for 5 minutes and turn off
+
+2. turn on another switch
+
+3. go upstair and the light bulb is for the turning switch, the hot bulb for first turned switch(turn on for 5 minutes) and the last one is for the third switch
+
+\subsection{Volum}
+Two container of 5L and 3L are given. Then are is 9.5L water given you need to make 4L water with minimum attempts and water wastage.
+
+\subsubsection{解题思路}
+
+\subsection{Eggs}
+Given one egg and a building with infinite number of floors. Find out minimum number of throws at which (least) floor egg will break, if thrown? 
+
+I said we have to start at floor 1 and keep incrementing and testing by moving 1 floor up. Then he said optimize it by minimizing no of throws. I could not find more optimal way. 
+I told him that I know with problem with 2 eggs and finite floor building. 
+
+Then, he told me that now lets there are 2 eggs and infinite floor building, find minimum no if throws required to find least floor at which egg breaks. 
+
+I still could not do that for infinite floors.
+
+\subsubsection{解题思路}
+lets calculate value of optimal x: 
+x + (x-1) + (x-2) + (x-3) + ...... 2 + 1 = no of floors 
+x(x+1)/2 = no. of floors 
+
+\subsection{Cross Bridge}
+4 men- each can cross a bridge in 1,3, 7, and 10 min. 
+Only 2 people can walk the bridge at a time. How many min. minutes would they take to cross the bridge.
+
+\subsubsection{解题思路}
+Two pass schedule in parallel.
+11 min for optimal solution.
+
+\subsection{Ball Identify}
+You are given a set of 8 balls, all of them identical in appearance and weight, except for one which is slightly heavier than the rest. You are also given a scale with no units, 
+which can only tell you if one load is heavier than the other (think a scale-of-justice type scale). How can you find the heavy ball with only two comparisons? You may place as 
+many balls as you wish on either side of the scale for each comparison.
+
+\subsubsection{解题思路}
+Balls: 1 2 3 4 5 6 7 8
+One Weight: {1 2 3} vs {4 5 6}
+
+Case 1: 
+	If it matches then take remaining to balls say 7 and 8 and put on either side. 
+	
+	Now which ever is heavier is the one 
+
+Case 2: 
+	If first 6 does not match, then take the 3 balls from heavier side and pick any 2 of them and weigh it. 
+
+Case A: 
+	If not same then the heavier is one. 
+
+Case B: 
+	If same then the remaining 3rd ball is the heavier one
+
+\subsection{Alarm Clock Design}
+Design an alarm clock for a deaf person
+
+\subsubsection{解题思路}
+
+Vibrator, light \& pillow vibrator. To cover minimal to severely deaf. 
+
+Vibrator + Light = Normal deaf. 
+
+Pillow vibrator + Light = severely deaf.
+
+\begin{Code}
+	Class Clock
+		Set the time.
+		Advance the time.
+		Display the time.
+	
+	Class Hour indicator
+		Set its value
+		Advance its value
+		Display its value
+	
+	Class Minute indicator
+		Set its value
+		Advance its value
+		Display its value
+	
+	Class Seconds indicator
+		Advance its value
+		Display its value
+	
+	Vibrator
+		Trigger
+		Silent
+	
+	Light
+		On
+		Off
+\end{Code}
+
+\subsection{Thread Safe Queue}
+Implement a circular queue of integers of user-specified size using a simple array. Provide routines to initialize(), enqueue() and dequeue() the queue. Make it thread safe. 
+Please implement this with your own code and do not use any class libraries or library calls.
+
+\subsubsection{解题思路}
+
+\subsection{Clock Hand Angle}
+Find the angle between minute and hour hand when time is 6:50 am
+
+\subsubsection{解题思路}
+Angle = (h*30 + (m/60) * 30) - (m * 6)
+
+\subsection{Triangle Division}
+Divide a triangle into 5 triangles of equal area
+
+\subsubsection{解题思路}
+
+\subsection{Water Level}
+There is a boat on the water. There is a rock in it. At this time, assume the level of the water is L1. Now say, you threw the rock into the water and it reached the bottom. Now 
+what will be the level of the water?
+
+\subsubsection{解题思路}
+The level of the water should be lower compared to L1, the reasons are explained as following: 
+
+case (I), boat + rock are in an equlibrium state which means: floating force generated by water == gravitational force of the boat+rock, in physics language 
+rho * Volume_water * g = (m_rock + m_boat) *g 
+
+case (II), boat is still in an equilibrium state (floating force== gravitational force) however the rock must go to the bottom of the water as it has much larger density (floating 
+force << gravitational force) 
+so rho * Volume_water * g << (m_rock+m_boat) *g 
+
+to conclude, Volume_water_1 > Volume_water_2 
+so, water_level_2 < water_level_1
+
+\subsection{Ropes Burning}
+There are unlimited ropes of same length and if we burn them it will take 1 hour. 
+How to measure 45 mins?
+
+\subsubsection{解题思路}
+Take 2 ropes R1, R2. Light R1 at both ends and R2 at one end. When R1 is completely burned (30 minutes have passed), light R2 at the other end. When R2 is completely burned 45 
+minutes have passed.
+
+\subsection{Cross Bridge}
+There are four people at the end of bridge. They take following time to cross the bridge: 
+
+1st: 1/1 min 
+
+2nd: 2/2 min 
+
+3rd: 7/5 min 
+
+4th: 9/10 min 
+
+Condition: \\
+1. They have only one torch and they can't cross bridge without torch. \\
+2. and only 2 person can cross bridge at a time.
+
+\subsubsection{解题思路}
+-> 1. + 2. - 2 min\\
+<- 1.      - 1 min\\
+-> 3. + 4. - 9/10 min\\
+<- 2.      - 2 min\\
+-> 1. + 2. - 2 min
+
+\subsection{Comperision Number}
+Which is greated $3^{20}$ or $2^{30}$
+\subsubsection{解题思路}
+$3^{20}=(3*3)^{10}=9^{10}$
+
+$2^{30}=(2*2*2)^{10}=8^{10}$

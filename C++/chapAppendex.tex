@@ -1,0 +1,201 @@
+\chapter{Appendex}
+
+\section{註記} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{dungeon-game}
+動態規劃，對於每個格子記錄從它出發順利到達終點需要的最小血量。從(m-1,n-1)遞推至(0,0)。
+注意對於每個格子其實有進和出兩個狀態：進入該格子時(未考慮當前格子影響)；和離開該格子後(已考慮當前格子影響)。這兩種方法都行，考慮到程序的結構可能有三部分：初始化邊界條件、狀態轉移、根據狀態表示答案，需要仔細斟酌以追求代碼簡短。這裏兩種方式並無明顯代碼長度差異。
+\subsection{majority-element}
+Boyer-Moore majority vote algorithm http://www.cs.utexas.edu/~moore/best-ideas/mjrty/ 
+這個可以拓展爲找出所有出現次數大於N/K的元素。方法是每次找出K個互不相同的元素丟掉，最後剩下的元素是候選解。時間複雜度O(N*K)。
+\subsection{fraction-to-recurring-decimal}
+
+注意INT_MIN/(-1)會溢出。
+maximum-gap
+平均数原理，求出极差d后，根据桶大小ceil(d/(n-1))分成若干个桶，答案必为不同桶的两个元素之差。
+find-peak-element
+二分查找，把區間縮小爲仍包含候選值的子區間。
+\begin{Code}
+	int l = 0, h = a.size();
+	while (l < h-1) {
+		int m = l+h >> 1;
+		if (a[m-1] > a[m]) h = m;
+		else if (m+1 == h || a[m] > a[m+1]) l = h = m;
+		else l = m+1;
+	}
+	return l;
+\end{Code}
+\subsection{min-stack}
+使用兩個棧，原棧S存放各個元素。每當新元素小於等於當前最小值時，就把新元素複製一份壓入另一個棧S'。彈出時，若元素在S'中出現，則也從S'中彈出。
+另一種方法是記錄新元素與當前最小值的差值，每個元素需要多記錄1個bit。可惜C++會Memory Limit Exceeded，感覺不合理。
+\subsection{find-minimum-in-rotated-sorted-array}
+方法是二分，如果要寫短可以採用下面的思路： 子數組中如果有相鄰兩個元素a[i]>a[i+1]，則a[i+1]是整個數組的最小值。 若子數組a[i..j]滿足a[i]>a[j]，則存在i<=k<j使得a[k]>a[k+1]。 
+對於子數組a[l..h]判斷a[l]>a[m]或a[m]>a[h]是否有一個成立，成立則可以去除一半候選元素，不然a[h]>a[l]爲一個逆序對。
+\subsection{find-minimum-in-rotated-sorted-array-ii}
+對於子數組a[l..h]判斷a[l]>a[m]或a[m]>a[h]是否有一個成立，成立則可以去除一半候選元素。 兩個條件均不滿足則a[l]<=a[m]<=a[h]，若a[h]>a[l]則找到逆序對，否則a[l]=a[m]=a[h]，可以把範圍縮小爲a[l+1..h-1]
+\subsection{first-missing-positive}
+空間複雜度O(1)。
+\subsection{jump-game}
+空間複雜度O(1)。
+\subsection{jump-game-ii}
+使用output-restricted queue優化的動態規劃，注意到動態規劃值的單增性可以用類似BFS的方式，空間複雜度O(1)。
+\subsection{linked-list-cycle-ii}
+Brent's cycle detection algorithm
+\subsection{longest-palindromic-substring}
+Manacher's algorithm
+\subsection{maximum-subarray}
+Kadane's algorithm
+\subsection{merge-k-sorted-lists}
+Tournament sort
+\subsection{minimal-window-substring}
+尺取法
+\subsection{n-queen}
+bitmask存儲列，正反斜線控制的格子。
+\subsection{palindrome-partitioning}
+f[i][j] = calc(f[ii][jj] : i <= ii <= jj <= j)形式的動態規劃可以採用如下計算方式。
+\begin{Code}
+	for (int i = n; --i >= 0; )
+	for (int j = i; j < n; j++) {
+		// calc [i,j]
+	}
+\end{Code}
+
+\subsection{recover-binary-search-tree}
+使用Morris in-order traversal找到鄰接失序對。
+如果交換的元素相鄰，則有一個鄰接失序對(如0 1 2 3 4 ->0 1 3 2 4)，否則有兩個鄰接失序對(如0 1 2 3 4 5 -> 0 4 2 3 1 5)。
+\subsection{remove-nth-node-from-end-of-list}
+http://meta.slashdot.org/story/12/10/11/0030249/linus-torvalds-answers-your-questions
+使用pointers-to-pointers很多時候能簡化實現。
+\subsection{regular-expression-matching}
+P爲模式串，T爲文本， f[i][j]表示P的前i個字符能否匹配T的前j個字符。 根據f[i-1][*]計算f[i][*]。 這個方法也可以看作構建了精簡表示的Thompson's automaton，時間複雜度O(|P|*|T|)。
+\subsection{sort-colors}
+Dutch national flag problem 如果不要求000111222，允許111000222111，那麼有交換次數更少的Bentley-McIlroy算法 http://www.iis.sinica.edu.tw/~scm/ncs/2010/10/dutch-national-flag-problem-3/
+\subsection{sqrtx}
+Hacker's Delight (2nd) 11.1.1 46340 = floor(sqrt(INT_MAX))
+\subsection{scramble-string}
+我用了$O(n^3)$的空間和$O(n^4)$的時間，應該有更好的算法。
+\subsection{sort-list}
+Natural merge sort
+\subsection{sudoku-solver}
+轉化爲exact cover problem，使用dancing links + Algorithm X求解。
+\subsection{trapping-rain-water}
+兩個指針夾逼，空間O(1)。
+\subsection{unique-binary-search-trees-ii}
+子樹可以復用。
+\subsection{maximal-rectangle}
+秋葉拓哉（iwi）、巖田陽一（wata）和北川宜稔（kita_masa）所著，巫澤俊（watashi）、莊俊元（navi）和李津羽（itsuhane）翻譯的《挑戰程序設計競賽》
+逐行掃描棋盤，掃描第i行時，h[j]表示第j列上方連續爲1的行數。若a[i][j]==0則h[j]==0， 當a[i][j]==1時，l[j]表示min(k : h[k+1..j]>=h[j])，r[j]表示max(k : h[j..k-1]>=h[j])。
+\begin{Code}
+	#define ROF(i, a, b) for (int i = (b); --i >= (a); )
+	#define FOR(i, a, b) for (int i = (a); i < (b); i++)
+	#define REP(i, n) for (int i = 0; i < (n); i++)
+	class Solution {
+		public:
+		int maximalRectangle(vector<vector<char> > &a) {
+			if (a.empty()) return 0;
+			int m = a.size(), n = a[0].size(), ans = 0;
+			vector<int> h(n), l(n), r(n, n-1);
+			REP(i, m) {
+				int ll = -1;
+				REP(j, n) {
+					h[j] = a[i][j] == '1' ? h[j]+1 : 0;
+					if (a[i][j] == '0') ll = j;
+					l[j] = h[j] ? max(h[j] == 1 ? 0 : l[j], ll+1) : j;
+				}
+				int rr = n;
+				ROF(j, 0, n) {
+					if (a[i][j] == '0') rr = j;
+					r[j] = h[j] ? min(h[j] == 1 ? n-1 : r[j], rr-1) : j;
+					ans = max(ans, (r[j]-l[j]+1)*h[j]);
+				}
+			}
+			return ans;
+		}
+	};
+\end{Code}
+
+\subsection{4-sum}
+使用了multimap，時間複雜度$O(n^2*log(n))$，得到所有答案後不需要去重操作。
+合法的四元組有三類：
+a<=b<c<=d，枚舉c和d，判斷是否存在和爲target-c-d的二元組
+a<=b=c<=d，枚舉b和d，判斷是否存在target-b-b-d
+a=b=c<=d，枚舉a，判斷是否存在target-a-a-a
+分別統計，小心實現可以保證不會產生相同的候選解，從而無需去重。
+\begin{Code}
+	#define ROF(i, a, b) for (int i = (b); --i >= (a); )
+	#define FOR(i, a, b) for (int i = (a); i < (b); i++)
+	#define REP(i, n) for (int i = 0; i < (n); i++)
+	class Solution {
+		public:
+		int maximalRectangle(vector<vector<char> > &a) {
+			if (a.empty()) return 0;
+			int m = a.size(), n = a[0].size(), ans = 0;
+			vector<int> h(n), l(n), r(n, n-1);
+			REP(i, m) {
+				REP(j, n) {
+					h[j] = a[i][j] == '1' ? h[j]+1 : 0;
+					l[j] = j;
+					while (l[j] && h[l[j]-1] >= h[j])
+					l[j] = l[l[j]-1];
+				}
+				ROF(j, 0, n) {
+					r[j] = j;
+					while (r[j]+1 < n && h[j] <= h[r[j]+1])
+					r[j] = r[r[j]+1];
+					ans = max(ans, (r[j]-l[j]+1)*h[j]);
+				}
+			}
+			return ans;
+		}
+	};
+\end{Code}
+
+\subsection{ACRush某TopCoder SRM}
+計數排序h[*]，從小到大插入各個指標
+大意是這一行有存在若干個區間，對於一個區間[L,R]，需要保證peer[L] == R \&\& peer[R] == L 插入指標時獲取所在區間的左右端點並更新peer[*]
+\begin{Code}
+	#define ROF(i, a, b) for (int i = (b); --i >= (a); )
+	#define FOR(i, a, b) for (int i = (a); i < (b); i++)
+	#define REP(i, n) for (int i = 0; i < (n); i++)
+	#define REP1(i, n) for (int i = 1; i <= (n); i++)
+	class Solution {
+		public:
+		int maximalRectangle(vector<vector<char> > &a) {
+			if (a.empty()) return 0;
+			int m = a.size(), n = a[0].size(), ans = 0;
+			vector<int> h(n), p(n), b(m+1), s(n);
+			REP(i, m) {
+				REP(j, n)
+				h[j] = a[i][j] == '1' ? h[j]+1 : 0;
+				fill(b.begin(), b.end(), 0);
+				REP(j, n)
+				b[h[j]]++;
+				REP1(j, m)
+				b[j] += b[j-1];
+				REP(j, n)
+				s[--b[h[j]]] = j;
+				fill(p.begin(), p.end(), -1);
+				ROF(j, 0, n) {
+					int x = s[j], l = x, r = x;
+					p[x] = x;
+					if (x && p[x-1] != -1) {
+						l = p[x-1];
+						p[l] = x;
+						p[x] = l;
+					}
+					if (x+1 < n && p[x+1] != -1) {
+						l = p[x];
+						r = p[x+1];
+						p[l] = r;
+						p[r] = l;
+					}
+					ans = max(ans, (r-l+1)*h[x]);
+				}
+			}
+			return ans;
+		}
+	};
+\end{Code}
+
+\subsection{棧維護histogram}
+常見解法。

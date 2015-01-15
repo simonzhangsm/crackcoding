@@ -144,7 +144,7 @@ your function should return length = 5, and A is now \code{[1,1,2,2,3]}
 
 \subsubsection{描述}
 Suppose a sorted array is rotated at some pivot unknown to you beforehand.
-(i.e., \code{0 1 2 4 5 6 7} might become \code{4 5 6 7 0 1 2}).
+(i.e., \code{0 1 2 4 5 6 7} might become \Code{4 5 6 7 0 1 2}).
 You are given a target value to search. If found in the array return its index, 
 otherwise return -1.
 You may assume no duplicate exists in the array.
@@ -444,6 +444,18 @@ For odd $k$, Time: $O(n^{\frac{k+1}{2}})$ --
 Compute a sorted list $S$ of all sum of $\frac{k-1}{2}$ elements in $A$. For each input element $a$ in $A$, check whether $S$ contains $s$ and $s′$, where $a+s+s′=target$
 
 \begin{center}
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		\multirow{2}{*}{\textbf{$k≥2$}} & \multirow{2}{*}{\textbf{Brute Force}} & \multirow{2}{*}{\textbf{Sort Find}} & \multicolumn{2}{|c|}{\textbf{Hash}} \\
+		\cline{4-5} & & & \textbf{Time} & \textbf{Space}\\
+		\hline
+		2Sum & $n^2$ & $nlog(n)$ & $n$ & $n$ \\
+		\hline
+		3Sum & $n^3$ & $n^2$ & $n^2$ & $n$ \\
+		\hline
+		4Sum & $n^4$ & $n^3$ & $n^2log(n)$ & $n^2$ \\
+		\hline
+	\end{tabular}
 	\begin{tabular}{|c|c|c|c|c|}
 		\hline
 		\multirow{2}{*}{\textbf{$k≥2$}} & \multirow{2}{*}{\textbf{Brute Force}} & \multirow{2}{*}{\textbf{Sort Find}} & \multicolumn{2}{|c|}{\textbf{Hash}} \\

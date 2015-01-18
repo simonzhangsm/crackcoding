@@ -609,3 +609,78 @@ Examples:
 1) Pattern : "abba", input: "redbluebluered" should return 1. 
 2) Pattern: "aaaa", input: "asdasdasdasd" should return 1. 
 3) Pattern: "aabb", input: "xyzabcxzyabc" should return 0. 
+
+\section{LeetCode} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Interleaving String}
+Given s1, s2, s3, find whether s3 is formed by the interleaving of s1 and s2.
+
+For example,
+
+Given:
+
+s1 = "aabcc",
+
+s2 = "dbbca",
+
+When s3 = "aadbbcbcac", return true.
+
+When s3 = "aadbbbaccc", return false.
+
+\subsubsection{思路}
+【Iteration】 
+s1取一部分，s2取一部分，然后再s1取一部分，反复直到匹配完成s3，算法去模拟这样的操作。
+
+当s1和s3匹配了一部分的时候，剩下s1‘和剩下的s3’与s2又是一个子问题，则递归，但是需要注意两点：
+
+1. 递归中，总是拿s1首先去匹配s3，如果不匹配，直接返回false，如此保持匹配是“交替”进行的；
+
+2. 当出现既可以匹配s1，又可以匹配s2的时候，一样可以通过递归来解决，看下面的代码。
+\begin{Code}
+	bool isInterleave(string s1, string s2, string s3) {
+		if(s3.size()!=s1.size()+s2.size()) return false;
+		if(s1.empty()) return s2==s3;
+		if(s2.empty()) return s1==s3;
+		if(s1[0]!=s3[0]){
+			if(s3[0]==s2[0])
+				return isInterleave(s2,s1,s3);
+			return false;
+		}
+		int i1=0, i3=0;
+		while(i1<s1.size() && i3<s3.size() && s1[i1]==s3[i3]){
+			i1++, i3++;
+			if(s2[0]==s3[i3] && isInterleave(s2, s1.substr(i1), s3.substr(i3)))
+				return true;
+		}
+		return isInterleave(s2, s1.substr(i1), s3.substr(i3));
+	}
+\end{Code}
+
+【Danymic Programming】
+动态规划矩阵matched[l1][l2]表示s1取l1长度（最后一个字母的pos是l1-1)，s2取l2长度(最后一个字母的pos是l2-1)，是否能匹配s3的l1+12长度。
+$$match[l1][l2] = s1[l1-1] == s3[l1+l2-1] \&\& match[l1-1][l2] || s2[l2-1] == s3[l1+l2-1] \&\& match[l1][l2-1]$$
+
+边界条件是，其中一个长度为0，另一个去匹配s3.
+
+这里s1和s2交替出现的规律并不明显，所以没有直观地想到。
+
+\begin{Code}
+	bool isInterleave(string s1, string s2, string s3) {
+		if(s3.size()!=s1.size()+s2.size()) return false;
+		if(s1.empty()) return s2==s3;
+		if(s2.empty()) return s1==s3;
+		bool match[s1.size()+1][s2.size()+1];
+		memset(match, 0x00, sizeof(match));
+		match[0][0] = true;
+		for(int i1=1;i1<=s1.size() && s1[i1-1]==s3[i1-1];i1++)
+			match[i1][0] = true;
+		for(int i2=1;i2<=s2.size() && s2[i2-1]==s3[i2-1];i2++)
+			match[0][i2] = true;
+		for(int i1=1;i1<=s1.size();i1++){
+			for(int i2=1;i2<=s2.size();i2++){
+				match[i1][i2] = (s1[i1-1] == s3[i1+i2-1] && match[i1-1][i2])
+							||	(s2[i2-1] == s3[i1+i2-1] && match[i1][i2-1]);
+			}
+		}
+		return match[s1.size()][s2.size()];
+	}
+\end{Code}

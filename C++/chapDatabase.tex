@@ -1,4 +1,724 @@
-\section{JOIN}
+\chapter{Database}
 
-The SQL Joins clause is used to combine records from two or more tables in a database. A JOIN is a means for combining fields from two tables by using values common to each.
+Consider the following two tables, (a) CUSTOMERS and (b) ORDERS:
 
+\begin{center}
+	\begin{tabular}{|c|c|c|c|c|}
+		\multicolumn{5}{c}{(a) CUSTOMERS}\\
+		\hline
+		{\textbf{ID}} & {\textbf{NAME}} & {\textbf{AGE}} & {\textbf{ADDRESS}} & {\textbf{SALARY}} \\
+		\hline
+		1 & Ramesh	& 32 & Ahmedabad 	& 2000.00 \\
+		2 & Khilan	& 25 & Delhi		& 1500.00 \\
+		3 & kaushik	& 23 & Kota			& 2000.00 \\
+		4 & Chaitali	& 25 & Mumbai	& 6500.00 \\
+		5 & Hardik	& 27 & Bhopal		& 8500.00 \\
+		6 & Komal	& 22 & MP			& 4500.00  \\
+		7 & Muffy	& 24 & Indore		& 10000.00 \\
+		\hline
+	\end{tabular}
+	\begin{tabular}{|c|c|c|c|}
+		\multicolumn{4}{c}{(b) ORDERS}\\
+		\hline
+		{\textbf{OID}} & {\textbf{DATE}} & {\textbf{CUSTOMER_ID}} & {\textbf{AMOUNT}} \\
+		\hline
+		102 & 2009-10-08 00:00:00 &           3 &   3000 \\
+		100 & 2009-10-08 00:00:00 &           3 &   1500 \\
+		101 & 2009-11-20 00:00:00 &           2 &   1560 \\
+		103 & 2008-05-20 00:00:00 &           4 &   2060 \\
+		\hline
+	\end{tabular}
+\end{center}
+
+\section{SQL Operators}
+\subsection{SQL Arithmetic Operators}
+
+Assume variable a holds 10 and variable b holds 20, then:
+
+\begin{center}
+	\begin{tabular}{|c|p{9cm}|c|}
+		\hline
+		Operator	&	Description	&	Example\\
+		\hline
+		+	&	Addition - Adds values on either side of the operator	&	a + b will give 30\\
+		-	&	Subtraction - Subtracts right hand operand from left hand operand	&	a - b will give -10\\
+		*	&	Multiplication - Multiplies values on either side of the operator	&	a * b will give 200\\
+		/	&	Division - Divides left hand operand by right hand operand	&	b / a will give 2\\
+		\%	&	Modulus - Divides left hand operand by right hand operand and returns remainder	&	b \% a will give 0\\
+		\hline
+	\end{tabular}
+\end{center}
+
+\subsection{SQL Comparison Operators}
+Assume variable a holds 10 and variable b holds 20, then:
+
+\begin{center}
+	\begin{tabular}{|c|p{9cm}|c|}
+		\hline
+		Operator	&	Description	&	Example\\
+		\hline
+		=	& Checks if the values of two operands are equal or not, if yes then condition becomes true.	& (a = b) is not true.\\
+		!=	& Checks if the values of two operands are equal or not, if values are not equal then condition becomes true.	& (a != b) is true.\\
+		<>	& Checks if the values of two operands are equal or not, if values are not equal then condition becomes true.	& (a <> b) is true.\\
+		>	& Checks if the value of left operand is greater than the value of right operand, if yes then condition becomes true.	& (a > b) is not true.\\
+		<	& Checks if the value of left operand is less than the value of right operand, if yes then condition becomes true.	& (a < b) is true.\\
+		>=	& Checks if the value of left operand is greater than or equal to the value of right operand, if yes then condition becomes true.	& (a >= b) is not true.\\
+		<=	& Checks if the value of left operand is less than or equal to the value of right operand, if yes then condition becomes true.	& (a <= b) is true.\\
+		!<	& Checks if the value of left operand is not less than the value of right operand, if yes then condition becomes true.	& (a !< b) is false.\\
+		!>	& Checks if the value of left operand is not greater than the value of right operand, if yes then condition becomes true.	& (a !> b) is true.\\
+		\hline
+	\end{tabular}
+\end{center}
+
+\subsection{SQL Logical Operators}
+Here is a list of all the logical operators available in SQL.
+
+\begin{center}
+	\begin{tabular}{|c|p{12cm}|c|}
+		\hline
+		Operator	&	Description \\
+		\hline
+		ALL	& The ALL operator is used to compare a value to all values in another value set.\\
+		AND	& The AND operator allows the existence of multiple conditions in an SQL statement's WHERE clause.\\
+		ANY	& The ANY operator is used to compare a value to any applicable value in the list according to the condition.\\
+		BETWEEN	& The BETWEEN operator is used to search for values that are within a set of values, given the minimum value and the maximum value.\\
+		EXISTS	& The EXISTS operator is used to search for the presence of a row in a specified table that meets certain criteria.\\
+		IN	& The IN operator is used to compare a value to a list of literal values that have been specified.\\
+		LIKE	& The LIKE operator is used to compare a value to similar values using wildcard operators.\\
+		NOT	& The NOT operator reverses the meaning of the logical operator with which it is used. Eg: NOT EXISTS, NOT BETWEEN, NOT IN, etc. This is a negate operator.\\
+		OR	& The OR operator is used to combine multiple conditions in an SQL statement's WHERE clause.\\
+		IS NULL	& The NULL operator is used to compare a value with a NULL value.\\
+		UNIQUE	& The UNIQUE operator searches every row of a specified table for uniqueness (no duplicates).\\
+		\hline
+	\end{tabular}
+\end{center}
+
+\section{Join}
+
+An SQL JOIN clause is used to combine rows from two or more tables, based on a common field between them.
+
+The most common type of join is: SQL INNER JOIN (simple join). An SQL INNER JOIN return all rows from multiple tables where the join condition is met.
+
+ let us join these two tables in our SELECT statement as follows:
+ 
+ \begin{Code}
+ 	SELECT ID, NAME, AGE, AMOUNT
+ 	FROM CUSTOMERS, ORDERS
+ 	WHERE  CUSTOMERS.ID = ORDERS.CUSTOMER_ID;
+ \end{Code}
+ 	
+ This would produce the following result:
+ 
+ \begin{center}
+ 	\begin{tabular}{|c|c|c|c|c|}
+ 		\hline
+ 		{\textbf{ID}} & {\textbf{NAME}} & {\textbf{AGE}} & {\textbf{DATE}} & {\textbf{AMOUNT}} \\
+ 		\hline
+ 		3 & kaushik		& 23 	&	2009-10-08 00:00:00 & 	3000 \\
+ 		3 & kaushik		& 23	& 	2009-10-08 00:00:00	&	1500 \\
+ 		2 & Khilan		& 25	& 	2009-11-20 00:00:00 &	1560 \\
+ 		4 & Chaitali	& 25	& 	2008-05-20 00:00:00 &	2060 \\
+ 		\hline
+ 	\end{tabular}
+\end{center}
+
+Here, it is noticeable that the join is performed in the WHERE clause. Several operators can be used to join tables, such as =, <, >, <>, <=, >=, !=, BETWEEN, LIKE, and NOT; they 
+can all be used to join tables. However, the most common operator is the equal symbol.
+
+SQL Join Types:
+There are different types of joins available in SQL:
+
+INNER JOIN: returns rows when there is a match in both tables.
+
+LEFT JOIN: returns all rows from the left table, even if there are no matches in the right table.
+
+RIGHT JOIN: returns all rows from the right table, even if there are no matches in the left table.
+
+FULL JOIN: returns rows when there is a match in one of the tables.
+
+SELF JOIN: is used to join a table to itself as if the table were two tables, temporarily renaming at least one table in the SQL statement.
+
+CARTESIAN JOIN: returns the Cartesian product of the sets of records from the two or more joined tables.
+
+\subsection{INNER JOIN}
+The INNER JOIN creates a new result table by combining column values of two tables (table1 and table2) based upon the join-predicate. The query compares each row of table1 with 
+each row of table2 to find all pairs of rows which satisfy the join-predicate. When the join-predicate is satisfied, column values for each matched pair of rows of A and B are 
+combined into a result row.
+
+Syntax:
+The basic syntax of INNER JOIN is as follows:
+
+\begin{Code}
+	SELECT  ID, NAME, AMOUNT, DATE
+	FROM CUSTOMERS
+	INNER JOIN ORDERS
+	ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID;
+\end{Code}
+
+This would produce the following result:
+
+\begin{Code}
+		+----+----------+--------+---------------------+
+		| ID | NAME     | AMOUNT | DATE                |
+		+----+----------+--------+---------------------+
+		|  3 | kaushik  |   3000 | 2009-10-08 00:00:00 |
+		|  3 | kaushik  |   1500 | 2009-10-08 00:00:00 |
+		|  2 | Khilan   |   1560 | 2009-11-20 00:00:00 |
+		|  4 | Chaitali |   2060 | 2008-05-20 00:00:00 |
+		+----+----------+--------+---------------------+
+\end{Code}
+
+\subsection{LEFT JOIN}
+The SQL LEFT JOIN returns all rows from the left table, even if there are no matches in the right table. This means that if the ON clause matches 0 (zero) records in right table, 
+the join will still return a row in the result, but with NULL in each column from right table.
+
+This means that a left join returns all the values from the left table, plus matched values from the right table or NULL in case of no matching join predicate.
+
+Syntax:
+The basic syntax of LEFT JOIN is as follows:
+
+\begin{Code}
+	SELECT  ID, NAME, AMOUNT, DATE
+	FROM CUSTOMERS
+	LEFT JOIN ORDERS
+	ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID;
+\end{Code}
+
+This would produce the following result:
+
+\begin{Code}
+		+----+----------+--------+---------------------+
+		| ID | NAME     | AMOUNT | DATE                |
+		+----+----------+--------+---------------------+
+		|  1 | Ramesh   |   NULL | NULL                |
+		|  2 | Khilan   |   1560 | 2009-11-20 00:00:00 |
+		|  3 | kaushik  |   3000 | 2009-10-08 00:00:00 |
+		|  3 | kaushik  |   1500 | 2009-10-08 00:00:00 |
+		|  4 | Chaitali |   2060 | 2008-05-20 00:00:00 |
+		|  5 | Hardik   |   NULL | NULL                |
+		|  6 | Komal    |   NULL | NULL                |
+		|  7 | Muffy    |   NULL | NULL                |
+		+----+----------+--------+---------------------+
+\end{Code}
+\subsection{RIGHT JOIN}
+The SQL RIGHT JOIN returns all rows from the right table, even if there are no matches in the left table. This means that if the ON clause matches 0 (zero) records in left table, 
+the join will still return a row in the result, but with NULL in each column from left table.
+
+This means that a right join returns all the values from the right table, plus matched values from the left table or NULL in case of no matching join predicate.
+
+Syntax:
+The basic syntax of RIGHT JOIN is as follows:
+
+\begin{Code}
+	SELECT  ID, NAME, AMOUNT, DATE
+	FROM CUSTOMERS
+	RIGHT JOIN ORDERS
+	ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID;
+\end{Code}
+
+This would produce the following result:
+
+\begin{Code}
+	+----+----------+--------+---------------------+
+	| ID | NAME     | AMOUNT | DATE                |
+	+----+----------+--------+---------------------+
+	|  3 | kaushik  |   3000 | 2009-10-08 00:00:00 |
+	|  3 | kaushik  |   1500 | 2009-10-08 00:00:00 |
+	|  2 | Khilan   |   1560 | 2009-11-20 00:00:00 |
+	|  4 | Chaitali |   2060 | 2008-05-20 00:00:00 |
+	+----+----------+--------+---------------------+
+\end{Code}
+
+\subsection{FULL JOIN}
+
+The SQL FULL JOIN combines the results of both left and right outer joins.
+
+The joined table will contain all records from both tables, and fill in NULLs for missing matches on either side.
+
+Syntax:
+The basic syntax of FULL JOIN is as follows:
+
+\begin{Code}
+	SELECT  ID, NAME, AMOUNT, DATE
+	FROM CUSTOMERS
+	FULL JOIN ORDERS
+	ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID;
+\end{Code}
+
+This would produce the following result:
+
+\begin{Code}
+	+----+----------+--------+---------------------+
+	| ID | NAME     | AMOUNT | DATE                |
+	+----+----------+--------+---------------------+
+	|  1 | Ramesh   |   NULL | NULL                |
+	|  2 | Khilan   |   1560 | 2009-11-20 00:00:00 |
+	|  3 | kaushik  |   3000 | 2009-10-08 00:00:00 |
+	|  3 | kaushik  |   1500 | 2009-10-08 00:00:00 |
+	|  4 | Chaitali |   2060 | 2008-05-20 00:00:00 |
+	|  5 | Hardik   |   NULL | NULL                |
+	|  6 | Komal    |   NULL | NULL                |
+	|  7 | Muffy    |   NULL | NULL                |
+	|  3 | kaushik  |   3000 | 2009-10-08 00:00:00 |
+	|  3 | kaushik  |   1500 | 2009-10-08 00:00:00 |
+	|  2 | Khilan   |   1560 | 2009-11-20 00:00:00 |
+	|  4 | Chaitali |   2060 | 2008-05-20 00:00:00 |
+	+----+----------+--------+---------------------+
+\end{Code}
+
+\subsection{SELF JOIN}
+
+The SQL SELF JOIN is used to join a table to itself as if the table were two tables, temporarily renaming at least one table in the SQL statement.
+
+Syntax:
+The basic syntax of SELF JOIN is as follows:
+
+\begin{Code}
+	SELECT  a.ID, b.NAME, a.SALARY
+	FROM CUSTOMERS a, CUSTOMERS b
+	WHERE a.SALARY < b.SALARY;
+\end{Code}
+
+This would produce the following result:
+
+\begin{Code}
+	+----+----------+---------+
+	| ID | NAME     | SALARY  |
+	+----+----------+---------+
+	|  2 | Ramesh   | 1500.00 |
+	|  2 | kaushik  | 1500.00 |
+	|  1 | Chaitali | 2000.00 |
+	|  2 | Chaitali | 1500.00 |
+	|  3 | Chaitali | 2000.00 |
+	|  6 | Chaitali | 4500.00 |
+	|  1 | Hardik   | 2000.00 |
+	|  2 | Hardik   | 1500.00 |
+	|  3 | Hardik   | 2000.00 |
+	|  4 | Hardik   | 6500.00 |
+	|  6 | Hardik   | 4500.00 |
+	|  1 | Komal    | 2000.00 |
+	|  2 | Komal    | 1500.00 |
+	|  3 | Komal    | 2000.00 |
+	|  1 | Muffy    | 2000.00 |
+	|  2 | Muffy    | 1500.00 |
+	|  3 | Muffy    | 2000.00 |
+	|  4 | Muffy    | 6500.00 |
+	|  5 | Muffy    | 8500.00 |
+	|  6 | Muffy    | 4500.00 |
+	+----+----------+---------+
+\end{Code}
+
+\subsection{CARTESIAN JOIN}
+
+The CARTESIAN JOIN or CROSS JOIN returns the Cartesian product of the sets of records from the two or more joined tables. Thus, it equates to an inner join where the 
+join-condition always evaluates to True or where the join-condition is absent from the statement.
+
+Syntax:
+The basic syntax of INNER JOIN is as follows:
+
+\begin{Code}
+	SELECT  ID, NAME, AMOUNT, DATE
+	FROM CUSTOMERS, ORDERS;
+\end{Code}
+
+This would produce the following result:
+
+\begin{Code}
+	+----+----------+--------+---------------------+
+	| ID | NAME     | AMOUNT | DATE                |
+	+----+----------+--------+---------------------+
+	|  1 | Ramesh   |   3000 | 2009-10-08 00:00:00 |
+	|  1 | Ramesh   |   1500 | 2009-10-08 00:00:00 |
+	|  1 | Ramesh   |   1560 | 2009-11-20 00:00:00 |
+	|  1 | Ramesh   |   2060 | 2008-05-20 00:00:00 |
+	|  2 | Khilan   |   3000 | 2009-10-08 00:00:00 |
+	|  2 | Khilan   |   1500 | 2009-10-08 00:00:00 |
+	|  2 | Khilan   |   1560 | 2009-11-20 00:00:00 |
+	|  2 | Khilan   |   2060 | 2008-05-20 00:00:00 |
+	|  3 | kaushik  |   3000 | 2009-10-08 00:00:00 |
+	|  3 | kaushik  |   1500 | 2009-10-08 00:00:00 |
+	|  3 | kaushik  |   1560 | 2009-11-20 00:00:00 |
+	|  3 | kaushik  |   2060 | 2008-05-20 00:00:00 |
+	|  4 | Chaitali |   3000 | 2009-10-08 00:00:00 |
+	|  4 | Chaitali |   1500 | 2009-10-08 00:00:00 |
+	|  4 | Chaitali |   1560 | 2009-11-20 00:00:00 |
+	|  4 | Chaitali |   2060 | 2008-05-20 00:00:00 |
+	|  5 | Hardik   |   3000 | 2009-10-08 00:00:00 |
+	|  5 | Hardik   |   1500 | 2009-10-08 00:00:00 |
+	|  5 | Hardik   |   1560 | 2009-11-20 00:00:00 |
+	|  5 | Hardik   |   2060 | 2008-05-20 00:00:00 |
+	|  6 | Komal    |   3000 | 2009-10-08 00:00:00 |
+	|  6 | Komal    |   1500 | 2009-10-08 00:00:00 |
+	|  6 | Komal    |   1560 | 2009-11-20 00:00:00 |
+	|  6 | Komal    |   2060 | 2008-05-20 00:00:00 |
+	|  7 | Muffy    |   3000 | 2009-10-08 00:00:00 |
+	|  7 | Muffy    |   1500 | 2009-10-08 00:00:00 |
+	|  7 | Muffy    |   1560 | 2009-11-20 00:00:00 |
+	|  7 | Muffy    |   2060 | 2008-05-20 00:00:00 |
+	+----+----------+--------+---------------------+
+\end{Code}
+
+\section{SELECT}
+
+\subsection{ORDER BY}
+
+The SQL ORDER BY clause is used to sort the data in ascending or descending order, based on one or more columns. Some database sorts query results in ascending order by default.
+
+Syntax:
+
+The basic syntax of ORDER BY clause is as follows:
+
+\begin{Code}
+	SELECT column-list 
+	FROM table_name 
+	[WHERE condition] 
+	[ORDER BY column1, column2, .. columnN] [ASC | DESC];
+\end{Code}
+
+\subsection{GROUP BY}
+The SQL GROUP BY clause is used in collaboration with the SELECT statement to arrange identical data into groups.
+
+The GROUP BY clause follows the WHERE clause in a SELECT statement and precedes the ORDER BY clause.
+
+Syntax:
+
+The basic syntax of GROUP BY clause is given below. The GROUP BY clause must follow the conditions in the WHERE clause and must precede the ORDER BY clause if one is used.
+
+\begin{Code}
+	SELECT column1, column2
+	FROM table_name
+	WHERE [ conditions ]
+	GROUP BY column1, column2
+	ORDER BY column1, column2
+\end{Code}
+
+\subsection{HAVING}
+
+The HAVING clause enables you to specify conditions that filter which group results appear in the final results.
+
+The WHERE clause places conditions on the selected columns, whereas the HAVING clause places conditions on groups created by the GROUP BY clause.
+
+The HAVING clause must follow the GROUP BY clause in a query and must also precede the ORDER BY clause if used. The following is the syntax of the SELECT statement, including the 
+HAVING clause:
+
+\begin{Code}
+	SELECT column1, column2
+	FROM table1, table2
+	WHERE [ conditions ]
+	GROUP BY column1, column2
+	HAVING [ conditions ]
+	ORDER BY column1, column2
+\end{Code}
+
+\subsection{DISTINCT}
+The SQL DISTINCT keyword is used in conjunction with SELECT statement to eliminate all the duplicate records and fetching only unique records.
+
+There may be a situation when you have multiple duplicate records in a table. While fetching such records, it makes more sense to fetch only unique records instead of fetching 
+duplicate records.
+
+Syntax:
+The basic syntax of DISTINCT keyword to eliminate duplicate records is as follows:
+
+\begin{Code}
+	SELECT DISTINCT column1, column2,.....columnN 
+	FROM table_name
+	WHERE [condition]
+\end{Code}
+
+\subsection{TOP}
+
+The SQL TOP clause is used to fetch a TOP N number or X percent records from a table.
+
+Note: All the databases do not support TOP clause. For example MySQL supports LIMIT clause to fetch limited number of records and Oracle uses ROWNUM to fetch limited number of 
+records.
+
+Syntax:
+The basic syntax of TOP clause with SELECT statement would be as follows:
+
+\begin{Code}
+	SELECT TOP number|percent column_name(s)
+	FROM table_name
+	WHERE [condition]
+\end{Code}
+
+\section{UNION}
+The SQL UNION clause/operator is used to combine the results of two or more SELECT statements without returning any duplicate rows.
+
+To use UNION, each SELECT must have the same number of columns selected, the same number of column expressions, the same data type, and have them in the same order, but they do 
+not have to be the same length.
+
+Syntax:
+The basic syntax of UNION is as follows:
+
+\begin{Code}
+	SELECT  ID, NAME, AMOUNT, DATE
+	FROM CUSTOMERS
+	LEFT JOIN ORDERS
+	ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID
+	UNION
+	SELECT  ID, NAME, AMOUNT, DATE
+	FROM CUSTOMERS
+	RIGHT JOIN ORDERS
+	ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID;
+\end{Code}
+
+This would produce the following result:
+
+\begin{Code}
+	+----+----------+--------+---------------------+
+	| ID | NAME     | AMOUNT | DATE                |
+	+----+----------+--------+---------------------+
+	|  1 | Ramesh   |   NULL | NULL                |
+	|  2 | Khilan   |   1560 | 2009-11-20 00:00:00 |
+	|  3 | kaushik  |   3000 | 2009-10-08 00:00:00 |
+	|  3 | kaushik  |   1500 | 2009-10-08 00:00:00 |
+	|  4 | Chaitali |   2060 | 2008-05-20 00:00:00 |
+	|  5 | Hardik   |   NULL | NULL                |
+	|  6 | Komal    |   NULL | NULL                |
+	|  7 | Muffy    |   NULL | NULL                |
+	+----+----------+--------+---------------------+
+\end{Code}
+
+\subsection{UNION ALL}
+The UNION ALL operator is used to combine the results of two SELECT statements including duplicate rows.
+
+The same rules that apply to UNION apply to the UNION ALL operator.
+
+Syntax:
+
+The basic syntax of UNION ALL is as follows:
+
+
+\begin{Code}
+	SELECT  ID, NAME, AMOUNT, DATE
+	FROM CUSTOMERS
+	LEFT JOIN ORDERS
+	ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID
+	UNION ALL
+	SELECT  ID, NAME, AMOUNT, DATE
+	FROM CUSTOMERS
+	RIGHT JOIN ORDERS
+	ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID;
+\end{Code}
+
+This would produce the following result:
+
+\begin{Code}
+	+----+----------+--------+---------------------+
+	| ID | NAME     | AMOUNT | DATE                |
+	+----+----------+--------+---------------------+
+	|  1 | Ramesh   |   NULL | NULL                |
+	|  2 | Khilan   |   1560 | 2009-11-20 00:00:00 |
+	|  3 | kaushik  |   3000 | 2009-10-08 00:00:00 |
+	|  3 | kaushik  |   1500 | 2009-10-08 00:00:00 |
+	|  4 | Chaitali |   2060 | 2008-05-20 00:00:00 |
+	|  5 | Hardik   |   NULL | NULL                |
+	|  6 | Komal    |   NULL | NULL                |
+	|  7 | Muffy    |   NULL | NULL                |
+	|  3 | kaushik  |   3000 | 2009-10-08 00:00:00 |
+	|  3 | kaushik  |   1500 | 2009-10-08 00:00:00 |
+	|  2 | Khilan   |   1560 | 2009-11-20 00:00:00 |
+	|  4 | Chaitali |   2060 | 2008-05-20 00:00:00 |
+	+----+----------+--------+---------------------+
+\end{Code}
+
+There are two other clauses (i.e., operators), which are very similar to UNION clause:
+
+SQL INTERSECT Clause: is used to combine two SELECT statements, but returns rows only from the first SELECT statement that are identical to a row in the second SELECT statement.
+
+SQL EXCEPT Clause : combines two SELECT statements and returns rows from the first SELECT statement that are not returned by the second SELECT statement.
+
+
+\section{Interviewing Questions}
+\subsection{Exclusive-Read with LOCK}
+Suppose that there is a database table, and four processes read the table at the same time. But, only one process is allowed to read the same row of the table at the same time. 
+How do you enforce the exclusive-read on a row?
+
+LOCKs:
+
+\subsection{TOP-K DELETE}
+How to delete two rows from the table in database ? 
+
+\begin{Code}
+	DELETE FROM table 
+	WHERE id in (SELECT TOP 2 * FROM table);
+\end{Code}
+
+\subsection{ACID}
+Describe ACID properties in terms of a database transaction?
+
+The ACID properties are atomic, consistent, isolated, and durable. 
+
+- {\bf Atomic} means that a transaction cannot be subdivided. The transaction is all or nothing. 
+
+- {\bf Consistent} means that a transaction satisfies integrity constraints after completion. 
+
+- {\bf Isolated} means that transactions do not interfere with each other except in allowable ways. A transaction should never overwrite changes made by another transaction. In 
+addition, a transaction may be restricted from interfering in other ways such as not viewing the uncommitted changes made by other transactions. 
+
+- {\bf Durable} means that any changes resulting from a transaction are permanent. No failure will erase any changes after a transaction terminates. 
+
+Concurrency control and recovery management ensure that transactions meet the ACID properties. Recovery management involves actions to deal with failures such as communication 
+errors and software crashes. Concurrency control involves actions to control interference among multiple, simultaneous users of the database.
+
+\subsection{Distribution of Database Servers}
+Database server is in US and web server is in India, how will you handle time zone conversion?
+
+Store the time in US timezone on database side. Use views to display the time on the web server side. These views must calculate the indian time before displaying
+
+\subsection{Query Performance}
+How to improve query performance?
+
+To improve the query performance we need to follow the below check list. \\
+1. run the query and check the execution plan \\
+2. in the execution plan if we are seeing table scan it means there is not index created. we need to create index on that table ( the column which selected in select list) \\
+3. if there is index is created but still ur getting table scan then need to check on which column the index has been created.. we need to make sure index has been created on the 
+column which has int value .. coz the performance will hit if u have created index on Name column \\
+4. from the execution plan we need to find how many hints we are getting based on that we need to modify the query.. hints are nothing but the suggestion for better performance. \\
+5. there should not more index created on same table. else that will become problem. \\
+6. what is the network speed .. that also matter for the performance issue. \\
+
+Search Efficiently : \\
+Depends on what job position you are looking for, you might want to answer it from a different aspect. But I think this question is asking you methods or different factors can 
+effect the search. \\
+1. Definitely "Hash " is a good answer. \\
+2. (building) Indexes , in data warehouse, bitmap index may apply on some columns like gender or something ( since you dont really do transaction in data warehouse, so bitmap 
+works here, not in transaction tables) \\
+3. Table Partitions \\
+4. parallel operations ( well, depends on if the DBA allows you to sacrifice some server performance to increase your efficiency)
+
+\subsection{Isolation}
+What are different isolation level?
+
+Different isolation level are : \\
+1. Read uncommitted (the lowest level where transactions are isolated only enough to ensure that physically corrupt data is not read) \\
+2. Read committed (Database Engine default level) \\
+3. Repeatable read \\
+4. Serializable (the highest level, where transactions are completely isolated from one another)
+
+\subsection{Database Backup}
+Select the option that correctly describes the database replication concept where two or more 
+replicas synchronize each other through a transaction identifier. 
+
+-Quorum \\
+-Multimasterslave \\
+-Master-Slave \\
+-Multimaster
+
+Master/Slave Replication: All write requests are performed on the master and then replicated to the slaves 
+
+Quorum: The result of Read and Write requests is calculated by querying a "majority" of replicas. 
+
+Multimaster: Two or more replicas sync each other via a transaction identifier.
+
+\subsection{MapReduce vs Joins}
+In mapreduce, which type of join is more efficient, map side join or reduce side join and why?
+
+'Reduce-Side joins are more simple than Map-Side joins since the input datasets need not to be structured. But it is less efficient as both datasets have to go through the 
+MapReduce shuffle phase.' 
+
+\subsection{JOIN vs UNION}
+Can you do JOIN using UNION keyword? Can you do UNION using JOIN keyword? 
+
+FULL OUTER JOIN is a UNION of LEFT JOIN and RIGHT JOIN
+
+\subsection{Distributed Queries}
+
+What is the best way to handle distributed databases and to merge their results ?
+
+\subsection{Specific Conceptions}
+
+Explain Indexing, Mining algorithms, Joins, SQL, normalisation, Materialized view
+
+Indexing - database index can speed up a query by hundreds or thosands of times. This data structure(indexes) are created by using one or more columns in the table, providing a 
+basis for both rapid random lookups and efficient access of ordered records. in a rational db an index is a copy of one part of a table. Code to create an index: 
+
+CREATE INDEX table_column1 ON table(column1) - this allows the database to very quickly match records from column1. 
+
+SQL - structured query language - a database language designed for managing data in a relational database management system RDBMS 
+
+Joins - a SQL clause that combines records from two or more tables in a database. An SQL join creates a set that can be saved as a table or used as is. 
+different types of joins: 
+INNER- create a set that has a similar set of column values 
+ex. SELECT * FROM table a, table b INNER JOIN 
+WHERE a.column1 = b.column2 
+
+OUTER - basically the opposite of an INNER JOIN, it will return all/some the records that do not match of the joined tables. outer hoins subdivide further into different types of 
+joins LEFT, RIGHT, FULL 
+
+LEFT OUTER- aka left join - returns all the records on the left table and only the records on the right table that match. as for the sql below - all the records in table 1 and 
+only the records that match for table 2 
+
+SELECT * FROM table1 a, table2 b LEFT JOIN ON column1 
+WHERE a.column1 = b.column2 
+
+RIGHT OUTER JOIN - aka RIGHT JOIN - is opposite of left join - return all the records from right table and only the records that match on left table 
+
+
+FULL OUTER JOIN - combines the records of both left and right joins and fill in NULLs for the missing records matches on either side. you need to use caution with FULL OUTER JOINs 
+becuase not all database systems support this but they do support UNIONS so you will have to write a left and right join with a union. 
+
+Mining Algorithms: 
+Apriori - an algorithm for association rules - aka association rule mining, given a set of itemsets (for instance, sets of retail transactions, each listing individual items 
+purchased), the algorithm attempts to find subsets which are common to at least a minimum number C of the itemsets. Apriori uses a "bottom up" approach, where frequent subsets are 
+extended one item at a time (a step known as candidate generation), and groups of candidates are tested against the data. The algorithm terminates when no further successful 
+extensions are found.
+
+normalisation is the process of reducing the redundancy and replication in the database design.
+
+Materialized view:1) MV is stored on disk 2) The reason MV is stored on disk is to reduce the computation 
+time i.e. in data warehousing environments we use aggregated or summary tables, these summary/aggregate tables are created before hand in the form of MV and stored on disk. 3) 
+Materialized view is a name in oracle environment and in sql server it is known by indexed views.
+
+\subsection{Stored Proc}
+Stored Proc vs Normal Query. Which is faster and why?
+
+Stored Procedures are used to execute N number of times, update multiple tables at the same time and perform faster than a normal query since the communication from PL SQL Engine 
+to SQL engine can be made faster by using collections. On the other hand, a normal query is just run once and update only one table at a time.
+
+\subsection{Indexing}
+
+1. Difference between clustered and non clustered index \\
+2. Difference between having and where \\
+3. What is query optimization
+
+1. Clustred vs Non-Clustred
+A clustered index forces the data to be stored in the index column sequence. Clustered index is helpful to search range of data values.
+Eg: Assume there is an Employee(EmpId, EmpName, Sal, Dept) with clustered index on EmpId column
+SELECT Empname 
+FROM Employee
+WHERE EmpId between 8 AND 16.
+As the employee records are stored in the sequence of EmpId, we can easily locate EmpIds 9 to 16 once we find the location of record for EmpID 8.
+
+A good example of clustered index is: Dictionary where each page header contains the starting letters of words that are present in that page. If we go to a page, we can easily 
+find all the words adjacent to a particular word.
+There can be only one clustered index per table but there can be approximately 249 non-clustred indexes.
+
+Non-Clustred index: A non-clustered index stores location of the data page and an offset to the data record in that page. 
+A good example is: index on the back of a book
+
+Diff in Having and Where: 
+Having is used with Group by clause and without group by clause it works similar to where. 
+Where : It is conditional join between table and it filter the data from tables. 
+
+Query Optimization : The best way is to figure out the execution plan and then analysis how the data is fetched. If there are full table scans in large data tables then we need to 
+consider the index. See if table joins are necessary otherwise we need to remove few tables if it is possible. 
+
+\subsection{Big Database}
+
+You have to design a database that can store terabytes of data. It should support efficient point queries. How would you do it ?
+
+If the data has some set of numbers that repeat very often, then we can have a hash table for it. for the remaining digits, we can have a BST. This will reduce the height of the 
+BST and hence the value of log(n)
+
+Patitioned Hashing Primary Indexing
+
+[note]: hash trie array is the best in this case
+
+\subsection{Unique Key vs Primary Key}
+What's the difference between a primary key and a unique constraint?
+
+Unique key columns may allow null values but the columns of a primary key do not allow null values.
+
+Only one primary key column is allowed in a table 
+But any number of Unique Constraint column is allowed in a table

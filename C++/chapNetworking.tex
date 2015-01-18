@@ -1,0 +1,103 @@
+\chapter{Networking \& Distributed Computing}
+\section{Distributed Computing}
+\subsection{System Design}
+\subsubsection{Facebook Friends}
+Design a system like friend's functionality in facebook. should have all features of facebook's friends functionality. like for each person , he can have any number of friends , 
+he will get suggestions for new firends , showing common friends if we visits any other profile . algo should be scalable , robust.
+
+Basically a friends network is an undirected graph. Each person is a vertex of the graph and friendship is an edge between the two vertices. We can represent the graph by by 
+maintaining an adjacency list. 
+- Like: Each person maintains a list of Posts. Lets say person A puts a post, persons who are connected to person A will be notified about the post (observer pattern). Friend B 
+can like a post which increase the 'Like' count. 
+- Friends Suggestion: For person A find all nodes X that is at distance 2 from node A. (Now this is scalable as the requirements can tell what is the depth we want to look for 
+making suggestions.) 
+- Common Friends: When A visits person B. Find all nodes X that are at distance 1 from node A.
+- Tagging Friends: 
+
+\subsubsection{REST API}
+Design an architecture for REST APIs where you have to upload big data like images/videos etc. Request should be async. Follow up: How will you tune the performance if you have 
+millions of requests coming at same time? Clues: Queueing the request, Storing data in filesystems rather than traditional DB etc.
+
+\subsubsection{SWMR}
+Design a distributed keystore with a single write end-point and multiple read end-points.
+
+
+\subsubsection{Phrase Search}
+How does a search engine perform exact phrase search? i.e. search for the term "the bees knees" exactly.
+
+When a phrase search is done, there could be multiple ways based on how the search engine is implemented. Will explain one way here. 
+Each of the words of the phrases are searched on the inverted index and the posting lists of the corresponding words will all be retrieved. We can do a repeated intersection of 
+the sets of documents in the posting lists.. 
+In the document set where all the words are present, a more detailed search for the specific location of the word in the documents where each of these words occur. The result will 
+have those documents that have them in the consecutive positions in each of the documents in the specified order. 
+Sometimes the phrases may be stored as they are too.. For instance to search phrases like "To be or not to be", which consists of all stopwords.. 
+If the n gram frequencies in words or phrases are stored as in vector space models, phrase searches are simpler.
+
+\subsubsection{Caching Design}
+
+Design a collaborative text editor where each participant has infinite undo/redo. Consider the scenario where a user goes offline and then comes online and tries to undo/redo.
+
+At a high level very naive approach: each participant generates a string of actions associated with a timestamp. It's a product design decision whether to use client side 
+timestamps or server side timestamps for each action. From the server side, it's a matter of merging these action sorted by timestamp. Every participants series of actions are 
+stored, so every time participant sends an undo or redo update that action with the latest timestamp (so that it's the latest action now). Action is defined as a character 
+(including backspace and cursor move)
+
+When user goes offline, the client side should gray out the document and make it read-only otherwise there's no logical way to merge his changes made in old document to the new 
+document when he get online. 
+
+\subsubsection{Parallel BFS and DFS}
+Design a parallel Breadth First Search algorithm for a directed weighted graph. 
+
+Basically you need to find the minimum cost to reach to a node from the starting node <given>. (Just save the optimum cost and not the optimum path). Calculate and output the 
+optimum reachability cost for all the nodes from a given starting point. 
+
+Implement in C with openMP. 
+
+1. How about using DFS or Shortest path first instead. Would these algorithms perform better than BFS with parallel implementation. Yes/No Why?
+
+While implementing BFS, we enque the neighbours of the present node into the queue. Then we deque each of them and again run a BFS on them sequentially. Because we have a parallel 
+processing available, we can execute them in parallel instead of sequential. But we need to keep the common information like visited nodes etc with each of the process.
+
+\subsubsection{Scalability}
+How to add a counter to www.google.com to track the billionth user.
+
+Assuming all web requests were always from unique users - worst case for computing! Operationally, the web server fleet needs these processes in it: 
+
+1. Accumulatator: Add number of web requests and send to a timebound computing server. Add a random delay to report this stat so that the computing server has time to process 
+requests over a period of time. 
+2. Stat listener: Fetches the current stat data from a timebound computing server 
+
+The timebound computing server (lets say 600 servers exist, each counts the request data for 6 seconds) and are roundrobined in 1 hr - it's job is to use the time it has to sort 
+the requests timestamp wise. It also fetches data from the previous server in roundrobin when it finishes counting, and adds the current fetched data to this list. If it sees a 
+crossover of a billion, it can very well know which transaction caused it. 
+
+This can now be sent to the web server thru' the stat listener, and it could choose to update the unique user during his/her next request. 
+
+Alternately, it can be sent to the user's data in the distributed hash table.
+
+\subsubsection{Distributed Time Zone}
+While developing a globally distributed web application that needs to manage time records for system internals 
+and for end-user usage (e.g. what date/time do i have the appointment?) \\
+what best practices would you implement? \\
+Hints - Server time versus user time. Distributed servers. Several timezones. Daylight savings time etc.
+
+we can use NTP algorithm to deal with this situation.it uses a hierarchical, semi-layered system of levels of clock sources. 
+This algorithm is a class of mutual network synchronization algorithm which allows for use-selectable policy control in the design of the time synchronization and evidence model. 
+NTP supports single inline and meshed operating models in which a clearly defined master source of time is used ones in which no penultimate master or reference clocks are needed. 
+
+In NTP service topologies based on peering all clocks equally participate in the synchronization of the network by exchanging their timestamps using regular beacon packets. In 
+addition NTP supports a UNICAST type time transfer which provides a higher level of security. NTP performance is tunable based on its application and environmental loading as well.
+
+\subsubsection{Heap vs Stack}
+What is the difference between a computers heap and it's stack?
+
+Physically stack and heap both are allocated on RAM and their implementation varies from language, compiler and run time 
+
+Stack is used for local variables of functions and to track function calling sequences. Heap is used for allocating dynamically created variables using malloc, calloc or new. 
+Stack memory is freed whenever the function completes execution but the heap memory needs to be freed explicitly using delete, free or by garbage collector of the language. 
+
+Stack memory of a process is fixed size and heap is variable memory. 
+
+Stack is faster than heap as allocating memory on stack is simpler just moving stack pointer up. 
+
+In case of multi threading, each thread of process will have a different stack but all threads share single heap

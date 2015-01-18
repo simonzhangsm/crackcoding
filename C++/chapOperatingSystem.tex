@@ -1,0 +1,107 @@
+\chapter{Operating System}
+\section{Questions}
+\subsection{Operating Sequence}
+Sequence of steps that happen in CPU, cache, TLB, VM, HDD leading to execution of “x = 7” which isn’t present in cache or sysmem nor translation in TLB. Also specify if any intrs, 
+exceptions or faults are generated.
+
+1) CPU first fetches the instruction x = 7 from the Instruction cache (when it reads this address in the PC/IR) \\
+2) After decoding and executing the instruction, it sees that, it needs to access the memory location of variable x (which will be a virtual address) \\
+3) Hence it issues a request to the TLB to return the physical address/tag. \\
+Assuming the cache is Virtually indexed, it will parallely calculate the index for this virtual address. \\
+4) Since it's a TLB miss, it accesses the Page table which resides mostly in Memory. \\
+//Not sure what the interrupt here is? \\
+5) But since, the translation is not found, meaning the page for this address is not in RAM, it issues a DMA request to transfer the page from Secondary storage to the RAM. It 
+knows the address of the page on Secondary storage through the vm_area struct for this process, which maintains the location of all the pages. \\
+// This is done in page fault handler. Page fault is raised when this even occurs. \\
+6) Once DMA is complete, the processor is interrupted with this event. It then updates the page table with this entry and also the TLB. \\
+//This would be an I/O interrupt to the processor 
+7) Once it gets the tag, it checks if that tag matches in the cache. \\
+8) It won't, since cache does not have this entry. \\
+9) Hence it fetches this block (cache block) from memory and places into the cache and restarts the execution. \\
+10) In the MEM phase of the execution pipeline, it writes the value 7 to this location in the cache.
+
+
+[Alternation]There are 2 cases viz. Swapping/Non-Swapping: 
+
+Case 1: No Swapping. 
+Here we assume, we have physical pages available, hence no swapping needed. 
+1. CPU fetches the instruction x=7 (We assume, code page is in memory) and decodes it. 
+2. CPU tries to find corresponding physical address of "x" by looking at TLB. Since there is no TLB entry present, (first stop the instruction) MMU (Memory management unit) raises 
+TLB exception, otherwise know as TLB Fault. 
+3. Now, TLB fault handling code, visits PTE (Page table entries) to find corresponding physical page. Since, there is no physical page assigned, this causes Page Fault to be 
+raised, which allocates a page in RAM and updates PTE. 
+4. Restart the instruction. 
+Note - We havent updated TLB entry yet. This would be done when the restarted instruction runs again, which would again raise TLB fault, but this time TLB fault handling code 
+would find the corresponding physical page and would load the TLB entry and the instruction is restarted. 
+5. Thus finally, this time, there would be no TLB fault and Page fault and instruction would be successful.
+
+Case 2 - Swapping. 
+In this case, RAM is out of physical pages and only way to find a physical page is to swap out a used physical page to the HDD and then use that page (the one that we swapped out) 
+to assign during Page fault. 
+
+Rest remains the same. Only, Page Fault handling changes i.e. it involves swapping (HDD is involved). Note - We also need to update PTE of the page we swapped out to the disk, so 
+that the process (whose page we swapped out ) knows about its page location.
+
+\subsection{Conseptions}
+What is a process. \\
+What is a stack. \\
+How many stacks can a process have. \\
+What is a thread. \\
+How many threads can a process have. \\
+Do the threads have their own stacks, or share the process stack(s), or both?\\
+What is deadlock or livelock?\\
+How to prevent deadlock?
+
+\subsection{Compiler Optimization}
+Compiler optimization for memory based code. How do you make sure your code works fine with such a code?
+
+Memory based code should have the "volatile" keyword for compiler to not optimize that particular variable
+
+\subsection{Singleton Class}
+What is a singleton class? Explain the code? \\
+How do you handle singleton object in multithreaded programs?
+
+\subsection{Mmap vs DMA}
+Explain the difference between Memory mapped I/O and DMA?
+
+Memory mapped I/O allows the CPU to control hardware by reading and writing specific memory addresses. Usually this would be used for low-bandwidth operations such as changing 
+control bits. 
+
+DMA allows hardware to directly read and write memory without involving the CPU. Usually this would be used for high-bandwidth operations such as disk I/O or camera video input. 
+
+\subsection{Stack Grown up or down}
+Write a C function to return whether the stack grows up or grows down.
+
+\subsection{Context Switch}
+Describe what happens when a function is called from another function.
+
+1. All local variables are reserved in stack \\
+2. ES register such like return address is saved \\
+3. Jump to the function address to fetch the code \\
+4. When the function is created, the local variables in the function is created in stack area, too. \\
+5. When it's done, it goes back to the return address saved in ES. \\
+6. Keep going on the caller function.
+
+\subsection{title}
+
+If an application is running, but it does not produce output; memory utilization is constant, cpu utilization goes down to 0; what will be the problem.
+
+When you say CPU utilization goes down to zero, are you talk about CPU utilization for this process alone. What is the memory utilization for this process, is it constant, If yes, 
+Then, It may be due to high priority process switching the context and \\
+- May be in a deadlock.\\
+- Waiting for I/O. \\
+- Thrashing
+
+\subsection{Core Dump}
+what are core dumps? What kind of editor do you use to look at core dumps?
+
+A core dump is the recorded state of the working memory of a computer program at a specific time, generally when the program has terminated abnormally (crashed).[1] In practice, 
+other key pieces of program state are usually dumped at the same time, including the processor registers, which may include the program counter and stack pointer, memory 
+management information, and other processor and operating system flags and information. The name comes from the once-standard memory technology core memory. Core dumps are often 
+used to diagnose or debug errors in computer programs.
+
+\subsection{Memory Allocation}
+malloc vs calloc
+
+new vs malloc
+

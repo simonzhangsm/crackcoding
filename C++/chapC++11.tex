@@ -35,7 +35,11 @@ reinterpret_cast。使用这个操作符的类型转换, 其的转换结果几�
 reinterpret_casts 的最普通的用途就是在函数指针类型之间进行转换。
 
 如果你使用的编译器缺乏对新的类型转换方式的支持,你可以用传统的类型转换方法代 替 static_cast, const_cast, 以及 reinterpret_cast。也可以用下面的宏替换来模拟新的 类型转换语法:
-#define static_cast(TYPE,EXPR) ((TYPE)(EXPR)) #define const_cast(TYPE,EXPR) ((TYPE)(EXPR)) #define reinterpret_cast(TYPE,EXPR) ((TYPE)(EXPR)) 你可以象这样使用使用:
+\#define static_cast(TYPE,EXPR) ((TYPE)(EXPR)) 
+\#define const_cast(TYPE,EXPR) ((TYPE)(EXPR)) 
+\#define reinterpret_cast(TYPE,EXPR) ((TYPE)(EXPR)) 
+
+你可以象这样使用使用:
 
 double result = static_cast(double, firstNumber)/secondNumber;
 

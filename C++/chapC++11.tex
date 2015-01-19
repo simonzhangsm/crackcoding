@@ -1,0 +1,87 @@
+\chapter{C++11}
+【C++ FAQ】 \hyperref[C++ FAQ]{"http://www.parashift.com/c++-faq/"}
+
+
+\section{New Feature}
+\subsubsection{指针与引用的区别}
+指针与引用看上去完全不同(指针用操作符“*”和“->”,引用使用操作符“. ”),但 是它们似乎有相同的功能。指针与引用都是让你间接引用其他对象。
+
+在任何情况下都不能使用指向空值的引用。 引用肯定会指向一个对象,在 C++里,引用应被初始化。
+
+指针与引用的另一个重要的不同是指针可以被重新赋值以指向另一个不同的对象。但是 引用则总是指向在初始化时被指定的对象,以后不能改变。
+
+总的来说,在以下情况下你应该使用指针,一是你考虑到存在不指向任何对象的可能(在 这种情况下,你能够设置指针为空),二是你需要能够在不同的时刻指向不同的对象(在这 种情况下,你能改变指针的指向)。如果总是指向一个对象并且一旦指向一个对象后就不会 改变指向,那么你应该使用引用。
+
+还有一种情况,就是当你重载某个操作符时,你应该使用引用。最普通的例子是操作符 []。这个操作符典型的用法是返回一个目标对象,其能被赋值。
+
+当你知道你必须指向一个对象并且不想改变其指向时,或者在重载操作符并为防止不必 要的语义误解时,你不应该使用指针。而在除此之外的其他情况下,则应使用指针。
+
+\subsubsection{尽量使用C++风格的类型转换}
+C++通过引进四个新的类型转换操作符克服了 C 风格类型转换的缺点,这四个操作符是, static_cast, const_cast, dynamic_cast, 和 reinterpret_cast。在大多数情况下,对于 这些操作符你只需要知道原来你习惯于这样写,
+
+(type) expression 
+
+而现在你总应该这样写: 
+
+static_cast<type>(expression)
+
+static_cast 在功能上基本上与 C 风格的类型转换一样强大,含义也一样。另外,static_cast 不能从表达式中去除 const 属 性,因为另一个新的类型转换操作符 const_cast 有这样的功能。
+
+const_cast 用于类型转换掉 表达式的 const 或 volatileness 属性。通过使用 const_cast,你向人们和编译器强调你通 过类型转换想做的只是改变一些东西的 constness 或者 volatileness 属性。这个含义被编 译器所约束。如果你试图使用 const_cast 来完成修改 constness 或者 volatileness 属性 之外的事情,你的类型转换将被拒绝。
+
+dynamic_cast,它被用于安全地沿着类的继承关系向下进 行类型转换。这就是说,你能用 dynamic_cast 把指向基类的指针或引用转换成指向其派生 类或其兄弟类的指针或引用,而且你能知道转换是否成功。失败的转换将返回空指针(当对 指针进行类型转换时)或者抛出异常(当对引用进行类型转换时).dynamic_casts 在帮助你浏览继承层次上是有限制的。它不能被用于缺乏虚函数的类型,也不能用它来转换掉 constness.
+
+reinterpret_cast。使用这个操作符的类型转换, 其的转换结果几乎都是执行期定义(implementation-defined)。因此,使用 reinterpret_casts 的代码很难移植。
+reinterpret_casts 的最普通的用途就是在函数指针类型之间进行转换。
+
+如果你使用的编译器缺乏对新的类型转换方式的支持,你可以用传统的类型转换方法代 替 static_cast, const_cast, 以及 reinterpret_cast。也可以用下面的宏替换来模拟新的 类型转换语法:
+#define static_cast(TYPE,EXPR) ((TYPE)(EXPR)) #define const_cast(TYPE,EXPR) ((TYPE)(EXPR)) #define reinterpret_cast(TYPE,EXPR) ((TYPE)(EXPR)) 你可以象这样使用使用:
+
+double result = static_cast(double, firstNumber)/secondNumber;
+
+\subsubsection{不要对数组使用多态}
+类继承的最重要的特性是你可以通过基类指针或引用来操作派生类。这样的指针或引用 具有行为的多态性,就好像它们同时具有多种形态。C++允许你通过基类指针和引用来操作派生类数组。多态和指针算法不能混合在一 起来用,所以数组与多态也不能用在一起。
+
+\subsubsection{避免无用的缺省构造函数}
+\subsubsection{Never call virtual fuctions in construction or destruction}
+\subsubsection{运算符重载}
+\subsubsection{谨慎定义类型转换函数}
+C++编译器能够在两种数据类型之间进行隐式转换(implicit conversions),它继承 了 C 语言的转换方法,例如允许把 char 隐式转换为 int 和从 short 隐式转换为 double。
+
+有两种函数允许编译器进行这些的转换:单参数构造函数(single-argument constructors)和隐式类型转换运算符。单参数构造函数是指只用一个参数即可以调用的构 造函数。该函数可以是只定义了一个参数,也可以是虽定义了多个参数但第一个参数以后的 所有参数都有缺省值。
+
+隐式类型转换运算符只是一个样子奇怪的成员函数:operator 关键字,其后跟一个类
+型符号。你不用定义函数的返回类型,因为返回类型就是这个函数的名字。
+
+容易的方法是利用一个最新编译器的特性,explicit 关键字。为了解决隐式类型转换 而特别引入的这个特性,它的使用方法很好理解。构造函数用 explicit 声明,如果这样做, 编译器会拒绝为了隐式类型转换而调用构造函数。
+
+\subsubsection{使用析构函数防止资源泄漏}
+c++中inline, static, constructor三种函数都不能带有virtual关键字。构造函数（默认，拷贝）都不能是虚函数。
+
+inline是编译时展开，必须有实体；
+static属于class自己的，也必须有实体；
+virtual函数基于vtable（内存空间），constructor函数如果是virtual的，调用时也需要根据vtable寻找，但是constructor是virtual的情况下是找不到的，因为constructor自己本身都不存在了，创建不到class的实例，没有实例，class的成员（除了public static/protected static for friend class/functions，其余无论是否virtual）都不能被访问了。
+
+然而，机构函数需要是虚拟函数。
+
+\subsubsection{使用析构函数防止资源泄漏}
+\subsubsection{禁止异常信息(exceptions)传递到析构函数外}
+\subsubsection{通过重载避免隐式类型转换}
+\subsubsection{理解虚拟函数、多继承、虚基类和 RTTI 所需的代价}
+\subsubsection{要求或禁止在堆中产生对象}
+\begindot
+\item[要求在堆中建立对象]
+禁止以调用“new”以外的其它手段建立对象,最直接的方法是把构造函数和析构函数声明为 private。 这样做副作用太大。没有理由让这两个函数都是 private。最好让析构函数成为 private, 让构造函数成为 public。
+
+另一种方法是把全部的构造函数都声明为 private。这种方法的缺点是一个类经常有许 多构造函数,类的作者必须记住把它们都声明为 private。否则如果这些函数就会由编译器 生成,构造函数包括拷贝构造函数,也包括缺省构造函数;编译器生成的函数总是 public。因此仅仅声明析构函数为 private 是很简单的,因为每个 类只有一个析构函数。
+
+通过限制访问一个类的析构函数或它的构造函数来阻止建立非堆对象,这种方法也禁止了继承和包容(containment). 通过把析构函数声明为protected(同时它的构造函数还保持 public)就可以解决继承的问题,需要包含对象的类可以修改为包
+含指向的指针.
+\item[禁止堆对象]通常对象的建立这样三种情况:对象被直接实例化;对象做为派生类的基类被实例化; 对象被嵌入到其它对象内。
+
+禁止用户直接实例化对象很简单,因为总是调用 new 来建立这种对象,你能够禁止用户调用new。自己声明operator new/delete函数,而且你可以把它声明为 private（同理数组也是禁止operator new[]和 operator delete[]）。但是如此对象做为一个位于堆中的派生类对象的基类被实例化将变为不可能。
+
+\myenddot
+
+\subsubsection{智能指针}
+

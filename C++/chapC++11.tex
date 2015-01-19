@@ -1,8 +1,18 @@
-\chapter{C++11}
-【C++ FAQ】 \hyperref[C++ FAQ]{"http://www.parashift.com/c++-faq/"}
-
+\chapter{OO \& C++11}
+【OO】 Three main features:
+\begindot
+\item Encapsulation (exposed by interface)
+\item Inheritance (implemented by Inheritance and Composition)
+\item Polymorphism (implemented by override and overload)
+\myenddot
 
 \section{New Feature}
+The members and base classes of a struct are public by default, while in class, they default to private. Note: you should make your base classes explicitly public, private, or protected, rather than relying on the defaults.
+
+【C++ FAQ】 \hyperref[C++ FAQ]{http://www.parashift.com/c++-faq}
+
+【__cplusplus宏】
+
 \subsubsection{指针与引用的区别}
 指针与引用看上去完全不同(指针用操作符“*”和“->”,引用使用操作符“. ”),但 是它们似乎有相同的功能。指针与引用都是让你间接引用其他对象。
 
@@ -73,19 +83,262 @@ virtual函数基于vtable（内存空间），constructor函数如果是virtual�
 \subsubsection{通过重载避免隐式类型转换}
 \subsubsection{理解虚拟函数、多继承、虚基类和 RTTI 所需的代价}
 \subsubsection{要求或禁止在堆中产生对象}
-\begindot
-\item[要求在堆中建立对象]
+
+【要求在堆中建立对象】
+
 禁止以调用“new”以外的其它手段建立对象,最直接的方法是把构造函数和析构函数声明为 private。 这样做副作用太大。没有理由让这两个函数都是 private。最好让析构函数成为 private, 让构造函数成为 public。
 
 另一种方法是把全部的构造函数都声明为 private。这种方法的缺点是一个类经常有许 多构造函数,类的作者必须记住把它们都声明为 private。否则如果这些函数就会由编译器 生成,构造函数包括拷贝构造函数,也包括缺省构造函数;编译器生成的函数总是 public。因此仅仅声明析构函数为 private 是很简单的,因为每个 类只有一个析构函数。
 
 通过限制访问一个类的析构函数或它的构造函数来阻止建立非堆对象,这种方法也禁止了继承和包容(containment). 通过把析构函数声明为protected(同时它的构造函数还保持 public)就可以解决继承的问题,需要包含对象的类可以修改为包
 含指向的指针.
-\item[禁止堆对象]通常对象的建立这样三种情况:对象被直接实例化;对象做为派生类的基类被实例化; 对象被嵌入到其它对象内。
+
+【禁止堆对象】
+
+通常对象的建立这样三种情况:对象被直接实例化;对象做为派生类的基类被实例化; 对象被嵌入到其它对象内。
 
 禁止用户直接实例化对象很简单,因为总是调用 new 来建立这种对象,你能够禁止用户调用new。自己声明operator new/delete函数,而且你可以把它声明为 private（同理数组也是禁止operator new[]和 operator delete[]）。但是如此对象做为一个位于堆中的派生类对象的基类被实例化将变为不可能。
 
+\subsubsection{智能指针}
+共享资源的智能指针——shared_ptr: shared_ptr是一种计数指针。当引用计数变为0时，shared_ptr所指向的对象就会被删除。
+
+unique_ptr的用途。unique_ptr,将一个指针从一个拥有者传个另一个， 会以更为小的开销来更好的实现这个功能。
+
+另外，不要不加思考地把指针替换为shared_ptr来防止内存泄露。shared_ptr并不是万能的，而且使用它们的话也是需要一定的开销的：
+\begindot
+\item 环状的链式结构shared_ptr将会导致内存泄露（你需要一些逻辑上的复杂化来打破这个环。比如使用weak_ptr）。
+\item 共享拥有权的对象一般比限定作用域的对象生存更久。从而将导致更高的平均资源使用时间。
+\item 在多线程环境中使用共享指针的代价非常大。这是因为你需要避免关于引用计数的数据竞争。
+\item 共享对象的析构器不会在预期的时间执行。
+\item 与非共享对象相比，在更新任何共享对象时，更容易犯算法或者逻辑上的错误。
 \myenddot
 
-\subsubsection{智能指针}
+unique_ptr的使用能够包括：
+\begindot
+\item 为动态申请的内存提供异常安全
+\item 将动态申请内存的所有权传递给某个函数
+\item 从某个函数返回动态申请内存的所有权
+\item 在容器中保存指针
+\myenddot
 
+弱指针（weak pointer）经常被解释为用来打破使用shared_ptr管理的数据结构中循环(?)。
+
+\subsubsection{如何在C + +代码中包含非系统的C头文件}
+如果你是其中一个C头文件不是由系统提供的，你可能需要把\#include行放到extern“C”（/ * ... * /）构造中。这告诉C + +编译器的功能在头文件中声明的C函数。
+\subsubsection{属性 Attributes}
+“属性”是C11标准中的新语法，用于让程序员在代码中提供额外信息。
+\begin{Code}
+	void f [[ noreturn ]] () // f() 永不返回
+	{
+		throw "error"; // 虽然不得返回，但可以抛出异常
+	}
+		
+	struct foo* f [[carries_dependency]] (int i); // 编译优化指示
+	int* g(int* x, int* y [[carries_dependency]]);
+	
+	// 使用[[omp::parallel()]]属性告诉编译器，这个for循环可以并行执行
+	for [[omp::parallel()]] (int i=0; i&lt;v.size(); ++i) { ... }	
+\end{Code}
+
+属性被放置在两个双重中括号“[[…]]”之间。目前，noreturn和carries_dependency是C++11标准中仅有的两个通用属性。
+
+\subsubsection{auto – 从初始化中推断数据类型}
+\subsubsection{常量表达式（constexpr） — 一般化的受保证的常量表达式}
+常量表达式机制是为了：
+
+提供一种更加通用的常量表达式
+
+允许用户自定义的类型成为常量表达式
+
+提供了一种保证在编译期完成初始化的方法（可以在编译时期执行某些函数调用）
+
+\subsubsection{decltype – 表达式的数据类型}
+
+decltype(E)是一个标识符或者表达式的推断数据类型(declared type)，可以用在变量声明中作为变量的数据类型。
+
+\subsubsection{控制默认函数——移动 (move) 或者拷贝 (copy)}
+在默认情况下，一个类有 5 个默认函数或操作符（译注：分为拷贝、移动和析构三大类）：
+
+拷贝赋值操作符（ copy assignment ）
+拷贝构造函数（ copy constructor ）
+移动赋值操作符（ move assignment ）
+移动构造函数（ move constructor ）
+析构函数（ destructor ）
+如果你显式声明了上述 5 个函数或操作符中的任何一个，你必须考虑其余的 4 个，并且显式地定义你需要的操作，或者使用这个操作的默认行为。拷贝、移动和析构是三个密切相关的操作，三者的行为必须完全协调一致。对于这五个函数，如果你只重定义了其中一小部分，而忽视了其余的函数，那等待你的只有灾难。
+
+一旦我们显式地指明（ 声明 , 定义 , =default , 或者 =delete ）了上述五个函数之中的任意一个，编译器将不会默认自动生成move操作。
+一旦我们显式地指明（ 声明 , 定义 , =default , 或者 =delete ）了上述五个函数之中的任意一个，编译器将默认自动生成所有的拷贝操作。但是，我们应该尽量避免这种情况的发生，不要依赖于编译器的默认动作。
+
+\subsubsection{Lambda表达式}
+Lambda表达式是一种描述函数对象的机制，它的主要应用是描述某些具有简单行为的函数.
+一个Lambda表达式可以存取在它被调用的作用域内的局部变量。
+
+[\&] “捕捉列表(capture list)”，用于描述将要被lambda函数以引用传参方式使用的局部变量。
+
+[\&v] 仅“捕捉”参数v
+
+[=v] 以传值方式使用参数v
+
+[] 什么都不捕捉
+
+[\&] 将所有的变量以引用传递方式使用
+
+[=] 以传值方式使用所有变量
+
+\subsubsection{noexcept防止抛出异常}
+如果一个函数不能抛出异常或者一个程序没有对函数抛出的异常进行处理，那么这个函数可以用关键字noexcept进行修饰，例如：
+
+extern "C" double sqrt(double) noexcept;
+
+\subsubsection{nullptr——空指针标识}
+
+\subsubsection{对重写（Override）的控制：final}
+对重写（Override）的控制：final
+
+禁止继承类对基类的某些虚函数进行重写。在C++11中，可以通过使用“final”关键字来实现。
+
+\subsubsection{静态（编译期）断言 — static_assert}
+静态（编译期）断言由一个常量表达式及一个字符串文本构成：
+\begin{Code}
+	static_assert(expression, string);
+\end{Code}
+expression在编译期进行求值，当结果为false（即：断言失败）时，将string作为错误消息输出。例如：
+
+\begin{Code}
+	static_assert(sizeof(long) >= 8,“64-bit code generation required for this library.”);
+	struct S { X m1; Y m2; };
+	static_assert(sizeof(S)==sizeof(X)+sizeof(Y),”unexpected padding in S”);
+\end{Code}
+static_assert在判断代码的编译环境方面（译注：比如判断当前编译环境是否64位）十分有用。但需要注意的是，由于static_assert在编译期进行求值，它不能对那些依赖于运行期计算的值的进行检验。例如：
+
+\begin{Code}
+	int f(int* p, int n){
+		//错误：表达式“p == 0”不是一个常量表达式
+		static_assert(p == 0, “p is not null”);
+	}
+\end{Code}
+\subsubsection{统一初始化的语法和语义}
+C++11的解决方法是对于所有的初始化，均可使用“\{\}-初始化变量列表”
+\subsubsection{async()}
+async的工作是根据需要来启动新线程，而future的工作则是等待新线程运行结束。
+
+不要使用async()来启动类似I/O操作，操作互斥体（mutex），多任务交互操作等复杂任务。
+
+async()可以启动一个新线程或者复用一个它认为合适的已有线程（非调用线程即可）
+
+std::future可用于异步任务中获取任务结果，但是它只是获取结果而已，真正的异步调用需要配合std::async, std::promise, std::packaged_task。这里async是个模板函数，promise和packaged_task是模板类，通常模板实例化参数是任务函数(callable object)。下面是它们的部分组合用法：假设计算任务 int task(string x);
+1  async+future简单用法: future<int> myFuture=async(task,10)
+
+async开启后台线程执行任务
+
+\begin{Code}
+	//自动选择线程执行任务fn，args是fn的参数，若fn是某个对象的非静态成员函数那么第一个args必须是对象的名字，后面的args是fn所需的参数
+	async (Fn&& fn, Args&&...args);
+	
+	async (launch policy, Fn&& fn, Args&&... args);//有三种方式policy执行任务fn
+	policy=launch::async表示开启一个新的线程执行fn
+	policy=launch::deferred 表示fn推迟到future::wait/get时才执行
+	policy=launch::async|launch::deferred表示由库自动选择哪种机制执行fn，和第一种构造方式async(fn,args)策略相同
+\end{Code}
+
+\subsubsection{std::future和std::promise}
+标准库中提供了3种future：普通future和为复杂场合使用的shared_future和atomic_future。在本主题中，只展示了普通future，它已经完全够用了。如果我们有一个future
+f，通过get()可以获得它的值:
+
+X v = f.get();  // if necessary wait for the value to get computed
+
+如果它的返回值还没有到达，调用线程会进行阻塞等待。
+
+如果我们不需要等待返回值（非阻塞方式），可以简单询问一下future，看返回值是否已经到达：
+if (f.wait_for(0)) ...
+
+但是，future最主要的目的还是提供一个简单的获取返回值的方法：get()。
+
+promise的主要目的是提供一个”put”（或”get”，随你）操作，以和future的get()对应。
+
+promise为future传递的结果类型有2种：传一个普通值或者抛出一个异常
+
+\subsubsection{lock 锁}
+锁是这样一个对象，它能够保持对一个mutex对象的引用并且可能会在自身销毁时（比如离开一个block域时）来对mutex对象进行解锁unlock操作。作为一种良好的异常处理习惯，可以在线程中使用锁来帮助管理mutex的拥有权。
+
+可以使用unique_lock来很直接明了地给出关于锁的描述。unique_lock能够更加安全的执行任何mutex所能达到的功能。
+
+与使用mutex相比，使用锁可以提供异常处理并且能够在忘记unlock()时提供相应的保护。在并发编程中，我们可以通过锁来得到所有需要的功能。
+
+现在考虑一个新的问题：如果我们需要两个分别用一个mutex表示的资源，应该如何实现？一种最简单的办法就是如下例所示的那样依次获取这两个mutex：
+
+\begin{Code}
+	std::mutex m1;
+	std::mutex m2;
+	int sh1; // 共享数据
+	int sh2
+	// ...
+	void f(){
+		// ...
+		std::unique_lock lck1(m1);
+		std::unique_lock lck2(m2);
+		//操作共享数据
+		sh1+=sh2;
+	}
+\end{Code}
+
+然而，上例中的方法有着一个致命缺陷：如果其它线程试图以相反的次序来获取m1和m2，便会出现死锁现象。对于一个含有很多锁的系统来说，这一做法相当有风险。为了解决这类问题，锁提供了两个方法来安全地尝试获取两个或者两个以上的锁。下面是一个相应的例子：
+
+\begin{Code}
+	void f(){
+		// ...
+		std::unique_lock lck1(m1,std::defer_lock); //使用锁但并不试图获取mutex
+		std::unique_lock lck2(m2,std::defer_lock);
+		std::unique_lock lck3(m3,std::defer_lock);
+		lock(lck1,lck2,lck3);
+		// 操作共享数据
+	}
+\end{Code}
+
+很明显，必须非常并且精巧地设计上例中的lock()才能避免死锁。从本质上来讲，它和小心使用try_lock()s所达到的效果是一样的。当lock()没有成功获取所有所锁时，它会抛出一个异常。实际上，由于lock()和try_lock(), unlock()接受任何参数，所以我们无法分清lock()到底抛出了哪个异常。这依赖于它的参数。
+
+如果你倾向于自己使用try_lock()来实现上例所示的相应功能，下面的例子可能对你有一定的帮助：
+
+\begin{Code}
+	void f(){
+		// ...
+		std::unique_lock lck1(m1,std::defer_lock); // 使用锁但是并不试图去获取mutex
+		std::unique_lock lck2(m2,std::defer_lock);
+		std::unique_lock lck3(m3,std::defer_lock);
+		int x;
+		if ((x = try_lock(lck1,lck2,lck3))==-1) { // 欢迎来到C的地界
+			// 操作共享数据
+		}
+		else {
+			// x拥有正在拥有一个mutex，因此我们无法获取
+			// 比如，如果lck2.try_lock()失效了，x的值就等于1
+		}
+	}
+\end{Code}
+
+\subsubsection{mutex 互斥}
+互斥是多线程系统中用于控制访问的一个原对象（primitive object）。下面的例子给出了它最基本的用法：
+
+\begin{Code}
+	std::mutex  m;
+	int sh; //共享数据
+	// …
+	m.lock();
+	// 对共享数据进行操作：
+	sh += 1;
+	m.unlock();
+\end{Code}
+在任何时刻，最多只能有一个线程执行到lock()和unlock()之间的区域（通常称为临界区). 除了lock()，mutex还提供了try_lock()操作。线程可以借助该操作来尝试进入临界区，这样一来该线程不会在失败的情况下被阻塞。
+
+recursive_mutex是一种能够被同一线程连续锁定多次的mutex。
+
+\subsubsection{Volatile易变的}
+不可优化性:volatile告诉编译器，不要对我这个变量进行各种激进的优化，甚至将变量直接消除，保证程序员写在代码中的指令，一定会被执行。
+
+易变性：在汇编层面反映出来，每次取值不是直接取volatile变量的寄存器内容，而是重新从内存中读取。
+
+顺序性：多线程编程，并发访问/修改的全局变量，通常都会建议加上Volatile关键词修饰，来防止C/C++编译器进行不必要的优化。
+
+C/C++ Volatile变量，与非Volatile变量之间的操作，是可能被编译器交换顺序的。
+
+C/C++ Volatile变量间的操作，是不会被编译器交换顺序的。

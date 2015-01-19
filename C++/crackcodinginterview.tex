@@ -2,6 +2,7 @@
 \usepackage{multirow}
 % for \soul 删除线
 \usepackage{ulem}
+\usepackage{amsmath}
 % 表头斜线
 \usepackage{diagbox}
 
@@ -23,7 +24,7 @@
 
 \frontmatter % 开始前言目录，页码用罗马数字
 
-%\include{title}
+\include{title}
 
 \tableofcontents
 
@@ -31,24 +32,24 @@
 
 \graphicspath{{diagrams/}}
 
-%\include{chapProgrammingTrick}
+\include{chapProgrammingTrick}
 \include{chapLinearList}
 \include{chapString}
-%\include{chapInterval}
-%\include{chapStackAndQueue}
-%\include{chapTree}
-%\include{chapSearching}
-%\include{chapSorting}
-%\include{chapBruteforce}
-%\include{chapBFS}
-%\include{chapDFS}
-%\include{chapDivideAndConquer}
-%\include{chapGreedy}
+\include{chapInterval}
+\include{chapStackAndQueue}
+\include{chapTree}
+\include{chapSearching}
+\include{chapSorting}
+\include{chapBruteforce}
+\include{chapBFS}
+\include{chapDFS}
+\include{chapDivideAndConquer}
+\include{chapGreedy}
 \include{chapDynamicProgramming}
-%\include{chapGraph}
+\include{chapGraph}
 \include{chapMath}
-%\include{chapBigInt}
-%\include{chapFundamental}
+\include{chapBigInt}
+\include{chapFundamental}
 \include{chapParallel}
 \include{chapBrainTeaser}
 \include{chapOperatingSystem}
@@ -56,6 +57,7 @@
 \include{chapDatabase}
 \include{chapC++11}
 \include{chapAppendex}
+\include{chapACM}
 
 \appendix % 开始附录，章用字母编号
 \printindex

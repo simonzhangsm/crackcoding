@@ -1589,7 +1589,7 @@ sequence. Sorry about that.
 \subsubsection{解题思路}
 格雷码(Gray Code)的定义请参考 \myurl{http://en.wikipedia.org/wiki/Gray_code}
 
-\textbf{自然二进制码转换为格雷码：$g_0=b_0, g_i=b_i \oplus b_{i-1}$}
+\textbf{自然二进制码转换为格雷码：$g_0=b_0, g_i=b_i \oplus b_{i-1}$}, here, $\oplus\equiv \wedge$.
 
 保留自然二进制码的最高位作为格雷码的最高位，格雷码次高位为二进制码的高位与次高位异或，其余各位与次高位的求法类似。例如，将自然二进制码1001，转换为格雷码的过程是：保留最高位；然后将第1位的1和第2位的0异或，得到1，作为格雷码的第2位；将第2位的0和第3位的0异或，得到0，作为格雷码的第3位；将第3位的0和第4位的1异或，得到1，作为格雷码的第4位，最终，格雷码为1101。
 
@@ -1633,7 +1633,6 @@ sequence. Sorry about that.
 	};
 \end{Code}
 
-
 \subsubsection{Reflect-and-prefix method}
 \begin{Code}
 	// LeetCode, Gray Code
@@ -1652,6 +1651,23 @@ sequence. Sorry about that.
 			return result;
 		}
 	};
+\end{Code}
+
+\begin{Code}
+	// LeetCode, Gray Code, By Simon Zhang
+	// reflect-and-prefix method
+	// 时间复杂度O(2^n)，空间复杂度O(1), 
+	vector<int> grayCode(int n) {
+		vector<int> res;
+		res.push_back(0);
+		for(int i=0;i<n;i++){
+			int highbit = 1<<i;
+			int curlen = res.size();
+			for(int j=curlen-1;j>=0;j--)
+			res.push_back(highbit | res[j]);
+		}
+		return res;
+	}
 \end{Code}
 
 
@@ -2183,6 +2199,9 @@ Above is a 3 x 7 grid. How many possible unique paths are there?
 	};
 \end{Code}
 
+\subsection{Fabonacci数列}
+Fabonacci数列为：$a_0=1,a_1=1,a_n=a_{n-1}+a_{n-2}$
+快速幂优化
 
 \subsection{Add Two Numbers}
 \label{sec:add-two-numbers}

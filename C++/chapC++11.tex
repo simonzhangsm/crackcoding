@@ -2,6 +2,7 @@
 【Compiler】 Compiling with c++11
 
 g++ -std=c++11 your_file.cpp -o your_program
+【Difference between Abstract class and interface】
 
 【OO】 Three main features:
 \begindot
@@ -17,7 +18,7 @@ The members and base classes of a struct are public by default, while in class, 
 
 【__cplusplus宏】
 
-\subsubsection{指针与引用的区别}
+\subsection{指针与引用的区别}
 指针与引用看上去完全不同(指针用操作符“*”和“->”,引用使用操作符“. ”),但 是它们似乎有相同的功能。指针与引用都是让你间接引用其他对象。
 
 在任何情况下都不能使用指向空值的引用。 引用肯定会指向一个对象,在 C++里,引用应被初始化。
@@ -30,7 +31,7 @@ The members and base classes of a struct are public by default, while in class, 
 
 当你知道你必须指向一个对象并且不想改变其指向时,或者在重载操作符并为防止不必 要的语义误解时,你不应该使用指针。而在除此之外的其他情况下,则应使用指针。
 
-\subsubsection{尽量使用C++风格的类型转换}
+\subsection{尽量使用C++风格的类型转换}
 C++通过引进四个新的类型转换操作符克服了 C 风格类型转换的缺点,这四个操作符是, static_cast, const_cast, dynamic_cast, 和 reinterpret_cast。在大多数情况下,对于 这些操作符你只需要知道原来你习惯于这样写,
 
 (type) expression 
@@ -57,13 +58,13 @@ reinterpret_casts 的最普通的用途就是在函数指针类型之间进行�
 
 double result = static_cast(double, firstNumber)/secondNumber;
 
-\subsubsection{不要对数组使用多态}
+\subsection{不要对数组使用多态}
 类继承的最重要的特性是你可以通过基类指针或引用来操作派生类。这样的指针或引用 具有行为的多态性,就好像它们同时具有多种形态。C++允许你通过基类指针和引用来操作派生类数组。多态和指针算法不能混合在一 起来用,所以数组与多态也不能用在一起。
 
-\subsubsection{避免无用的缺省构造函数}
-\subsubsection{Never call virtual fuctions in construction or destruction}
-\subsubsection{运算符重载}
-\subsubsection{谨慎定义类型转换函数}
+\subsection{避免无用的缺省构造函数}
+\subsection{Never call virtual fuctions in construction or destruction}
+\subsection{运算符重载}
+\subsection{谨慎定义类型转换函数}
 C++编译器能够在两种数据类型之间进行隐式转换(implicit conversions),它继承 了 C 语言的转换方法,例如允许把 char 隐式转换为 int 和从 short 隐式转换为 double。
 
 有两种函数允许编译器进行这些的转换:单参数构造函数(single-argument constructors)和隐式类型转换运算符。单参数构造函数是指只用一个参数即可以调用的构 造函数。该函数可以是只定义了一个参数,也可以是虽定义了多个参数但第一个参数以后的 所有参数都有缺省值。
@@ -73,7 +74,7 @@ C++编译器能够在两种数据类型之间进行隐式转换(implicit convers
 
 容易的方法是利用一个最新编译器的特性,explicit 关键字。为了解决隐式类型转换 而特别引入的这个特性,它的使用方法很好理解。构造函数用 explicit 声明,如果这样做, 编译器会拒绝为了隐式类型转换而调用构造函数。
 
-\subsubsection{使用析构函数防止资源泄漏}
+\subsection{使用析构函数防止资源泄漏}
 c++中inline, static, constructor三种函数都不能带有virtual关键字。构造函数（默认，拷贝）都不能是虚函数。
 
 inline是编译时展开，必须有实体；
@@ -82,11 +83,11 @@ virtual函数基于vtable（内存空间），constructor函数如果是virtual�
 
 然而，机构函数需要是虚拟函数。
 
-\subsubsection{使用析构函数防止资源泄漏}
-\subsubsection{禁止异常信息(exceptions)传递到析构函数外}
-\subsubsection{通过重载避免隐式类型转换}
-\subsubsection{理解虚拟函数、多继承、虚基类和 RTTI 所需的代价}
-\subsubsection{要求或禁止在堆中产生对象}
+\subsection{使用析构函数防止资源泄漏}
+\subsection{禁止异常信息(exceptions)传递到析构函数外}
+\subsection{通过重载避免隐式类型转换}
+\subsection{理解虚拟函数、多继承、虚基类和 RTTI 所需的代价}
+\subsection{要求或禁止在堆中产生对象}
 
 【要求在堆中建立对象】
 
@@ -103,10 +104,34 @@ virtual函数基于vtable（内存空间），constructor函数如果是virtual�
 
 禁止用户直接实例化对象很简单,因为总是调用 new 来建立这种对象,你能够禁止用户调用new。自己声明operator new/delete函数,而且你可以把它声明为 private（同理数组也是禁止operator new[]和 operator delete[]）。但是如此对象做为一个位于堆中的派生类对象的基类被实例化将变为不可能。
 
-\subsubsection{智能指针}
-共享资源的智能指针——shared_ptr: shared_ptr是一种计数指针。当引用计数变为0时，shared_ptr所指向的对象就会被删除。
+\subsection{智能指针}
+共享资源的智能指针——shared_ptr: shared_ptr是一种计数指针。当引用计数变为0时，shared_ptr所指向的对象就会被删除。与所指对象的内存绑定紧密，不能与其他 unique_ptr 类型的指针对象共享所指对象的内存。
 
-unique_ptr的用途。unique_ptr,将一个指针从一个拥有者传个另一个， 会以更为小的开销来更好的实现这个功能。
+unique_ptr的用途。unique_ptr,将一个指针从一个拥有者传个另一个， 会以更为小的开销来更好的实现这个功能。unique_ptr 形如其名地，与所指对象的内存绑定紧密，不能与其他 unique_ptr 
+类型的指针对象共享所指对象的内存。这种“所有权”仅能够通过标准库的 move函数 来转移。一旦“所有权”转移成功了，原来的 unique_ptr 指针就失去了对象内存的所有权。
+与所指对象的内存绑定紧密，不能与其他 unique_ptr 类型的指针对象共享所指对象的内存。
+\begin{Code}
+	unique_ptr<int> iPtr1(new int(11));
+	unique_ptr<int> iPtr3 = new int(11);//error
+	unique_ptr<int> iPtr2(iPtr1);       //error
+	unique_ptr<int> iPtr2(move(iPtr1));
+	unique_ptr<int> iPtr2 = iPtr1;      //error
+	unique_ptr<int> iPtr2 = move(iPtr1);
+	
+	shared_ptr<int> sp1(new int(22)); 
+	shared_ptr<int> sp2 = sp1;
+	
+	class Base{};
+	class Derived: public Base{};
+	
+	std::shared_ptr<Derived> p1(new Derived()); 
+	std::shared_ptr<Base> p2 = p1; //以基礎類別指標指向子類別實體
+	std::shared_ptr<Base> p3(p1); //以基礎類別指標指向子類別實體
+	std::shared_ptr<Base> p4(new Derived()); //以基礎類別指標指向子類別實體
+	
+	weak_ptr<int> wp = sp1;    //wp指向shared_ptr<int>所指对象
+\end{Code}
+
 
 另外，不要不加思考地把指针替换为shared_ptr来防止内存泄露。shared_ptr并不是万能的，而且使用它们的话也是需要一定的开销的：
 \begindot
@@ -125,11 +150,20 @@ unique_ptr的使用能够包括：
 \item 在容器中保存指针
 \myenddot
 
-弱指针（weak pointer）经常被解释为用来打破使用shared_ptr管理的数据结构中循环(?)。
+弱指针（weak pointer）经常被解释为用来打破使用shared_ptr管理的数据结构中循环(?)。  weak_ptr，他基本上是一個需要搭配 shared_ptr 來一起使用的特例；和 shared_ptr 不同的地方在於，除了他不會增加內部的 reference 
+counter 的計數（註 1）外，它基本上也不能用來做資料的存取，主要只能用來監控 shared_ptr 目前的狀況。
 
-\subsubsection{如何在C + +代码中包含非系统的C头文件}
+std::weak_ptr is a smart pointer that holds a non-owning ("weak") reference to an object that is managed by std::shared_ptr. It must be converted to std::shared_ptr in order to 
+access the referenced object.
+std::weak_ptr models temporary ownership: when an object needs to be accessed only if it exists, and it may be deleted at any time by someone else, std::weak_ptr is used to track 
+the object, and it is converted to std::shared_ptr to assume temporary ownership. If the original std::shared_ptr is destroyed at this time, the object's lifetime is extended 
+until the temporary std::shared_ptr is destroyed as well.
+In addition, std::weak_ptr is used to break circular references of std::shared_ptr.
+
+
+\subsection{如何在C + +代码中包含非系统的C头文件}
 如果你是其中一个C头文件不是由系统提供的，你可能需要把\#include行放到extern“C”（/ * ... * /）构造中。这告诉C + +编译器的功能在头文件中声明的C函数。
-\subsubsection{属性 Attributes}
+\subsection{属性 Attributes}
 “属性”是C11标准中的新语法，用于让程序员在代码中提供额外信息。
 \begin{Code}
 	void f [[ noreturn ]] () // f() 永不返回
@@ -146,8 +180,8 @@ unique_ptr的使用能够包括：
 
 属性被放置在两个双重中括号“[[…]]”之间。目前，noreturn和carries_dependency是C++11标准中仅有的两个通用属性。
 
-\subsubsection{auto – 从初始化中推断数据类型}
-\subsubsection{常量表达式（constexpr） — 一般化的受保证的常量表达式}
+\subsection{auto – 从初始化中推断数据类型}
+\subsection{常量表达式（constexpr） — 一般化的受保证的常量表达式}
 常量表达式机制是为了：
 
 提供一种更加通用的常量表达式
@@ -156,11 +190,11 @@ unique_ptr的使用能够包括：
 
 提供了一种保证在编译期完成初始化的方法（可以在编译时期执行某些函数调用）
 
-\subsubsection{decltype – 表达式的数据类型}
+\subsection{decltype – 表达式的数据类型}
 
 decltype(E)是一个标识符或者表达式的推断数据类型(declared type)，可以用在变量声明中作为变量的数据类型。
 
-\subsubsection{控制默认函数——移动 (move) 或者拷贝 (copy)}
+\subsection{控制默认函数——移动 (move) 或者拷贝 (copy)}
 在默认情况下，一个类有 5 个默认函数或操作符（译注：分为拷贝、移动和析构三大类）：
 
 拷贝赋值操作符（ copy assignment ）
@@ -173,7 +207,7 @@ decltype(E)是一个标识符或者表达式的推断数据类型(declared type)
 一旦我们显式地指明（ 声明 , 定义 , =default , 或者 =delete ）了上述五个函数之中的任意一个，编译器将不会默认自动生成move操作。
 一旦我们显式地指明（ 声明 , 定义 , =default , 或者 =delete ）了上述五个函数之中的任意一个，编译器将默认自动生成所有的拷贝操作。但是，我们应该尽量避免这种情况的发生，不要依赖于编译器的默认动作。
 
-\subsubsection{Lambda表达式}
+\subsection{Lambda表达式}
 Lambda表达式是一种描述函数对象的机制，它的主要应用是描述某些具有简单行为的函数.
 一个Lambda表达式可以存取在它被调用的作用域内的局部变量。
 
@@ -189,19 +223,19 @@ Lambda表达式是一种描述函数对象的机制，它的主要应用是描�
 
 [=] 以传值方式使用所有变量
 
-\subsubsection{noexcept防止抛出异常}
+\subsection{noexcept防止抛出异常}
 如果一个函数不能抛出异常或者一个程序没有对函数抛出的异常进行处理，那么这个函数可以用关键字noexcept进行修饰，例如：
 
 extern "C" double sqrt(double) noexcept;
 
-\subsubsection{nullptr——空指针标识}
+\subsection{nullptr——空指针标识}
 
-\subsubsection{对重写（Override）的控制：final}
+\subsection{对重写（Override）的控制：final}
 对重写（Override）的控制：final
 
 禁止继承类对基类的某些虚函数进行重写。在C++11中，可以通过使用“final”关键字来实现。
 
-\subsubsection{静态（编译期）断言 — static_assert}
+\subsection{静态（编译期）断言 — static_assert}
 静态（编译期）断言由一个常量表达式及一个字符串文本构成：
 \begin{Code}
 	static_assert(expression, string);
@@ -221,9 +255,9 @@ static_assert在判断代码的编译环境方面（译注：比如判断当前�
 		static_assert(p == 0, “p is not null”);
 	}
 \end{Code}
-\subsubsection{统一初始化的语法和语义}
+\subsection{统一初始化的语法和语义}
 C++11的解决方法是对于所有的初始化，均可使用“\{\}-初始化变量列表”
-\subsubsection{async()}
+\subsection{async()}
 async的工作是根据需要来启动新线程，而future的工作则是等待新线程运行结束。
 
 不要使用async()来启动类似I/O操作，操作互斥体（mutex），多任务交互操作等复杂任务。
@@ -245,7 +279,7 @@ async开启后台线程执行任务
 	policy=launch::async|launch::deferred表示由库自动选择哪种机制执行fn，和第一种构造方式async(fn,args)策略相同
 \end{Code}
 
-\subsubsection{std::future和std::promise}
+\subsection{std::future和std::promise}
 标准库中提供了3种future：普通future和为复杂场合使用的shared_future和atomic_future。在本主题中，只展示了普通future，它已经完全够用了。如果我们有一个future
 f，通过get()可以获得它的值:
 
@@ -262,7 +296,7 @@ promise的主要目的是提供一个”put”（或”get”，随你）操作�
 
 promise为future传递的结果类型有2种：传一个普通值或者抛出一个异常
 
-\subsubsection{lock 锁}
+\subsection{lock 锁}
 锁是这样一个对象，它能够保持对一个mutex对象的引用并且可能会在自身销毁时（比如离开一个block域时）来对mutex对象进行解锁unlock操作。作为一种良好的异常处理习惯，可以在线程中使用锁来帮助管理mutex的拥有权。
 
 可以使用unique_lock来很直接明了地给出关于锁的描述。unique_lock能够更加安全的执行任何mutex所能达到的功能。
@@ -320,7 +354,7 @@ promise为future传递的结果类型有2种：传一个普通值或者抛出一
 	}
 \end{Code}
 
-\subsubsection{mutex 互斥}
+\subsection{mutex 互斥}
 互斥是多线程系统中用于控制访问的一个原对象（primitive object）。下面的例子给出了它最基本的用法：
 
 \begin{Code}
@@ -336,7 +370,7 @@ promise为future传递的结果类型有2种：传一个普通值或者抛出一
 
 recursive_mutex是一种能够被同一线程连续锁定多次的mutex。
 
-\subsubsection{Volatile易变的}
+\subsection{Volatile易变的}
 不可优化性:volatile告诉编译器，不要对我这个变量进行各种激进的优化，甚至将变量直接消除，保证程序员写在代码中的指令，一定会被执行。
 
 易变性：在汇编层面反映出来，每次取值不是直接取volatile变量的寄存器内容，而是重新从内存中读取。
@@ -346,3 +380,33 @@ recursive_mutex是一种能够被同一线程连续锁定多次的mutex。
 C/C++ Volatile变量，与非Volatile变量之间的操作，是可能被编译器交换顺序的。
 
 C/C++ Volatile变量间的操作，是不会被编译器交换顺序的。
+
+\subsection{垃圾回收（Garbage Collection）}
+垃圾回收的方式虽然很多，但主要可以分为两大类：
+
+1. 基于引用计数（reference counting garbage collector）的垃圾回收器
+
+简单地说，引用计数主要是使用系统记录对象被引用（引用、指针）的次数。当对象被引用的次数变为0时，该对象即可被视作“垃圾”而回收。使用引用计数做垃圾回收的算法的一个优点是实现很简单，与其他垃圾回收算法相比，该方法不会造成程序暂停，因为计数的增减与对象的使用是紧密结合的。此外，引用计数也不会对系统的缓存或者交换空间造成冲击，因此被认为“副作用”较小。但是这种方法比较难处理“环形引用”问题，此外由于计数带来的额外开销也并不小，所以在实用上也有一定的限制。
+
+2. 基于跟踪处理（tracing garbage collector）的垃圾回收器
+
+相比于引用计数，跟踪处理的垃圾回收机制被更为广泛的应用。其基本方法是产生跟踪对象的关系图，然后进行垃圾回收。使用跟踪方式的垃圾回收算法主要有以下几种：
+
+（1）标记 – 清除（Mark – Sweep）
+顾名思义，这个算法可以分为两个过程。首先该算法将程序中正在使用的对象视为“根对象”，从根对象开始查找它们所引用的堆空间，并在这些堆空间上做标记。当标记结束后，所有被标记的对象就是可达目标（Reachable 
+Object）或活对象（Live Object），而没有被标记的对象就被认为是垃圾，在第二步的清扫（Sweep）阶段会被回收掉。
+
+这种方法的特点是活的对象不会被移动，但是其存在会出现大量的内存碎片的问题。
+
+（2）标记 – 整理（Mark – Compact）
+这个算法标记的方法和 标记-清除 的方法一样，但是标记完之后，不再遍历所有对象清扫垃圾了，而是将活的对象向“左”靠齐，这就解决了内存碎片的问题。
+
+标记 – 整理 的方法有个特点就是移动活的对象，因此相应的，程序中所有对堆内存的引用都必须更新。
+
+（3）标记 – 拷贝（Mark – Copy）
+这种算法将堆空间分为两个部分：From 和 To。刚开始系统只从 From  的堆空间里面分配内存，当 From 分配满的时候系统就开始垃圾回收：从From 堆空间找出所有的活对象，拷贝到To的堆空间里。这样一来，From 
+的堆空间里面就全剩下垃圾了。而对象被拷贝到 To 里之后，在 To 里是紧凑排列的。接下来是需要将 From 和 To 交换一下角色，接着从新的 From 里面开始分配。
+
+标记 – 拷贝 算法的一个问题是堆的利用率只有一半，而且也需要移动活的对象。此外，从某种意义上讲，这种算法其实是 标记 – 整理 算法的另一种实现而已。
+
+虽然历来 C++ 都没有公开的支持过垃圾回收机制，但垃圾回收并非某些语言的专利。事实上，C++11标准也开始对垃圾回收做了一定的支持，虽然支持的程度还非常有限，但我们已经看到了C++语言变得更为强大的端倪。

@@ -1072,7 +1072,22 @@ corresponding outputs are in the right-hand column.
 	};
 \end{Code}
 
-
+\begin{Code}
+	void nextPermutation(vector<int> &num) {
+        int i=num.size()-1;
+        while(i>0 && num[i]<=num[i-1])
+            i--;
+        if(i){
+            i--;
+            int j=num.size()-1;
+            while(j>=i && num[j]<=num[i])
+                j--;
+            swap(num[i],num[j]);
+            i++;
+        }
+        reverse(num.begin()+i,num.end());
+    }
+\end{Code}
 \subsubsection{相关题目}
 \begindot
 \item Permutation Sequence, 见 \S \ref{sec:permutation-sequence}

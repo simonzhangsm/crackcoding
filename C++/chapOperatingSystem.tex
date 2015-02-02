@@ -42,7 +42,7 @@ to assign during Page fault.
 Rest remains the same. Only, Page Fault handling changes i.e. it involves swapping (HDD is involved). Note - We also need to update PTE of the page we swapped out to the disk, so 
 that the process (whose page we swapped out ) knows about its page location.
 
-\subsection{Conseptions}
+\subsection{Conceptions}
 What is a process. \\
 What is a stack. \\
 How many stacks can a process have. \\
@@ -105,3 +105,24 @@ malloc vs calloc
 
 new vs malloc
 
+\subsection{Deadlock}
+A deadlock is a situation which occurs when a process or thread enters a waiting state because a resource requested is being held by another waiting process, 
+which in turn is waiting for another resource.
+
+Necessary Conditions
+\begindot
+\item Mutual exclusion
+\item Hold and wait
+\item No preemption
+\item Circular wait
+\myenddot
+
+Methods to handle deadlocks
+
+\begindot
+\item[Deadlock Prevention]Use a protocol to prevent or avoid deadlocks, ensuring that the
+system will never enter a deadlocked state.
+\item[Deadlock Avoidance] Allow the system to enter a deadlocked state, detect it, and recover.
+\item[Deadlock Detection] Ignore the problem altogether and pretend that deadlocks never
+occur in the system.
+\myenddot

@@ -1,0 +1,71 @@
+\chapter{Design Pattern}
+UML的关联(Association), 聚合(Aggregation), 组合(Composition)区别 
+
+【Association】两者之间存在某种关联即可，很弱的关系，如student and course, 每个学生可以选不同的课，每门课上有不同学生；表明某个对象可以向另一个对象通过某种方式发送消息。发送消息的方法可以通过指针成员变量， 
+也可以是方法参数、局部变量等等。例如：
+
+\begin{Code}
+	class A{
+	private:
+		B* itsB;
+	};
+\end{Code}
+
+【Aggregation】它表明了“部分”到“整体”的关系，显著的特点就是不能包含循环的联系 （就是说，部分中不能包含整体）
+\begin{Code}
+	class A {...} 
+	
+	class B { 
+		A* a; 
+		.....
+	} 
+\end{Code}
+
+
+【Composition】跟聚合几乎相同，唯一的区别就是“部分”不能脱离“整体”单独存在，就是说， “部分”的生命期不能比“整体”还要长。
+\begin{Code}
+	class A{...} 
+	class B{ 
+		A a; 
+		......
+	}
+\end{Code}
+
+
+\section{Singleton}
+
+There shall be only one object of a class during the execution of a programm
+
+\begin{Code}
+	class Singleton{
+	public:
+		Singleton (const MySingleton&) = delete;
+		Singleton& operator=(const MySingleton&) = delete;
+		static Singleton * getInstance(){
+			std::unique_lock<std::mutex> lock(mx);
+			if(theOnlyInstance == nullptr){
+				theOnlyInstance = new Singleton();
+			}
+			return theOnlyInstance;
+		}
+		void release(); //will be the focus later
+	private:
+		std::mutex mx;
+		static Singleton * theOnlyInstance;
+		Singleton();
+		~Singleton();
+	};
+	
+	class Singleton{
+	public:
+		Singleton (const MySingleton&) = delete;
+		Singleton& operator=(const Singleton&) = delete;
+		static Singleton * getInstance(){
+			static Singleton theOnlyInstance;
+			return &theOnlyInstance;
+		}
+	private:
+		Singleton();
+		~Singleton();
+	};
+\end{Code}

@@ -1869,3 +1869,106 @@ return 5.
 \begindot
 \item 无
 \myenddot
+
+\subsection{Random Weight}
+Write a function that receives a stream of pairs: id (some unique integer) + weight (positive real number). 
+The stream ends with the special pair {0,0}. 
+The function should return one the unique ids at random, with probability proportional to its weight (compared to the total weights sum when stream has ended). 
+Stream size and weights sum are unknown in advance, and you are allowed O(1) memory consumption. 
+
+Example: If this was the stream: {1,2},{2,2},{3,4},{4,10}, then id 2 would be returned with probability 1/9.
+
+\subsection{Print ASCII}
+Write a function that prints all ASCII characters. You are not allowed to use for/while loop.
+\begin{Code}
+	// Google Interview, Print ASCII
+	class Solution {
+		void printAscii(){
+			printAscii();
+		}
+		void printAscii(int c) {
+			if(c>=129)
+				return;
+			cout<<(char)c<<endl;
+			printAscii(c+1);
+		}
+	}
+\end{Code}
+
+\subsection{Inplace Reverse sentence}
+You given a sentence of english words and spaces between them. 
+Nothing crazy: 
+1) no double spaces 
+2) no empty words 
+3) no spaces at the ends of a sentence
+
+
+void inplace_reverse(char* arr, int length) {
+	// your solution
+}
+Example: 
+
+input "I wish you a merry Christmas" 
+
+output "Christmas merry a you wish I" 
+
+Constrains: O(1) additional memory
+
+\begin{Code}
+	void reverseword(char *word,int len){
+		if(word==nullptr || len<1) return;
+		reverse(word, word+len);
+	}
+	void reverseSentence(char *arr, int length){
+		if(arr==nullptr || length<1) return;
+		
+		int wordbegin = 0;
+		for(int i=0;i<length;i++){
+			if(arr[i]!=' ') continue;
+			reverseword(arr+wordbegin,i-wordbegin-1);
+			wordbegin = i+1;
+		}
+		reverseword(arr,length);
+	}
+\end{Code}
+
+\subsection{Inverse Index}
+Given a string, you need to find super string by word match. i.e. all words in the input string has to occure in any order in output string. 
+e.g. given data set: \\
+"string search" \\
+"java string search" \\
+"manual c++ string search equals" \\
+"java search code" \\
+"c++ java code search" \\
+... \\
+
+input: "java search" \\
+output: \\
+1) "java string search" \\
+2) "java search code" \\
+3) "c++ java code search" \\
+
+input: "c++ search" \\
+output: \\
+1) "manual c++ string search equals" \\
+2) "c++ java code search" \\
+
+There are millions of records in given data set and you need to process few million as input.
+
+\begin{Code}
+	Loop each string, adding the words into a hashmap on the word => string ID. For example: 
+	
+	java => 1, 3, 4 
+	search => 0, 1, 2, 3, 4 
+	
+	To find "java search", look up each word in our map and intersect the results, i.e. we get 1, 3, 4 in this case. 
+	
+	Therefore the result is: 
+	
+	"java string search" 
+	"java search code" 
+	"c++ java code search" 
+\end{Code}
+
+\subsection{atoi}
+Implement a function that convert asci value to int.

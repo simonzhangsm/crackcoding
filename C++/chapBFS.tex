@@ -15,7 +15,7 @@
 【启发式搜索】通过估价函数进行优化处理，例如最短路径时，$f(x)=dist(x)+h(x,B)$最小的点进行扩展。其中$dist(x)$表示当前已知点到x的最短距离，而$h(x,B)$表示启发函数从x到B得距离。具体过程：每次我们先利用堆找到f值的最小x，让其出堆，然后从它开始拓展新节点。对于x的相邻节点y，如果y还没有被扩展，将其入堆，否则考虑$dist(x)+h(x,B)$,其中$dist(x)$表示边（x，y）的长度，如果这个值小于$dist(y)$则更新$dist(y)$并将其放入堆中。
 \section{走迷宫} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection{描述}
+【解题思路】
 一个迷宫由一个01矩阵表示，每个单元格要么是空地（用0表示），要
 么是障碍物（用1表示）。你的任务是找到一条从入口到出口的最短路径。任何时候都不能在障碍物格子中，也不
 能走到迷宫之外。只能横着走或竖着走，不能斜着走。数据保证有唯一解。
@@ -244,7 +244,7 @@ bool state_is_target(const state_t &s) {
 \section{八数码问题} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \label{subsec:eightDigits}
 
-\subsubsection{描述}
+【解题思路】
 编号为1$\sim$8的8个正方形滑块摆成3行3列，有一个格子空着，如图~\ref{fig:eightDigits}所示。
 
 \begin{center}
@@ -847,7 +847,7 @@ void hashset_insert(const state_t &s) {
 
 \section{四子连棋} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection{描述}
+【解题思路】
 在一个4*4的棋盘上摆放了14颗棋子，其中有7颗白色棋子，7颗黑色棋子，有两个空白地带，任何一颗黑白
 棋子都可以向上下左右四个方向移动到相邻的空格，这叫行棋一步，黑白双方交替走棋，任意一方可以先走，
 如果某个时刻使得任意一种颜色的棋子形成四个一线（包括斜线），这样的状态为目标棋局。
@@ -1933,7 +1933,7 @@ bool state_is_target(const state_t &s) {
 \label{sec:word-ladder}
 
 
-\subsubsection{描述}
+【解题思路】
 Given two words (start and end), and a dictionary, find the length of shortest transformation sequence from start to end, such that:
 \begindot
 \item Only one letter can be changed at a time
@@ -2033,7 +2033,7 @@ Note:
 \label{sec:word-ladder-ii}
 
 
-\subsubsection{描述}
+【解题思路】
 Given two words (start and end), and a dictionary, find all shortest transformation sequence(s) from start to end, such that:
 \begindot
 \item Only one letter can be changed at a time
@@ -2159,7 +2159,7 @@ Note:
 \label{sec:surrounded-regions}
 
 
-\subsubsection{描述}
+【解题思路】
 Given a 2D board containing \fn{'X'} and \fn{'O'}, capture all regions surrounded by \fn{'X'}.
 
 A region is captured by flipping all \fn{'O'}s into \fn{'X'}s in that surrounded region .

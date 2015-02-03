@@ -138,7 +138,7 @@ $$f(n,m)=max{f(n-1,m), f(n-1,m-w[n])+P(n,m)}$$
 给定一个带权值（可正可负）的棋盘，求权值和最大的连通块。
 
 \section{最长公共子序列} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{描述}
+【解题思路】
 一个序列的子序列(subsequence)是指在该序列中删去若干（可以为0个）元素后得到的序列。
 准确的说，若给定序列$X=(x_1,x_2,\cdots,x_m)$，则另一个序列$Z=(z_1,z_2,\cdots,z_k)$，
 是X的子序列是指存在一个严格递增下标序列$(i_1,i_2,\cdots,i_k)$使得对于所有$j=1,2,\cdots,k$
@@ -294,7 +294,7 @@ void lcs_print(const char *x, const int m, const char *y, const int n) {
 
 
 \section{最大连续子序列和} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{描述}
+【解题思路】
 给定一个整数序列$S_1,S_2,\cdot,S_n(1 \leq n \leq 1,000,000, -32768 \leq S_i \leq 32768)$，定义函数$sum(i,j)=S_i+\cdot+S_j(1 \leq i \leq j \leq n)$。
 
 求最大的$sum(i,j)$，即\textbf{最大连续子序列和}(maximum continuous subsequence sum)。
@@ -429,7 +429,7 @@ int main() {
 
 
 \section{Minimum Adjustment Cost}
-\subsubsection{描述}
+【解题思路】
 Given an integer array, adjust each integers so that the difference of every 
 adjcent integers are not greater than a given number target.
 
@@ -509,7 +509,7 @@ dp[i][j]: 把A[i]的值修改为j，所需要的最小花费, 则dp[i][j] = min\
 \section{最大M子段和} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \label{sec:mmss}
 
-\subsubsection{描述}
+【解题思路】
 给定一个整数序列$S_1,S_2,\cdot,S_n(1 \leq n \leq 1,000,000, -32768 \leq S_i \leq 32768)$，定义函数$sum(i,j)=S_i+ ... +S_j(1 \leq i \leq j \leq n)$。
 
 现给定一个正整数m，找出m对i和j，使得$sum(i_1,j_1)+sum(i_2,j_2)+ ... +sum(i_m,j_m)$最大。这就是\textbf{最大M子段和}(maximum m segments sum)。
@@ -631,7 +631,7 @@ int main() {
 
 \subsection{0-1背包问题}
 
-\subsubsection{描述}
+【解题思路】
 有$N$种物品，第$i$种物品的重量为$w_i$，价值为$v_i$，每种物品只有一个。背包能承受的重量为$W$。
 将哪些物品装入背包可使这些物品的总重量不超过背包容量，且价值总和最大？
 
@@ -837,7 +837,7 @@ int main() {
 \subsection{完全背包问题}
 \label{sec:ukp}
 
-\subsubsection{描述}
+【解题思路】
 给你一个储钱罐(piggy bank)，往里面存硬币。存入的过程是不可逆的，要想把钱拿出来只能摔碎
 储钱罐。因此，你想知道里面是否有足够多的钱，把它摔碎是值得的。
 
@@ -1061,7 +1061,7 @@ void unbounded_knapsack3(int d[], const int w, const int v) {
 
 \subsection{多重背包问题}
 
-\subsubsection{描述}
+【解题思路】
 某地发生地震，为了挽救灾区同胞的生命，心系灾区同胞的你准备自己采购一些粮食
 支援灾区，现在假设你一共有资金W元，而市场有N种大米，每种大米都是袋装产品，
 其价格不等，并且只能整袋购买。
@@ -1244,7 +1244,7 @@ int main() {
 
 \subsection{最长上升子序列}
 
-\subsubsection{描述}
+【解题思路】
 当一个序列严格递增时，我们称这个序列是上升的。
 对于一个给定的序列$(a_1, a_2, ..., a_N)$，我们可以得到一些上升的子序列$(a_{i1}, a_{i2}, ..., a_{iK})$，
 这里$1 \leq i1 < i2 < ... < iK \leq N$。例如，对于序列(1, 7, 3, 5, 9, 4, 8)，
@@ -1332,7 +1332,7 @@ int main() {
 
 \subsection{嵌套矩形}
 
-\subsubsection{描述}
+【解题思路】
 有$n$个矩形，每个矩形可以用$a,b$来描述，表示长和宽。矩形$X(a,b)$可以嵌套在
 矩形$Y(c,d)$中当且仅当$a<c,b<d$或者$b<c,a<d$（相当于旋转X90度）。例如
 （1,5）可以嵌套在（6,2）内，但不能嵌套在（3,4）中。你的任务是选出尽可能多的
@@ -1467,7 +1467,7 @@ int main() {
 
 \subsection{线段覆盖 2}
 
-\subsubsection{描述}
+【解题思路】
 数轴上有$n(n \leq 1000)$条线段，线段的两端都是整数坐标，坐标范围在$0 \sim 1000000$，每条线段有一个价值，请从$n$条线段中挑出若干条线段，使得这些线段两两不覆盖（端点可以重合）且线段价值之和最大。
 
 \subsubsection{输入}
@@ -1581,7 +1581,7 @@ int main() {
 
 \subsection{硬币问题}
 
-\subsubsection{描述}
+【解题思路】
 有$n$种硬币，面值为别为$v_1,v_2,v_3,\cdots, v_n$，每种都有无限多。给定非负整数$S$，可以
 选取多少个硬币，使得面值和恰好为$S$？输出硬币数目的最小值和最大值。
 $1 \leq n \leq 100, 1 \leq S \leq 10000, 1 \leq v_i \leq S$。
@@ -1878,7 +1878,7 @@ void print_path(const int *d, int j) {
 
 
 \subsection{最优矩阵链乘}
-\subsubsection{描述}
+【解题思路】
 一个$m \times n$的矩阵乘以一个$n \times p$的矩阵等于一个$m \times p$的矩阵，运算量为$mnp$。
 
 矩阵乘法不满足分配律，但满足结合律，即$A \times B \times C=(A \times B) \times C=A \times (B \times C)$。
@@ -2009,7 +2009,7 @@ int main() {
 
 
 \subsection{石子合并}
-\subsubsection{描述}
+【解题思路】
 在一条直线上摆着$N$堆石子。现要将石子有次序地合并成一堆。规定每次只能选相邻的2堆石子合并成新的一堆，并将新的一堆石子数记为该次合并的得分。
 
 试设计一个算法，计算出将$N$堆石子合并成一堆的最小得分。
@@ -2131,7 +2131,7 @@ int main() {
 
 
 \subsection{矩阵取数游戏}
-\subsubsection{描述}
+【解题思路】
 帅帅经常跟同学玩一个矩阵取数游戏：对于一个给定的$n*m$的矩阵，矩阵中的每个元素$a_{ij}$均为非负整数。游戏规则如下：
 \begindot
 \item 每次取数时须从每行各取走一个元素，共$n$个，$m$次后取完矩阵所有元素；
@@ -2392,7 +2392,7 @@ int main() {
 
 \subsection{数字三角形}
 
-\subsubsection{描述}
+【解题思路】
 有一个由非负整数组成的三角形，第一行只有一个数，除了最下一行之外每个数的左下角和右下
 角各有一个数，如图~\ref{fig:numbersTriangle}所示。
 
@@ -2540,7 +2540,7 @@ int main() {
 
 \subsection{过河卒}
 
-\subsubsection{描述}
+【解题思路】
 如图，A点有一个过河卒，需要走到目标B点。卒行走规则：可以向下、或者向右。同时在棋盘上的任一点有一个对方的马（如上图的C点），该马所在的点和所有跳跃一步可达的点称为对方马的控制点。例如上图C点上的马可以控制9个点（图中的P1，P2 … P8 和 C）。卒不能通过对方马的控制点。
 
 \begin{center}
@@ -2637,7 +2637,7 @@ int main() {
 
 \subsection{传纸条}
 
-\subsubsection{描述}
+【解题思路】
 小渊和小轩是好朋友也是同班同学，他们在一起总有谈不完的话题。一次素质拓展活动中，班上同学安排做成一个$m$行$n$列的矩阵，而小渊和小轩被安排在矩阵对角线的两端，因此，他们就无法直接交谈了。幸运的是，他们可以通过传纸条来进行交流。纸条要经由许多同学传到对方手里，小渊坐在矩阵的左上角，坐标$(1,1)$，小轩坐在矩阵的右下角，坐标$(m,n)$。从小渊传到小轩的纸条只可以向下或者向右传递，从小轩传给小渊的纸条只可以向上或者向左传递。
 
 在活动进行中，小渊希望给小轩传递一张纸条，同时希望小轩给他回复。班里每个同学都可以帮他们传递，但只会帮他们一次，也就是说如果此人在小渊递给小轩纸条的时候帮忙，那么在小轩递给小渊的时候就不会再帮忙。反之亦然。
@@ -2748,7 +2748,7 @@ TODO: 本题可以优化为三维
 
 \subsection{骑士游历}
 
-\subsubsection{描述}
+【解题思路】
 设有一个$n*m$的棋盘($2 \leq n \leq 50, 2 \leq m \leq 50$)，如图~\ref{fig:horse}所示，在棋盘上有一个中国象棋马。规定：
 \begindot
 \item 马只能走日字
@@ -2840,7 +2840,7 @@ int main() {
 
 \subsection{乘积最大}
 
-\subsubsection{描述}
+【解题思路】
 设有一个长度为$N$的数字串，要求选手使用$K$个乘号将它分成$K+1$个部分，找出一种分法，使得这$K+1$个部分的乘积能够为最大。
 
 举个例子：有一个数字串：312， 当$N=3$，$K=1$时会有以下两种分法：
@@ -3020,7 +3020,7 @@ int main() {
 
 \subsection{数的划分}
 
-\subsubsection{描述}
+【解题思路】
 将整数$n$分成$k$份，且每份不能为空，任意两种划分方案不能相同(不考虑顺序)。
 
 例如：$n=7$，$k=3$，下面三种划分方案被认为是相同的。
@@ -3108,7 +3108,7 @@ int main() {
 
 \subsection{访问艺术馆}
 
-\subsubsection{描述}
+【解题思路】
 皮尔是一个出了名的盗画者，他经过数月的精心准备，打算到艺术馆盗画。艺术馆的结构，每条走廊要么分叉为二条走廊，要么通向一个展览室。皮尔知道每个展室里藏画的数量，并且他精确地测量了通过每条走廊的时间，由于经验老道，他拿下一副画需要5秒的时间。你的任务是设计一个程序，计算在警察赶来之前(警察到达时皮尔回到了入口也算)，他最多能偷到多少幅画。
 
 \begin{center}
@@ -3229,7 +3229,7 @@ int main() {
 
 \subsection{没有上司的舞会}
 
-\subsubsection{描述}
+【解题思路】
 Ural大学有$N$个职员，编号为$1 \sim N$。他们有从属关系，也就是说他们的关系就像一棵以校长为根的树，父结点就是子结点的直接上司。每个职员有一个快乐指数。现在有个周年庆宴会，要求与会职员的快乐指数最大。但是，没有职员愿和直接上司一起与会。
 
 \subsubsection{输入}
@@ -3380,7 +3380,7 @@ int main() {
 方法一是一种暴力枚举法，方法二是一种动规法。
 
 \subsection{奶牛浴场}
-\subsubsection{描述}
+【解题思路】
 由于john建造了牛场围栏，激起了奶牛的愤怒，奶牛的产奶量急剧减少。为了讨好奶牛，john决定在牛场中建造一个大型浴场。但是john的奶牛有一个奇怪的习惯，每头奶牛都必须在牛场中的一个固定的位置产奶，而奶牛显然不能在浴场中产奶，于是，john希望所建造的浴场不覆盖这些产奶点。这回，他又要求助于clevow了。你还能帮助clevow吗？
 
 john的牛场和规划的浴场都是矩形。浴场要完全位于牛场之内，并且浴场的轮廓要与牛场的轮廓平行或者重合。浴场不能覆盖任何产奶点，但是产奶点可以位于浴场的轮廓上。
@@ -3577,7 +3577,7 @@ int main() {
 
 
 \subsection{最大全1子矩阵}
-\subsubsection{描述}
+【解题思路】
 给定一个$m \times n$的01矩阵，求最大的全1子矩阵。
 
 \subsubsection{输入}
@@ -3692,7 +3692,7 @@ int main() {
 \label{sec:triangle}
 
 
-\subsubsection{描述}
+【解题思路】
 Given a triangle, find the minimum path sum from top to bottom. Each step you may move to adjacent numbers on the row below.
 
 For example, given the following triangle
@@ -3744,7 +3744,7 @@ $$
 \label{sec:maximum-subarray}
 
 
-\subsubsection{描述}
+【解题思路】
 Find the contiguous subarray within an array (containing at least one number) which has the largest sum.
 
 For example, given the array \code{[−2,1,−3,4,−1,2,1,−5,4]},
@@ -3842,7 +3842,7 @@ the contiguous subarray \code{[4,−1,2,1]} has the largest \code{sum = 6}.
 \label{sec:palindrome-partitioning-ii}
 
 
-\subsubsection{描述}
+【解题思路】
 Given a string s, partition s such that every substring of the partition is a palindrome.
 
 Return the minimum cuts needed for a palindrome partitioning of s.
@@ -3910,7 +3910,7 @@ $$
 \label{sec:maximal-rectangle}
 
 
-\subsubsection{描述}
+【解题思路】
 Given a 2D binary matrix filled with 0's and 1's, find the largest rectangle containing all ones and return its area.
 
 
@@ -3973,7 +3973,7 @@ Given a 2D binary matrix filled with 0's and 1's, find the largest rectangle con
 \label{sec:best-time-to-buy-and-sell-stock-iii}
 
 
-\subsubsection{描述}
+【解题思路】
 Say you have an array for which the i-th element is the price of a given stock on day i.
 
 Design an algorithm to find the maximum profit. You may complete at most two transactions.
@@ -4032,7 +4032,7 @@ Note: You may not engage in multiple transactions at the same time (ie, you must
 \label{sec:interleaving-string}
 
 
-\subsubsection{描述}
+【解题思路】
 Given $s1, s2, s3$, find whether $s3$ is formed by the interleaving of $s1$ and $s2$.
 
 For example, Given: \code{s1 = "aabcc", s2 = "dbbca"},
@@ -4154,7 +4154,7 @@ i+j]}。如果s1的最后一个字符等于s3的最后一个字符，则\fn{f[i]
 \label{sec:scramble-string}
 
 
-\subsubsection{描述}
+【解题思路】
 Given a string $s1$, we may represent it as a binary tree by partitioning it to two non-empty substrings recursively.
 
 Below is one possible representation of \code{s1 = "great"}:
@@ -4432,7 +4432,7 @@ Given two strings $s1$ and $s2$ of the same length, determine if $s2$ is a scram
 \label{sec:minimum-path-sum}
 
 
-\subsubsection{描述}
+【解题思路】
 Given a $m \times n$ grid filled with non-negative numbers, find a path from top left to bottom right which minimizes the sum of all numbers along its path.
 
 Note: You can only move either down or right at any point in time
@@ -4549,7 +4549,7 @@ Note: You can only move either down or right at any point in time
 \label{sec:edit-distance}
 
 
-\subsubsection{描述}
+【解题思路】
 Given two words \fn{word1} and \fn{word2}, find the minimum number of steps required to convert \fn{word1} to \fn{word2}. (each operation is counted as 1 step.)
 
 You have the following 3 operations permitted on a word:
@@ -4654,7 +4654,7 @@ You have the following 3 operations permitted on a word:
 \label{sec:decode-ways}
 
 
-\subsubsection{描述}
+【解题思路】
 A message containing letters from \fn{A-Z} is being encoded to numbers using the following mapping:
 \begin{Code}
 	'A' -> 1
@@ -4714,7 +4714,7 @@ The number of ways decoding \fn{"12"} is 2.
 \label{sec:distinct-subsequences}
 
 
-\subsubsection{描述}
+【解题思路】
 Given a string $S$ and a string $T$, count the number of distinct subsequences of $T$ in $S$.
 
 A subsequence of a string is a new string which is formed from the original string by deleting some (can be none) of the characters without disturbing the relative positions of 
@@ -4763,7 +4763,7 @@ Return 3.
 \label{sec:word-break}
 
 
-\subsubsection{描述}
+【解题思路】
 Given a string s and a dictionary of words dict, determine if s can be segmented into a space-separated sequence of one or more dictionary words.
 
 For example, given \\
@@ -4839,7 +4839,7 @@ $$
 \label{sec:word-break-ii}
 
 
-\subsubsection{描述}
+【解题思路】
 Given a string s and a dictionary of words dict, add spaces in s to construct a sentence where each word is a valid dictionary word.
 
 Return all such possible sentences.

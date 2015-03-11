@@ -53,12 +53,18 @@ body={165mm,245mm},marginparsep=10pt,marginpar=50pt]{geometry}
 
 \setlength\abovecaptionskip{0pt}
 
-%\setmainfont{Times New Roman}
-\setmainfont{Linux Libertine}
+\setmainfont{Times New Roman}
+%\setmainfont{Linux Libertine}
 %\setmainfont{TeX Gyre Pagella}
 \newfontfamily\urlfont{PT Sans Narrow}
 %\setmonofont[AutoFakeBold=1.6,AutoFakeSlant=0.17,Mapping=tex-text-tt]{Inconsolata}
-\setCJKfamilyfont{zhyou}{YouYuan}
+%\setCJKfamilyfont{zhyou}{YouYuan}
+%\setCJKfamilyfont{zhsong}{宋體}
+%\setCJKfamilyfont{zhhei}{黑體}
+%\setCJKfamilyfont{zhkai}{楷體}
+\setCJKfamilyfont{zhfs}{仿宋}
+%\setCJKfamilyfont{zhli}{隸書}
+%\setCJKfamilyfont{zhyou}{幼圓}
 
 \newcommand{\fn}[1]{\texttt{#1}}
 \newcommand{\sfn}[1]{\texttt{\small #1}}

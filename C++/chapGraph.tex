@@ -1,51 +1,45 @@
 \chapter{图}
 无向图的节点定义如下：
-\begin{Code}
-	// 无向图的节点
+\begin{Codex}
 	struct UndirectedGraphNode {
 		int label;
 		vector<UndirectedGraphNode *> neighbors;
 		UndirectedGraphNode(int x) : label(x) {};
 	};
-\end{Code}
+\end{Codex}
 
 稠密图适合用邻接矩阵来表示。
 \begin{Codex}[label=am_graph.cpp]
-/** 顶点数最大值. */
-const int MAX_NV = 100;
+    /** 顶点数最大值. */
+    const int MAX_NV = 100;
 
-/** 边的权值类型，可以为int, float, double. */
-typedef int graph_weight_t;
-const graph_weight_t GRAPH_INF = INT_MAX;
+    /** 边的权值类型，可以为int, float, double. */
+    typedef int graph_weight_t;
+    const graph_weight_t GRAPH_INF = INT_MAX;
 
-/**
- * @struct 图，用邻接矩阵(Adjacency Matrix).
- */
-struct graph_t {
-    int nv; // 顶点数
-    int ne; // 边数
-    // 邻接矩阵，存放边的信息，如权重等
-    graph_weight_t matrix[MAX_NV][MAX_NV];
-};
+    struct graph_t {
+        int nv; // 顶点数
+        int ne; // 边数
+        // 邻接矩阵，存放边的信息，如权重等
+        graph_weight_t matrix[MAX_NV][MAX_NV];
+    };
 \end{Codex}
 
 稀疏图适合用邻接表来表示。
 \begin{Codex}[label=al_graph.cpp]
-/** 边的权值类型，可以为int, float, double. */
-typedef int graph_weight_t;
+    /** 边的权值类型，可以为int, float, double. */
+    typedef int graph_weight_t;
 
-/** 顶点的编号，可以为char, int, string等. */
-typedef char graph_vertex_id_t;
+    /** 顶点的编号，可以为char, int, string等. */
+    typedef char graph_vertex_id_t;
 
-/**
- * @struct 图，用邻接表(Adjacency List).
- */
-struct graph_t {
-    int nv; // 顶点数
-    int ne; // 边数
-    // 邻接表，存放边的信息，如权重等
-    map<graph_vertex_id_t, map<graph_vertex_id_t, graph_weight_t> > matrix;
-};
+    /**图，用邻接表(Adjacency List) */
+    struct graph_t {
+        int nv; // 顶点数
+        int ne; // 边数
+        // 邻接表，存放边的信息，如权重等
+        map<graph_vertex_id_t, map<graph_vertex_id_t, graph_weight_t> > matrix;
+    };
 \end{Codex}
 
 
@@ -54,143 +48,120 @@ struct graph_t {
 图的深度优先搜索的代码框架如下：
 
 \begin{Codex}[label=graph_dfs.cpp]
-/**
- * @brief 图的深度优先搜索代码框架，搜索边.
- * @param[in] g 图
- * @param[in] u 出发顶点
- * @param[in] visited 边的访问历史记录
- * @return 无
- * @remark 在使用的时候，为了降低递归的内存占用量，可以把
- * g, visited 抽出来作为全局变量
- */
-void dfs(const graph_t &g, int u, bool visited[][MAX_NV]) {
-    for(int v = 0;  v < g.nv; v++) if(g.matrix[u][v] && !visited[u][v]) {
-        visited[u][v] = visited[v][u] = true; // 无向图用这句
-        // visited_edges[u][v] = true; // 有向图用这句
-        dfs(g, v, visited);
-        // 这里写逻辑代码
-        // printf("%d %d\n", u, v);
+    void dfs(const graph_t &g, int u, bool visited[][MAX_NV]) {
+        for(int v = 0;  v < g.nv; v++) if(g.matrix[u][v] && !visited[u][v]) {
+            visited[u][v] = visited[v][u] = true; // 无向图用这句
+            // visited_edges[u][v] = true; // 有向图用这句
+            dfs(g, v, visited);
+            // 这里写逻辑代码
+            // printf("%d %d\n", u, v);
+        }
     }
-}
 
-/**
- * @brief 图的深度优先搜索代码框架，搜索顶点.
- * @param[in] g 图
- * @param[in] u 出发顶点
- * @param[in] visited 顶点的访问历史记录
- * @return 无
- * @remark 在使用的时候，为了降低递归的内存占用量，可以把
- * g, visited 抽出来作为全局变量
- */
-void dfs(const graph_t &g, int u, bool visited[MAX_NV]) {
-    visited[u] = true;
-    for(int v = 0;  v < g.nv; v++) if(g.matrix[u][v] && !visited[v]) {
-        dfs(g, v, visited);
-        // 这里写逻辑代码
-        // printf("%d %d\n", u, v);
+    void dfs(const graph_t &g, int u, bool visited[MAX_NV]) {
+        visited[u] = true;
+        for(int v = 0;  v < g.nv; v++) if(g.matrix[u][v] && !visited[v]) {
+            dfs(g, v, visited);
+            // 这里写逻辑代码
+            // printf("%d %d\n", u, v);
+        }
     }
-}
 \end{Codex}
 
 
 \subsection{Satellite Photographs}
 
 【解题思路】
-Farmer John purchased satellite photos of $W \times H$ pixels of his farm ($1 \leq W \leq 80, 1 \leq H \leq 1000$) and wishes to determine the largest 'contiguous' (connected) pasture. Pastures are contiguous when any pair of pixels in a pasture can be connected by traversing adjacent vertical or horizontal pixels that are part of the pasture. (It is easy to create pastures with very strange shapes, even circles that surround other circles.) 
+Farmer John purchased satellite photos of $W \times H$ pixels of his farm ($1 \leq W \leq 80, 1 \leq H \leq 1000$) and wishes to determine the largest 'contiguous' (connected) pasture. Pastures are contiguous when any pair of pixels in a pasture can be connected by traversing adjacent vertical or horizontal pixels that are part of the pasture. (It is easy to create pastures with very strange shapes, even circles that surround other circles.)
 
-Each photo has been digitally enhanced to show pasture area as an asterisk ('*') and non-pasture area as a period ('.'). Here is a $10 \times 5$ sample satellite photo: 
+Each photo has been digitally enhanced to show pasture area as an asterisk ('*') and non-pasture area as a period ('.'). Here is a $10 \times 5$ sample satellite photo:
 \begin{Code}
-..*.....** 
-.**..***** 
-.*...*.... 
-..****.*** 
-..****.*** 
+    ..*.....**
+    .**..*****
+    .*...*....
+    ..****.***
+    ..****.***
 \end{Code}
 
 This photo shows three contiguous pastures of 4, 16, and 6 pixels. Help FJ find the largest contiguous pasture in each of his satellite photos.
 
 
-\subsubsection{输入}
-Line 1: Two space-separated integers: $W$ and $H$ 
+【输入】
+Line 1: Two space-separated integers: $W$ and $H$
 
 Lines 2..H+1: Each line contains $W$ "*" or "." characters representing one raster line of a satellite photograph.
 
 
-\subsubsection{输出}
+【输出】
 Line 1: The size of the largest contiguous field in the satellite photo.
 
 
-\subsubsection{样例输入}
+【样例输入】
 \begin{Code}
-10 5
-..*.....**
-.**..*****
-.*...*....
-..****.***
-..****.***
+    10 5
+    ..*.....**
+    .**..*****
+    .*...*....
+    ..****.***
+    ..****.***
 \end{Code}
 
 
-\subsubsection{样例输出}
-\begin{Code}
-16
+【样例输出】
+\begin{Code}    
+    16
 \end{Code}
 
 
-\subsubsection{分析}
+【解题思路】
 这是一个平面的二维地图，把地图上的每个点当成隐式图上的一个顶点，每个顶点有上下左右四个邻接点。在这个隐式图上进行深搜。
 
 
-\subsubsection{代码}
+
 \begin{Codex}[label=satellite_photographs.c]
-/* POJ 3051 Satellite Photographs, http://poj.org/problem?id=3051 */
-#include <stdio.h>
-#include <string.h>
+    /* POJ 3051 Satellite Photographs, http://poj.org/problem?id=3051 */
+    #include <stdio.h>
+    #include <string.h>
 
-#define MAXH 1000
-#define MAXW 80
+    #define MAXH 1000
+    #define MAXW 80
 
-int H, W; /* H行W列 */
-char map[MAXH+2][MAXW+2];/* 上下左右加一圈'.'可以防止越界 */
-
-int count;
-
-void dfs(int x, int y) {
-    /* 加了一圈'.'可以防止越界，因此不需要判断越界 */
-    if (map[x][y] == '.') return;
-
-    map[x][y] = '.';  /* 标记(x,y)已访问过，起到去重作用 */
-    count++;
-    dfs(x + 1, y);
-    dfs(x - 1, y);
-    dfs(x, y + 1);
-    dfs(x, y - 1);
-}
-
-int main() {
-    int i, j, max;
-    memset(map, '.', sizeof(map));
-
-    scanf("%d%d", &W, &H); /* H是行数，W是列数 */
-    for(i = 1; i <= H; ++i) {
-        char line[MAXW+1];
-        scanf("%s", line);
-        strncpy(&map[i][1], line, W);
+    int H, W; /* H行W列 */
+    char map[MAXH+2][MAXW+2];/* 上下左右加一圈'.'可以防止越界 */
+    int count;
+    void dfs(int x, int y) {
+        /* 加了一圈'.'可以防止越界，因此不需要判断越界 */
+        if (map[x][y] == '.') return;
+        map[x][y] = '.';  /* 标记(x,y)已访问过，起到去重作用 */
+        count++;
+        dfs(x + 1, y);
+        dfs(x - 1, y);
+        dfs(x, y + 1);
+        dfs(x, y - 1);
     }
 
-    max = 0;
-    for (i = 1; i <= H; i++) {
-        for (j = 1; j <= W; j++) {
-            if (map[i][j] == '*') {
-                count = 0;
-                dfs(i, j);
-            }
-            if (count > max) max = count;
+    int main() {
+        int i, j, max;
+        memset(map, '.', sizeof(map));
+        scanf("%d%d", &W, &H); /* H是行数，W是列数 */
+        for(i = 1; i <= H; ++i) {
+            char line[MAXW+1];
+            scanf("%s", line);
+            strncpy(&map[i][1], line, W);
         }
+        max = 0;
+        for (i = 1; i <= H; i++) {
+            for (j = 1; j <= W; j++) {
+                if (map[i][j] == '*') {
+                    count = 0;
+                    dfs(i, j);
+                }
+                if (count > max) max = count;
+            }
+        }
+        printf("%d\n", max);
+        return 0;
     }
-    printf("%d\n", max);
-    return 0;
-}
 \end{Codex}
 
 
@@ -210,11 +181,11 @@ int main() {
 
 
 \subsubsection{Description}
-Little Johnny has got a new car. He decided to drive around the town to visit his friends. Johnny wanted to visit all his friends, but there was many of them. In each street he had one friend. He started thinking how to make his trip as short as possible. Very soon he realized that the best way to do it was to travel through each street of town only once. Naturally, he wanted to finish his trip at the same place he started, at his parents' house. 
+Little Johnny has got a new car. He decided to drive around the town to visit his friends. Johnny wanted to visit all his friends, but there was many of them. In each street he had one friend. He started thinking how to make his trip as short as possible. Very soon he realized that the best way to do it was to travel through each street of town only once. Naturally, he wanted to finish his trip at the same place he started, at his parents' house.
 
-The streets in Johnny's town were named by integer numbers from 1 to $n, n < 1995$. The junctions were independently named by integer numbers from 1 to $m, m <= 44$. No junction connects more than 44 streets. All junctions in the town had different numbers. Each street was connecting exactly two junctions. No two streets in the town had the same number. He immediately started to plan his round trip. If there was more than one such round trip, he would have chosen the one which, when written down as a sequence of street numbers is lexicographically the smallest. But Johnny was not able to find even one such round trip. 
+The streets in Johnny's town were named by integer numbers from 1 to $n, n < 1995$. The junctions were independently named by integer numbers from 1 to $m, m <= 44$. No junction connects more than 44 streets. All junctions in the town had different numbers. Each street was connecting exactly two junctions. No two streets in the town had the same number. He immediately started to plan his round trip. If there was more than one such round trip, he would have chosen the one which, when written down as a sequence of street numbers is lexicographically the smallest. But Johnny was not able to find even one such round trip.
 
-Help Johnny and write a program which finds the desired shortest round trip. If the round trip does not exist the program should write a message. Assume that Johnny lives at the junction ending the street appears first in the input with smaller number. All streets in the town are two way. There exists a way from each street to another street in the town. The streets in the town are very narrow and there is no possibility to turn back the car once he is in the street 
+Help Johnny and write a program which finds the desired shortest round trip. If the round trip does not exist the program should write a message. Assume that Johnny lives at the junction ending the street appears first in the input with smaller number. All streets in the town are two way. There exists a way from each street to another street in the town. The streets in the town are very narrow and there is no possibility to turn back the car once he is in the street
 
 
 \subsubsection{Input}
@@ -227,28 +198,28 @@ Output one line of each block contains the sequence of street numbers (single me
 
 \subsubsection{Sample Input}
 \begin{Code}
-1 2 1
-2 3 2
-3 1 6
-1 2 5
-2 3 3
-3 1 4
-0 0
-1 2 1
-2 3 2
-1 3 3
-2 4 4
-0 0
-0 0
+    1 2 1
+    2 3 2
+    3 1 6
+    1 2 5
+    2 3 3
+    3 1 4
+    0 0
+    1 2 1
+    2 3 2
+    1 3 3
+    2 4 4
+    0 0
+    0 0
 \end{Code}
 
 \subsubsection{Sample Output}
 \begin{Code}
-1 2 3 5 4 6 
-Round trip does not exist.
+    1 2 3 5 4 6
+    Round trip does not exist.
 \end{Code}
 
-\subsubsection{分析}
+【解题思路】
 欧拉回路。
 
 如果能从图的某一顶点出发，每条边恰好经过一次，这样的路线称为\textbf{欧拉道路}(Eulerian Path)。
@@ -265,71 +236,53 @@ Round trip does not exist.
 存在一条欧拉道路，以前一个顶点为起点，以后一个顶点为终点。
 
 
-\subsubsection{代码}
+
 \begin{Codex}[label=round_trip.cpp]
-// POJ 1041 John's trip, http://poj.org/problem?id=1041
-#include <iostream>
-#include <cstring>
-#include <algorithm>
-#include <stack>
+    // POJ 1041 John's trip, http://poj.org/problem?id=1041
+    #include <iostream>
+    #include <cstring>
+    #include <algorithm>
+    #include <stack>
 
-using namespace std;
+    using namespace std;
+    const int MAX_NV = 45;
+    const int MAX_NE = 1996;
+    struct graph_t {
+        int nv; // 顶点数
+        int ne; // 边数
+        // G[点][边] = 点，这样是为了能方便让边lexicographically输出
+        int matrix[MAX_NV][MAX_NE];
+    };
 
-const int MAX_NV = 45;
-const int MAX_NE = 1996;
-
-/**
- * @struct 图，邻接矩阵的变种.
- */
-struct graph_t {
-    int nv; // 顶点数
-    int ne; // 边数
-    // G[点][边] = 点，这样是为了能方便让边lexicographically输出
-    int matrix[MAX_NV][MAX_NE];
-};
-
-graph_t G;
-
-bool visited[MAX_NE];  // 边是否已访问
-int degree[MAX_NV];    // 点的度
-
-stack<int> s;  // 栈，用于输出
-
-void stack_print(stack<int> &s) {
-    while (!s.empty()) {
-        cout << s.top() << " ";
-        s.pop();
+    graph_t G;
+    bool visited[MAX_NE];  // 边是否已访问
+    int degree[MAX_NV];    // 点的度
+    stack<int> s;  // 栈，用于输出
+    void stack_print(stack<int> &s) {
+        while (!s.empty()) {
+            cout << s.top() << " ";
+            s.pop();
+        }
+        cout << endl;
     }
-    cout << endl;
-}
 
-void euler(int u) {
-    for (int e = 1; e <= G.ne; e++) {
-        if (!visited[e] && G.matrix[u][e]) { //若相邻边未访问过
-            visited[e] = true;
-            euler(G.matrix[u][e]);
-            s.push(e);
+    void euler(int u) {
+        for (int e = 1; e <= G.ne; e++) {
+            if (!visited[e] && G.matrix[u][e]) { //若相邻边未访问过
+                visited[e] = true;
+                euler(G.matrix[u][e]);
+                s.push(e);
+            }
         }
     }
-}
 
-int main() {
-    int x, y, z, start;
-    while ((cin >> x >> y) && x && y) {
-        memset(visited, false, sizeof(visited));
-        memset(degree, 0, sizeof(degree));
-        memset(&G, 0, sizeof(G));
-
-        start = x < y ? x : y;
-        cin >> z;
-        G.ne = max(G.ne, z);
-        G.nv = max(G.nv, max(x, y));
-        G.matrix[x][z] = y;
-        G.matrix[y][z] = x;
-        ++degree[x];
-        ++degree[y];
-
+    int main() {
+        int x, y, z, start;
         while ((cin >> x >> y) && x && y) {
+            memset(visited, false, sizeof(visited));
+            memset(degree, 0, sizeof(degree));
+            memset(&G, 0, sizeof(G));
+            start = x < y ? x : y;
             cin >> z;
             G.ne = max(G.ne, z);
             G.nv = max(G.nv, max(x, y));
@@ -337,26 +290,33 @@ int main() {
             G.matrix[y][z] = x;
             ++degree[x];
             ++degree[y];
-        }
 
-        /* 欧拉回路形成的条件之一，判断结点的度是否为偶数 */
-        bool flag = true;
-        for (int i = 1; i <= G.nv; i++) {
-            if (degree[i] & 1) {
-                flag = false;
-                break;
+            while ((cin >> x >> y) && x && y) {
+                cin >> z;
+                G.ne = max(G.ne, z);
+                G.nv = max(G.nv, max(x, y));
+                G.matrix[x][z] = y;
+                G.matrix[y][z] = x;
+                ++degree[x];
+                ++degree[y];
+            }
+            /* 欧拉回路形成的条件之一，判断结点的度是否为偶数 */
+            bool flag = true;
+            for (int i = 1; i <= G.nv; i++) {
+                if (degree[i] & 1) {
+                    flag = false;
+                    break;
+                }
+            }
+            if (!flag) {
+                cout << "Round trip does not exist." << endl;
+            } else {
+                euler(start);
+                stack_print(s);
             }
         }
-
-        if (!flag) {
-            cout << "Round trip does not exist." << endl;
-        } else {
-            euler(start);
-            stack_print(s);
-        }
+        return 0;
     }
-    return 0;
-}
 \end{Codex}
 
 
@@ -377,169 +337,158 @@ int main() {
 \subsection{The Necklace}
 
 【解题思路】
-My little sister had a beautiful necklace made of colorful beads. Two successive beads in the 
-necklace shared a common color at their meeting point. The figure below shows a segment of 
+My little sister had a beautiful necklace made of colorful beads. Two successive beads in the
+necklace shared a common color at their meeting point. The figure below shows a segment of
 the necklace:
- 
+
 \centerline{\fbox{\includegraphics[width=240pt]{uva10054.png}}}
- 
-But, alas! One day, the necklace was torn and the beads were all scattered over the floor. 
-My sister did her best to recollect all the beads from the floor, but she is not sure 
+
+But, alas! One day, the necklace was torn and the beads were all scattered over the floor.
+My sister did her best to recollect all the beads from the floor, but she is not sure
 whether she was able to collect all of them. Now, she has come to me for help. She wants
  to know whether it is possible to make a necklace using all the beads she has in the same
  way her original necklace was made and if so in which order the bids must be put.
- 
+
 Please help me write a program to solve the problem.
- 
+
 \subsubsection{Input}
 The input contains T test cases. The first line of the input contains the integer T.
- 
-The first line of each test case contains an integer $N(5 \leq N \leq 1000)$ giving the number of beads 
-my sister was able to collect. Each of the next N lines contains two integers describing 
+
+The first line of each test case contains an integer $N(5 \leq N \leq 1000)$ giving the number of beads
+my sister was able to collect. Each of the next N lines contains two integers describing
 the colors of a bead. Colors are represented by integers ranging from 1 to 50.
- 
+
 \subsubsection{Output}
-For each test case in the input first output the test case number as shown in the sample output. Then 
-if you apprehend that some beads may be lost just print the sentence ``some beads may be lost" on a 
-line by itself. Otherwise, print N lines with a single bead description on each line. Each bead 
-description consists of two integers giving the colors of its two ends. For $1 \leq i \leq N_1$, the second integer 
-on line i must be the same as the first integer on line i + 1. Additionally, the second integer 
+For each test case in the input first output the test case number as shown in the sample output. Then
+if you apprehend that some beads may be lost just print the sentence ``some beads may be lost" on a
+line by itself. Otherwise, print N lines with a single bead description on each line. Each bead
+description consists of two integers giving the colors of its two ends. For $1 \leq i \leq N_1$, the second integer
+on line i must be the same as the first integer on line i + 1. Additionally, the second integer
 on line N must be equal to the first integer on line 1. Since there are many solutions, any one
  of them is acceptable.
- 
+
 Print a blank line between two successive test cases.
- 
+
 \subsubsection{Sample Input}
 \begin{Code}
-2
-5
-1 2
-2 3
-3 4
-4 5
-5 6
-5
-2 1
-2 2
-3 4
-3 1
-2 4
+    2
+    5
+    1 2
+    2 3
+    3 4
+    4 5
+    5 6
+    5
+    2 1
+    2 2
+    3 4
+    3 1
+    2 4
 \end{Code}
- 
+
 \subsubsection{Sample Output}
 \begin{Code}
-Case #1
-some beads may be lost
- 
-Case #2
-2 1
-1 3
-3 4
-4 2
-2 2
+    Case #1
+    some beads may be lost
+
+    Case #2
+    2 1
+    1 3
+    3 4
+    4 2
+    2 2
 \end{Code}
- 
-\subsubsection{分析}
+
+【解题思路】
 欧拉回路。
- 
-注意顶点可以有自环。
 
-
-\subsubsection{代码}
+注意顶点可以有自环：
 \begin{Codex}[label=eulerian_circuit.c]
-#include <stdio.h>
-#include<string.h>
- 
-#define MAXN 51  // 顶点最大个数
- 
-int G[MAXN][MAXN];
-int visited_vertices[MAXN]; 
-int visited_edges[MAXN][MAXN];
-int count[MAXN]; // 顶点的度
- 
-void dfs(const int u) {  
-    int v;
-    visited_vertices[u] = 1;
-    for(v = 0;  v < MAXN; v++) if(G[u][v] && !visited_vertices[v]) {
-        dfs(v);
-    }
-}
- 
-/*
- * @brief 欧拉回路，允许自环和重复边
- * @param[in] u 起点
- * @return 无
- */
-void euler(const int u){
-    int v;
-    for(v = 0; v < MAXN; ++v) if(G[u][v]){
-        --G[u][v]; --G[v][u]; // 这个技巧，即有visited的功能，又允许重复边
-        euler(v);
-        // 逆向打印，或者存到栈里再打印
-        printf("%d %d\n", u, v);
-    }
-}
- 
-int main() {
-    int T, N, a, b;
-    int i;
-    int cases=1;
-    scanf("%d",&T);
-    while(T--) {
-        int flag = 1; // 结点的度是否为偶数
-        int flag2 = 1; // 图是否是连通的
-        
-        memset(G, 0, sizeof(G));
-        memset(count, 0, sizeof(count));
- 
-        scanf("%d",&N);
-        for(i = 0; i < N; ++i){
-            scanf("%d %d", &a, &b); 
-            ++G[a][b];
-            ++G[b][a];
-            ++count[a];
-            ++count[b];
+    #include <stdio.h>
+    #include<string.h>
+
+    #define MAXN 51  // 顶点最大个数
+    int G[MAXN][MAXN];
+    int visited_vertices[MAXN];
+    int visited_edges[MAXN][MAXN];
+    int count[MAXN]; // 顶点的度
+
+    void dfs(const int u) {
+        int v;
+        visited_vertices[u] = 1;
+        for(v = 0;  v < MAXN; v++) if(G[u][v] && !visited_vertices[v]) {
+            dfs(v);
         }
- 
-        printf("Case #%d\n", cases++);
- 
-        // 欧拉回路形成的条件之一，判断结点的度是否为偶数
-        for(i=0; i<MAXN; ++i) {
-            if(count[i] & 1){
-                flag = 0;
-                break;
+    }
+
+    // @brief 欧拉回路，允许自环和重复边
+    void euler(const int u){
+        int v;
+        for(v = 0; v < MAXN; ++v) if(G[u][v]){
+            --G[u][v]; --G[v][u]; // 这个技巧，即有visited的功能，又允许重复边
+            euler(v);
+            // 逆向打印，或者存到栈里再打印
+            printf("%d %d\n", u, v);
+        }
+    }
+
+    int main() {
+        int T, N, a, b;
+        int i;
+        int cases=1;
+        scanf("%d",&T);
+        while(T--) {
+            int flag = 1; // 结点的度是否为偶数
+            int flag2 = 1; // 图是否是连通的
+            memset(G, 0, sizeof(G));
+            memset(count, 0, sizeof(count));
+            scanf("%d",&N);
+            for(i = 0; i < N; ++i){
+                scanf("%d %d", &a, &b);
+                ++G[a][b];
+                ++G[b][a];
+                ++count[a];
+                ++count[b];
             }
-        }
-        // 检查图是否连通
-        if(flag) {
-            memset(visited_vertices, 0, sizeof(visited_vertices));
-            memset(visited_edges, 0, sizeof(visited_edges));
- 
-            for(i=0; i< MAXN; ++i) 
-                if(count[i]) { 
-                    dfs(i);
-                    break; 
-                }
-            for(i=0; i< MAXN; ++i){
-                if(count[i] && !visited_vertices[i]) {
-                    flag2 = 0; 
+
+            printf("Case #%d\n", cases++);
+
+            // 欧拉回路形成的条件之一，判断结点的度是否为偶数
+            for(i=0; i<MAXN; ++i) {
+                if(count[i] & 1){
+                    flag = 0;
                     break;
                 }
             }
-        }
-        if (flag && flag2) {
-            for(i = 0; i < MAXN; ++i) if(count[i]){
-                euler(i);
-                break;
+            // 检查图是否连通
+            if(flag) {
+                memset(visited_vertices, 0, sizeof(visited_vertices));
+                memset(visited_edges, 0, sizeof(visited_edges));
+                for(i=0; i< MAXN; ++i)
+                    if(count[i]) {
+                        dfs(i);
+                        break;
+                    }
+                for(i=0; i< MAXN; ++i){
+                    if(count[i] && !visited_vertices[i]) {
+                        flag2 = 0;
+                        break;
+                    }
+                }
             }
-        } else {
-            printf("some beads may be lost\n");
+            if (flag && flag2) {
+                for(i = 0; i < MAXN; ++i) if(count[i]){
+                    euler(i);
+                    break;
+                }
+            } else {
+                printf("some beads may be lost\n");
+            }
+
+            if(T > 0) printf("\n");
         }
- 
-        if(T > 0) printf("\n");
+        return 0;
     }
-    return 0;
-}
 \end{Codex}
 
 
@@ -560,7 +509,132 @@ int main() {
 
 \section{图的广搜} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+广度优先搜索算法（Breadth-First-Search BFS），BFS是从根节点开始，沿着树的宽度遍历树的节点。如果所有节点均被访问，则算法中止。广度优先搜索的实现一般采用open-closed表。
 
+【空间复杂度】
+
+因为所有节点都必须被储存，因此BFS的空间复杂度为 O(|V| + |E|)，其中 |V| 是节点的数目，而 |E| 是图中边的数目。注：另一种说法称BFS的空间复杂度为 O(BM)，其中 B 是最大分支系数，而 M 是树的最长路径长度。由于对空间的大量需求，因此BFS并不适合解非常大的问题。
+
+【时间复杂度】
+
+最差情形下，BFS必须寻找所有到可能节点的所有路径，因此其时间复杂度为 O(|V| + |E|)，其中 |V| 是节点的数目，而 |E| 是图中边的数目。
+
+【最佳解】
+
+若所有边的长度相等，广度优先搜索算法是最佳解——亦即它找到的第一个解，距离根节点的边数目一定最少；但对一般的图来说，BFS并不一定回传最佳解。这是因为当图形为加权图（亦即各边长度不同）时，BFS仍然回传从根节点开始，经过边数目最少的解；而这个解距离根节点的距离不一定最短。这个问题可以使用考虑各边权值，BFS的改良算法成本一致搜寻法（en:uniform-cost search）来解决。然而，若非加权图形，则所有边的长度相等，BFS就能找到最近的最佳解。
+
+【广度优先搜索算法的应用】
+
+\begin{itemize}
+  \item 寻找图中所有连接元件（Connected Component）。一个连接元件是图中的最大相连子图。
+  \item 寻找连接元件中的所有节点。
+  \item 寻找非加权图中任两点的最短路径。
+  \item 测试一图是否为二分图。
+  \item (Reverse) Cuthill–McKee算法
+\end{itemize}
+
+\begin{Codex}
+    //BFS on 邻接矩阵
+    typedef char VertexType; /* 顶点类型应由用户定义 */
+    typedef int EdgeType; /* 边上的权值类型应由用户定义 */
+
+    #define MAXSIZE 9 /* 存储空间初始分配量 */
+    #define MAXEDGE 15
+    #define MAXVEX 9
+
+    typedef struct{
+        VertexType vexs[MAXVEX]; /* 顶点表 */
+        EdgeType arc[MAXVEX][MAXVEX];/* 邻接矩阵，可看作边表 */
+        int numVertexes, numEdges; /* 图中当前的顶点数和边数 */
+    } MGraph;
+
+    /* 邻接矩阵的广度遍历算法 */
+    void BFSTraverse(MGraph G){
+        int i, j;
+        Queue Q;
+        for (i = 0; i < G.numVertexes; i++)
+            visited[i] = false;
+        InitQueue(&Q);/* 初始化一辅助用的队列 */
+
+        for (i = 0; i < G.numVertexes; i++){/* 对每一个顶点做循环 */
+            if (!visited[i]){/* 若是未访问过就处理 */
+                visited[i] = true;/* 设置当前顶点访问过 */
+                cout << G.vexs[i] << ' '; /* 打印顶点，也可以其它操作 */
+                EnQueue(&Q, i);/* 将此顶点入队列 */
+                while (!QueueEmpty(Q)){/* 若当前队列不为空 */
+                    DeQueue(&Q, &i);/* 将队对元素出队列，赋值给i */
+                    for (j = 0 ; j < G.numVertexes; j++){
+                        /* 判断其它顶点若与当前顶点存在边且未访问过  */
+                        if (G.arc[i][j] == 1 && !visited[j]){
+                            visited[j] = true;/* 将找到的此顶点标记为已访问 */
+                            cout << G.vexs[j] << ' '; /* 打印顶点 */
+                            EnQueue(&Q, j);/* 将找到的此顶点入队列  */
+                        }
+                    }
+                }
+            }
+        }
+    }
+\end{Codex}
+
+\begin{Codex}
+    //BFS on 邻接表
+    typedef char VertexType; /* 顶点类型应由用户定义 */
+    typedef int EdgeType; /* 边上的权值类型应由用户定义 */
+
+    #define MAXSIZE 9 /* 存储空间初始分配量 */
+    #define MAXEDGE 15
+    #define MAXVEX 9
+
+    /* 邻接表结构****************** */
+    typedef struct EdgeNode{ /* 边表结点 */
+        int adjvex;    /* 邻接点域,存储该顶点对应的下标 */
+        int weight;     /* 用于存储权值,对于非网图可以不需要 */
+        struct EdgeNode *next; /* 链域,指向下一个邻接点 */
+    } EdgeNode;
+
+    typedef struct VertexNode{ /* 顶点表结点 */
+        int in; //结点入度
+        char data; /* 顶点域,存储顶点信息 */
+        EdgeNode *firstedge;/* 边表头指针 */
+    } VertexNode, AdjList[MAXVEX];
+
+    typedef struct{
+        AdjList adjList;
+        int numVertexes, numEdges; /* 图中当前顶点数和边数 */
+    } graphAdjList, *GraphAdjList;
+
+    /* 邻接表的广度遍历算法 */
+    void BFSTraverse(GraphAdjList GL){
+        int i, j;
+        EdgeNode *p;
+        Queue Q;
+        for (i = 0; i < GL->numVertexes; i++)
+            visited[i] = false;
+        InitQueue(&Q);/* 初始化一辅助用的队列 */
+
+        for (i = 0; i < GL->numVertexes; i++){/* 对每一个顶点做循环 */
+            if (!visited[i]){/* 若是未访问过就处理 */
+                visited[i] = true;/* 设置当前顶点访问过 */
+                cout << GL->adjList[i].data << ' '; /* 打印顶点，也可以其它操作 */
+                EnQueue(&Q, i);/* 将此顶点入队列 */
+                while (!QueueEmpty(Q)){/* 若当前队列不为空 */
+                    DeQueue(&Q, &i);/* 将队对元素出队列，赋值给i */
+                    p = GL->adjList[i].firstedge;/* 找到当前顶点的边表链表头指针 */
+                    while (p){
+                        /* 判断其它顶点若与当前顶点存在边且未访问过  */
+                        if (!visited[p->adjvex]){
+                            visited[p->adjvex] = true;/* 将找到的此顶点标记为已访问 */
+                            cout << GL->adjList[p->adjvex].data << ' '; /* 打印顶点 */
+                            EnQueue(&Q, p->adjvex);/* 将找到的此顶点入队列  */
+                        }
+                        p  = p->next;/* 指针指向下一个邻接点 */
+                    }
+                }
+            }
+        }
+    }
+\end{Codex}
 
 \section{最小生成树} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 “最小”指的是边的权值之和最小。
@@ -610,157 +684,142 @@ lowcost & 0 & 0 & 0 & 0 & 0 & & & \\
 \end{tabular}
 \end{center}
 
-
-\subsubsection{代码}
-
 \begin{Codex}[label=am_graph_prim1.cpp]
-#include <iostream>
-#include <climits>  /* for INT_MAX */
+    #include <iostream>
+    #include <climits>  /* for INT_MAX */
 
-using namespace std;
+    using namespace std;
 
-/** 顶点数最大值. */
-const int MAX_NV = 100;
+    /** 顶点数最大值. */
+    const int MAX_NV = 100;
 
-/** 边的权值类型，可以为int, float, double. */
-typedef int graph_weight_t;
-const graph_weight_t GRAPH_INF = INT_MAX;
+    /** 边的权值类型，可以为int, float, double. */
+    typedef int graph_weight_t;
+    const graph_weight_t GRAPH_INF = INT_MAX;
 
-/**
- * @struct 图，用邻接矩阵(Adjacency Matrix).
- */
-struct graph_t {
-    int nv; // 顶点数
-    int ne; // 边数
-    // 邻接矩阵，存放边的信息，如权重等
-    graph_weight_t matrix[MAX_NV][MAX_NV];
-};
+    /**
+     * @struct 图，用邻接矩阵(Adjacency Matrix).
+     */
+    struct graph_t {
+        int nv; // 顶点数
+        int ne; // 边数
+        // 邻接矩阵，存放边的信息，如权重等
+        graph_weight_t matrix[MAX_NV][MAX_NV];
+    };
 
-graph_t g;
+    graph_t g;
 
-struct closedge_t {
-    int adjvex; /* 弧头，属于U */
-    /* 边 adjvex->本下标 的权值，-GRAPH_INF表示已经加入U */
-    graph_weight_t lowcost;
-};
+    struct closedge_t {
+        int adjvex; /* 弧头，属于U */
+        /* 边 adjvex->本下标 的权值，-GRAPH_INF表示已经加入U */
+        graph_weight_t lowcost;
+    };
 
-/*
- * @brief 在V-E集合中寻找最小的边
- * @param[in] closedge MST中的边，起点为adjvex，终点为本下标
- * @param[in] n closedge数组的长度
- * @return 找到了则返回弧尾的下标，V-U为空集则返回-1，表示终止
- */
-static int min_element(const closedge_t closedge[], int n) {
-    int min_value = GRAPH_INF;
-    int min_pos = -1;
-    for (int i = 0; i < n; i++)
-        if (closedge[i].lowcost > -GRAPH_INF) {
-            if (min_value > closedge[i].lowcost) {
-                min_value = closedge[i].lowcost;
-                min_pos = i;
+    static int min_element(const closedge_t closedge[], int n) {
+        int min_value = GRAPH_INF;
+        int min_pos = -1;
+        for (int i = 0; i < n; i++)
+            if (closedge[i].lowcost > -GRAPH_INF) {
+                if (min_value > closedge[i].lowcost) {
+                    min_value = closedge[i].lowcost;
+                    min_pos = i;
+                }
+            }
+        return min_pos;
+    }
+
+    //@brief Prim算法，求图的最小生成树.
+    graph_weight_t prim(const graph_t &g) {
+        graph_weight_t sum = 0; /* 权值之和 */
+        int u = 0; /* 从0号顶点出发 */
+        const int n = g.nv;
+        /* closedge[n]，记录从顶点集U到V-U的边*/
+        closedge_t* const closedge = new closedge_t[n];
+
+        /* 辅助数组初始化*/
+        for (int i = 0; i < n; i++) if (i != u) {
+            closedge[i].adjvex = u;
+            closedge[i].lowcost = g.matrix[u][i];
+        }
+        closedge[u].lowcost = -GRAPH_INF; /* 初始, U={u} */
+
+        for (int i = 0; i < n; i++) if (i != u) { /* 其余的n-1个顶点*/
+            /* 求出TE的下一个顶点k */
+            const int k = min_element(closedge, n);
+            /* 输出此边 closedge[k].adjvex --> k */
+            cout << (char)('A' + closedge[k].adjvex) << " - " << (char)('A' + k)
+                    << " : "<< g.matrix[closedge[k].adjvex][k] << endl;
+            sum += g.matrix[closedge[k].adjvex][k];
+            // sum += closedge[k].lowcost;  // 等价
+            closedge[k].lowcost = -GRAPH_INF;  /* 顶点k并入U，表示此边加入TE */
+            /* 更新k的邻接点的值，不相邻为无穷大*/
+            for (int j = 0; j < n; j++) {
+                const graph_weight_t w = g.matrix[k][j];
+                if (w < closedge[j].lowcost) {
+                    closedge[j].adjvex = k;
+                    closedge[j].lowcost = w;
+                }
             }
         }
-    return min_pos;
-}
-
-/**
- * @brief Prim算法，求图的最小生成树.
- * @param[in] g 图对象的指针
- * @return MST的边的权值之和
- */
-graph_weight_t prim(const graph_t &g) {
-    graph_weight_t sum = 0; /* 权值之和 */
-    int u = 0; /* 从0号顶点出发 */
-    const int n = g.nv;
-    /* closedge[n]，记录从顶点集U到V-U的边*/
-    closedge_t* const closedge = new closedge_t[n];
-
-    /* 辅助数组初始化*/
-    for (int i = 0; i < n; i++) if (i != u) {
-        closedge[i].adjvex = u;
-        closedge[i].lowcost = g.matrix[u][i];
+        delete[] closedge;
+        return sum;
     }
-    closedge[u].lowcost = -GRAPH_INF; /* 初始, U={u} */
 
-    for (int i = 0; i < n; i++) if (i != u) { /* 其余的n-1个顶点*/
-        /* 求出TE的下一个顶点k */
-        const int k = min_element(closedge, n);
-        /* 输出此边 closedge[k].adjvex --> k */
-        cout << (char)('A' + closedge[k].adjvex) << " - " << (char)('A' + k)
-                << " : "<< g.matrix[closedge[k].adjvex][k] << endl;
-        sum += g.matrix[closedge[k].adjvex][k];
-        // sum += closedge[k].lowcost;  // 等价
-        closedge[k].lowcost = -GRAPH_INF;  /* 顶点k并入U，表示此边加入TE */
-        /* 更新k的邻接点的值，不相邻为无穷大*/
-        for (int j = 0; j < n; j++) {
-            const graph_weight_t w = g.matrix[k][j];
-            if (w < closedge[j].lowcost) {
-                closedge[j].adjvex = k;
-                closedge[j].lowcost = w;
+    /** 读取输入，构建图. */
+    void read_graph() {
+        int m, n;
+
+        /* 读取节点和边的数目 */
+        cin >> m >> n;
+        g.nv = m;
+        g.ne = n;
+
+        /* 初始化图，所有节点间距离为无穷大 */
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < m; j++) {
+                g.matrix[i][j] = GRAPH_INF;
             }
         }
-    }
-    delete[] closedge;
-    return sum;
-}
 
-/** 读取输入，构建图. */
-void read_graph() {
-    int m, n;
-
-    /* 读取节点和边的数目 */
-    cin >> m >> n;
-    g.nv = m;
-    g.ne = n;
-
-    /* 初始化图，所有节点间距离为无穷大 */
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < m; j++) {
-            g.matrix[i][j] = GRAPH_INF;
+        /* 读取边信息 */
+        for (int k = 0; k < n; k++) {
+            char chx, chy;
+            int w;
+            cin >> chx >> chy >> w;
+            const int i = chx - 'A';
+            const int j = chy - 'A';
+            g.matrix[i][j] = w;
+            g.matrix[j][i] = w;
         }
     }
-
-    /* 读取边信息 */
-    for (int k = 0; k < n; k++) {
-        char chx, chy;
-        int w;
-        cin >> chx >> chy >> w;
-        const int i = chx - 'A';
-        const int j = chy - 'A';
-        g.matrix[i][j] = w;
-        g.matrix[j][i] = w;
+    int main() {
+        read_graph();
+        cout << "Total : " << prim(g) << endl;
+        return 0;
     }
-}
 
-/* test
-输入数据:
-7 11
-A B 7
-A D 5
-B C 8
-B D 9
-B E 7
-C E 5
-D E 15
-D F 6
-E F 8
-E G 9
-F G 11
+    输入数据:
+        7 11
+        A B 7
+        A D 5
+        B C 8
+        B D 9
+        B E 7
+        C E 5
+        D E 15
+        D F 6
+        E F 8
+        E G 9
+        F G 11
 
-输出:
-A - D : 5
-D - F : 6
-A - B : 7
-B - E : 7
-E - C : 5
-E - G : 9
-Total:39
-*/
-int main() {
-    read_graph();
-    cout << "Total : " << prim(g) << endl;
-    return 0;
-}
+    输出:
+        A - D : 5
+        D - F : 6
+        A - B : 7
+        B - E : 7
+        E - C : 5
+        E - G : 9
+        Total:39
 \end{Codex}
 
 
@@ -770,88 +829,75 @@ int main() {
 Prim算法的另一种实现是使用小根堆，其流程是：小根堆中存储一个端点在生成树中，另一个端点不在生成树的边，每次从小根堆的堆顶可选出权值最小的边$(u, v)$，将其从堆中推出，加入生成树中。然后将新出现的所有一个端点在生成树中，一个端点不在生成树的边都插入小根堆中。下一轮迭代中，下一条满足要求的边又上升到堆顶。如此重复$n-1$次，最后建立起该图的最小生成树。该算法的C代码实现如下。
 
 
-\subsubsection{代码}
+
 
 \begin{Codex}[label=am_graph_prim2.cpp]
-#include <iostream>
-#include <climits>  /* for INT_MAX */
-#include <queue>
-#include <algorithm>
+    #include <iostream>
+    #include <climits>  /* for INT_MAX */
+    #include <queue>
+    #include <algorithm>
 
-using namespace std;
+    using namespace std;
 
-/** 顶点数最大值. */
-const int MAX_NV = 100;
+    /** 顶点数最大值. */
+    const int MAX_NV = 100;
 
-/** 边的权值类型，可以为int, float, double. */
-typedef int graph_weight_t;
-const graph_weight_t GRAPH_INF = INT_MAX;
+    /** 边的权值类型，可以为int, float, double. */
+    typedef int graph_weight_t;
+    const graph_weight_t GRAPH_INF = INT_MAX;
 
-/**
- * @struct 图，用邻接矩阵(Adjacency Matrix).
- */
-struct graph_t {
-    int nv; // 顶点数
-    int ne; // 边数
-    // 邻接矩阵，存放边的信息，如权重等
-    graph_weight_t matrix[MAX_NV][MAX_NV];
-};
+    struct graph_t {
+        int nv; // 顶点数
+        int ne; // 边数
+        // 邻接矩阵，存放边的信息，如权重等
+        graph_weight_t matrix[MAX_NV][MAX_NV];
+    };
 
-graph_t g;
+    graph_t g;
 
-/**
- * @struct 边
- */
-struct edge_t{
-    int u;  // from
-    int v;  // to
-    graph_weight_t w;  // 权值
+    struct edge_t{
+        int u;  // from
+        int v;  // to
+        graph_weight_t w;  // 权值
 
-    bool operator>(const edge_t &other) const {
-        return w > other.w;
-    }
-};
-
-/**
-  * @brief Prim算法，求图的最小生成树.
-  * @param[in] g 图对象的指针
-  * @return MST的边的权值之和
-  */
-int prim(const graph_t &g){
-    graph_weight_t sum = 0; // 权值之和
-    priority_queue<edge_t, vector<edge_t>, greater<edge_t> > q;
-    const int n = g.nv;
-    bool* used = new bool[n];  // 判断顶点是否已经加入最小生成树
-    std::fill(used, used + n, false);
-
-    int count = 1;  // MLE 当前的边数
-    int u = 0;      // 从0号顶点出发
-    used[u] = true;    // 开始顶点加入U(所以count初始为1)
-    while (count < n) {
-        for(int v = 0; v < n; v++) if(!used[v]) { // 若v不在生成树，(u,v)加入堆
-            edge_t e = {u, v, g.matrix[u][v]};
-            q.push(e);
+        bool operator>(const edge_t &other) const {
+            return w > other.w;
         }
-        while(!q.empty() && count < n) {
-            const edge_t e = q.top(); q.pop();  // 从堆中退出最小权值边，存入 e
-            if(!used[e.v]) {
-                // 输出生成树TE的边，即此边加入TE
-                cout << (char)('A' + e.u) << " - " << (char)('A' + e.v) <<
-                        " : " << g.matrix[e.u][e.v] << endl;
-                sum += g.matrix[e.u][e.v];
-                u = e.v;
-                used[u] = true; // u并入到生成树的顶点集合U
-                count++;
-                break;
+    };
+
+    //@brief Prim算法，求图的最小生成树.
+    int prim(const graph_t &g){
+        graph_weight_t sum = 0; // 权值之和
+        priority_queue<edge_t, vector<edge_t>, greater<edge_t> > q;
+        const int n = g.nv;
+        bool* used = new bool[n];  // 判断顶点是否已经加入最小生成树
+        std::fill(used, used + n, false);
+
+        int count = 1;  // MLE 当前的边数
+        int u = 0;      // 从0号顶点出发
+        used[u] = true;    // 开始顶点加入U(所以count初始为1)
+        while (count < n) {
+            for(int v = 0; v < n; v++) if(!used[v]) { // 若v不在生成树，(u,v)加入堆
+                edge_t e = {u, v, g.matrix[u][v]};
+                q.push(e);
+            }
+            while(!q.empty() && count < n) {
+                const edge_t e = q.top(); q.pop();  // 从堆中退出最小权值边，存入 e
+                if(!used[e.v]) {
+                    // 输出生成树TE的边，即此边加入TE
+                    cout << (char)('A' + e.u) << " - " << (char)('A' + e.v) <<
+                            " : " << g.matrix[e.u][e.v] << endl;
+                    sum += g.matrix[e.u][e.v];
+                    u = e.v;
+                    used[u] = true; // u并入到生成树的顶点集合U
+                    count++;
+                    break;
+                }
             }
         }
+        delete[] used;
+        return sum;
     }
-
-    delete[] used;
-    return sum;
-}
-
-// ...
 \end{Codex}
 
 \subsubsection{算法分析}
@@ -869,150 +915,138 @@ int prim(const graph_t &g){
 \figcaption{Kruskal算法构造最小生成树的过程}\label{fig:kruskal}
 \end{center}
 
-下面是Kruskal算法的C语言实现。
-
-\subsubsection{代码}
+下面是Kruskal算法的C语言实现：
 
 \begin{Codex}[label=kruskal.cpp]
-#include <iostream>
-#include <climits>  /* for INT_MAX */
-#include <queue>
-#include <algorithm>
+    #include <iostream>
+    #include <climits>  /* for INT_MAX */
+    #include <queue>
+    #include <algorithm>
 
-using namespace std;
+    using namespace std;
 
-/* 等价于复制粘贴，这里为了节约篇幅，使用include，在OJ上提交时请用复制粘贴 */
-#include "ufs.c"  /* 见“树->并查集”这节 */
+    /* 等价于复制粘贴，这里为了节约篇幅，使用include，在OJ上提交时请用复制粘贴 */
+    #include "ufs.c"  /* 见“树->并查集”这节 */
 
-const int MAX_NV = 11; /* 顶点数最大值 */
-const int MAX_NE = 100;  /* 最大边数 */
-/** 边的权值类型. */
-typedef int graph_weight_t;
+    const int MAX_NV = 11; /* 顶点数最大值 */
+    const int MAX_NE = 100;  /* 最大边数 */
+    /** 边的权值类型. */
+    typedef int graph_weight_t;
 
-/** 图的边. */
-struct edge_t{
-    int u;  /** 顶点编号 */
-    int v;  /** 顶点编号 */
-    graph_weight_t w;  /** 权值 */
+    /** 图的边. */
+    struct edge_t{
+        int u;  /** 顶点编号 */
+        int v;  /** 顶点编号 */
+        graph_weight_t w;  /** 权值 */
 
-    bool operator>(const edge_t &other) const {
-        return w > other.w;
-    }
-};
-
-edge_t edges[MAX_NE];
-
-
-/*
-  * @brief Kruskal算法，堆+并查集.
-  * @param[in] edges 边的数组
-  * @param[in] n 边数，一定要大于或等于(顶点数-1)
-  * @param[in] m 顶点数
-  * @return MST的边的权值之和
-  */
-graph_weight_t kruskal(const edge_t edges[], int n, int m) {
-    graph_weight_t sum = 0;
-    priority_queue<edge_t, vector<edge_t>,
-                                greater<edge_t> > q;
-    ufs_t *s = ufs_create(MAX_NV);
-    if (n < m - 1) return -1;
-
-    /* 把所有边插入堆中*/
-    for (int i = 0; i < n; i++) {
-        q.push(edges[i]);
-    }
-
-    for (int i = 0; i < n; i++) {
-        /* 从堆中退出最小权值边 */
-        const edge_t e = q.top(); q.pop();
-        /* 取两顶点所在集合的根*/
-        const int u = ufs_find(s, e.u);
-        const int v = ufs_find(s, e.v);
-        if (u != v) { /* 不是同一集合，说明不连通*/
-            ufs_union(s, u, v); /* 合并，连通成一个分量*/
-            /* 输出生成树TE的边，即此边加入TE */
-            cout << (char)('A' + e.u) << " - " << (char)('A' + e.v) << endl;
-            sum += e.w;
+        bool operator>(const edge_t &other) const {
+            return w > other.w;
         }
-    }
+    };
 
-    ufs_destroy(s);
-    return sum;
-}
+    edge_t edges[MAX_NE];
+    //@brief Kruskal算法，堆+并查集.
+    graph_weight_t kruskal(const edge_t edges[], int n, int m) {
+        graph_weight_t sum = 0;
+        priority_queue<edge_t, vector<edge_t>,
+                                    greater<edge_t> > q;
+        ufs_t *s = ufs_create(MAX_NV);
+        if (n < m - 1) return -1;
 
-bool operator<(const edge_t &e1, const edge_t &e2) {
-    return e1.w < e2.w;
-}
-
-/** Kruskal算法，快排+并查集. */
-graph_weight_t kruskal1(edge_t edges[], int n, int m) {
-    graph_weight_t sum = 0;
-    ufs_t *s = ufs_create(MAX_NV);  /* 并查集，0位置未用  */
-    if (n < m - 1) return -1;
-
-    std::sort(edges, edges + n);
-
-    for (int i = 0; i < n; i++) {
-        /* 从堆中退出最小权值边，存入ed */
-        const edge_t e = edges[i];
-        /* 取两顶点所在集合的根*/
-        const int u = ufs_find(s, e.u);
-        const int v = ufs_find(s, e.v);
-        if (u != v) { /* 不是同一集合，说明不连通*/
-            ufs_union(s, u, v); /* 合并，连通成一个分量*/
-            /* 输出生成树TE的边，即此边加入TE */
-            cout << (char)('A' + e.u) << " - " << (char)('A' + e.v) << endl;
-            sum += e.w;
+        /* 把所有边插入堆中*/
+        for (int i = 0; i < n; i++) {
+            q.push(edges[i]);
         }
-    }
-    ufs_destroy(s);
-    return sum;
-}
 
-/* test
-输入数据:
-7 11
-A B 7
-A D 5
-B C 8
-B D 9
-B E 7
-C E 5
-D E 15
-D F 6
-E F 8
-E G 9
-F G 11
+        for (int i = 0; i < n; i++) {
+            /* 从堆中退出最小权值边 */
+            const edge_t e = q.top(); q.pop();
+            /* 取两顶点所在集合的根*/
+            const int u = ufs_find(s, e.u);
+            const int v = ufs_find(s, e.v);
+            if (u != v) { /* 不是同一集合，说明不连通*/
+                ufs_union(s, u, v); /* 合并，连通成一个分量*/
+                /* 输出生成树TE的边，即此边加入TE */
+                cout << (char)('A' + e.u) << " - " << (char)('A' + e.v) << endl;
+                sum += e.w;
+            }
+        }
 
-输出:
-A - D
-C - E
-D - F
-B - E
-A - B
-E - G
-Total : 39
-*/
-int main() {
-    int m, n;
-    /* 读取顶点数，边数目*/
-    cin >> m >> n;
-
-    /* 读取边信息 */
-    for (int i = 0; i < n; i++) {
-        char chx, chy;
-        int w;
-        cin >> chx >> chy >> w;
-
-        edges[i].u = chx - 'A';
-        edges[i].v = chy - 'A';
-        edges[i].w = w;
+        ufs_destroy(s);
+        return sum;
     }
 
-    /* 求解最小生成树 */
-    cout << "Total : " << kruskal(edges, n, m) << endl;
-    return 0;
-}
+    bool operator<(const edge_t &e1, const edge_t &e2) {
+        return e1.w < e2.w;
+    }
+
+    /** Kruskal算法，快排+并查集. */
+    graph_weight_t kruskal1(edge_t edges[], int n, int m) {
+        graph_weight_t sum = 0;
+        ufs_t *s = ufs_create(MAX_NV);  /* 并查集，0位置未用  */
+        if (n < m - 1) return -1;
+
+        std::sort(edges, edges + n);
+
+        for (int i = 0; i < n; i++) {
+            /* 从堆中退出最小权值边，存入ed */
+            const edge_t e = edges[i];
+            /* 取两顶点所在集合的根*/
+            const int u = ufs_find(s, e.u);
+            const int v = ufs_find(s, e.v);
+            if (u != v) { /* 不是同一集合，说明不连通*/
+                ufs_union(s, u, v); /* 合并，连通成一个分量*/
+                /* 输出生成树TE的边，即此边加入TE */
+                cout << (char)('A' + e.u) << " - " << (char)('A' + e.v) << endl;
+                sum += e.w;
+            }
+        }
+        ufs_destroy(s);
+        return sum;
+    }
+    int main() {
+        int m, n;
+        /* 读取顶点数，边数目*/
+        cin >> m >> n;
+
+        /* 读取边信息 */
+        for (int i = 0; i < n; i++) {
+            char chx, chy;
+            int w;
+            cin >> chx >> chy >> w;
+
+            edges[i].u = chx - 'A';
+            edges[i].v = chy - 'A';
+            edges[i].w = w;
+        }
+
+        /* 求解最小生成树 */
+        cout << "Total : " << kruskal(edges, n, m) << endl;
+        return 0;
+    }
+
+    输入数据:
+        7 11
+        A B 7
+        A D 5
+        B C 8
+        B D 9
+        B E 7
+        C E 5
+        D E 15
+        D F 6
+        E F 8
+        E G 9
+        F G 11
+
+    输出:
+        A - D
+        C - E
+        D - F
+        B - E
+        A - B
+        E - G
+        Total : 39
 \end{Codex}
 
 \subsubsection{算法分析}
@@ -1029,46 +1063,46 @@ Flatopia的城镇从1到$N$编号，城镇i的位置由笛卡尔坐标$(x_i,y_i)
 
 Flatopia政府希望能最小化建造高速公路的代价。由于Flatopia地势平坦，一条高速公路的代价正比于它的长度。因此，应该让高速公路的总长度最小。
 
-\subsubsection{输入}
+【输入】
 输入由两部分组成。第一部分描述所有的城镇，第二部分描述所有已经建造好的高速公路。
 
 第一行包含一个整数$N(1 \leq N \leq 750)$，表示城镇的数目。接下来的$N$行每行包含一对整数，$x_i$和$y_i$，由空格隔开，表示第$i$个城镇的坐标。坐标的绝对值不会超过10000。每个城镇的坐标都不重叠。
 
 接下来一行包含一个整数$M(0 \leq M \leq 1000)$，表示已经存在的高速公路的数目。接下来的$M$行每行包含一对整数，给出了一对城镇编号，表示这两个城镇被一条高速公路连接起来。每两个城镇之间最多被一条高速公路连接。
 
-\subsubsection{输出}
+【输出】
 输出所有需要新建的高速公路。每行一个高速公路，用一对城镇编号表示。
 
 如果不需要新建高速公路，输出为空。
 
-\subsubsection{样例输入}
+【样例输入】
 \begin{Code}
-9
-1 5
-0 0 
-3 2
-4 5
-5 1
-0 4
-5 2
-1 2
-5 3
-3
-1 3
-9 7
-1 2
+    9
+    1 5
+    0 0
+    3 2
+    4 5
+    5 1
+    0 4
+    5 2
+    1 2
+    5 3
+    3
+    1 3
+    9 7
+    1 2
 \end{Code}
 
-\subsubsection{样例输出}
+【样例输出】
 \begin{Code}
-1 6
-3 7
-4 9
-5 7
-8 3
+    1 6
+    3 7
+    4 9
+    5 7
+    8 3
 \end{Code}
 
-\subsubsection{分析}
+【解题思路】
 很明显，最小生成树。
 
 题中的网络是一个完全图，任意两个城镇之间都有边，权值是两点间的距离。因此Prim算法比Kruskal算法效率更高。
@@ -1077,65 +1111,54 @@ Flatopia政府希望能最小化建造高速公路的代价。由于Flatopia地�
 
 因为题目只需要输出新建的高速公路的两个端点，不需要输出最小生成树的长度，所以计算距离的时候不用sqrt，也就不用double了。
 
-\subsubsection{代码}
+
 \begin{Codex}[label=highways.cpp]
-// POJ 1751 Highways, http://poj.org/problem?id=1751
+    // POJ 1751 Highways, http://poj.org/problem?id=1751
+    // 等价于复制粘贴，这里为了节约篇幅，使用include，在OJ上提交时请用复制粘贴
+    #include "am_graph_prim1.cpp"  // 见“图->最小生成树->Prim算法”这节
 
-// 等价于复制粘贴，这里为了节约篇幅，使用include，在OJ上提交时请用复制粘贴
-#include "am_graph_prim1.cpp"  // 见“图->最小生成树->Prim算法”这节
+    // 1. 修改范围
+    const int MAX_NV = 750;
+    // 2. 重写 read_graph()
+    // 3. 重写 main()
+    // 4. 修改 mgraph_prim()里的printf，权值大于0才打印出来
+    if (g.matrix[closedge[k].adjvex][k] > 0)
+        cout << closedge[k].adjvex+1 << " " << k+1 << endl;
 
-// 1. 修改范围
-const int MAX_NV = 750;
-// 2. 重写 read_graph()
-// 3. 重写 main()
-// 4. 修改 mgraph_prim()里的printf，权值大于0才打印出来
-if (g.matrix[closedge[k].adjvex][k] > 0)
-    cout << closedge[k].adjvex+1 << " " << k+1 << endl;
+    // 输入数据
+    int n, m, x[MAX_NV], y[MAX_NV];
 
-// 输入数据 
-int n, m, x[MAX_NV], y[MAX_NV];
-
-/*
- * @brief 两点之间的距离.
- *
- * 因为题目只需要输出新建的高速公路的两个端点，不需要输出最小生成
- * 树的长度，能比较大小即可，所以用距离的平方，简化计算。
- *
- * @param[in] i 编号为i+1的城镇
- * @param[in] j 编号为j+1的城镇
- *
- * @return 欧氏距离的平方
- */
-static int distance(int i,int j) {
-    return (x[i]-x[j]) * (x[i]-x[j]) + (y[i]-y[j]) * (y[i]-y[j]);
-}
-
-/** 读取输入，构建图. */
-void read_graph() {
-    int i, j;
-    cin >> n;
-    g.nv = n;
-    g.ne = n * (n - 1) / 2;
-
-    for (i = 0; i < n; i++)
-        cin >> x[i] >> y[i];
-    for (i = 0; i < n; i++)
-        for (j = i; j < n; j++)
-            g.matrix[i][j] = g.matrix[j][i] = distance(i, j);
-
-    cin >> m;
-    for (i = 0; i < m; i++) {
-        int a, b;
-        cin >> a >> b;
-        g.matrix[a - 1][b - 1] = g.matrix[b - 1][a - 1] = 0;
+    // 两点之间的距离.
+    static int distance(int i,int j) {
+        return (x[i]-x[j]) * (x[i]-x[j]) + (y[i]-y[j]) * (y[i]-y[j]);
     }
-}
 
-int main() {
-    read_graph();
-    prim(g);
-    return 0;
-}
+    /** 读取输入，构建图. */
+    void read_graph() {
+        int i, j;
+        cin >> n;
+        g.nv = n;
+        g.ne = n * (n - 1) / 2;
+
+        for (i = 0; i < n; i++)
+            cin >> x[i] >> y[i];
+        for (i = 0; i < n; i++)
+            for (j = i; j < n; j++)
+                g.matrix[i][j] = g.matrix[j][i] = distance(i, j);
+
+        cin >> m;
+        for (i = 0; i < m; i++) {
+            int a, b;
+            cin >> a >> b;
+            g.matrix[a - 1][b - 1] = g.matrix[b - 1][a - 1] = 0;
+        }
+    }
+
+    int main() {
+        read_graph();
+        prim(g);
+        return 0;
+    }
 \end{Codex}
 
 \subsubsection{相关的题目}
@@ -1165,41 +1188,40 @@ int main() {
 
 为了使得任意两台计算机之间都是连通的（不管是直接还是间接的），需要在若干台计算机之间用网线直接连接，现在想使得总的连接费用最省，让你编程计算这个最小的费用。
 
-\subsubsection{输入}
+【输入】
 输入第一行为两个整数$n,m(2 \leq n \leq 100000,2\leq m \leq 100000)$，表示计算机总数，和可以互相建立连接的连接个数。接下来$m$行，每行三个整数$a,b,c$ 表示在机器$a$和机器$b$之间建立连接的话费是$c$。(题目保证一定存在可行的连通方案, 数据中可能存在权值不一样的重边，但是保证没有自环)
 
-\subsubsection{输出}
+【输出】
 输出只有一行一个整数，表示最省的总连接费用。
 
-\subsubsection{样例输入}
+【样例输入】
 \begin{Code}
-3 3
-1 2 1
-1 3 2
-2 3 1
+    3 3
+    1 2 1
+    1 3 2
+    2 3 1
 \end{Code}
 
-\subsubsection{样例输出}
+【样例输出】
 \begin{Code}
-2
+    2
 \end{Code}
 
-\subsubsection{分析}
+【解题思路】
 本题是非常直白的kruskal算法，可以直接使用第 \S \ref{sec:kruskal}节的样例代码。
 
-\subsubsection{代码}
 \begin{Codex}[label=wiring.c]
-// wikioi 1231 最优布线问题, http://www.wikioi.com/problem/1231/
-// 1. 修改范围
-const int MAX_NV = 100001; // 顶点数最大值
-const int MAX_NE = 100000;  // 最大边数
-// 2. 注释掉 kruskal()里的printf()
-// 3. sum 类型改为 long long，kruskal()返回值改为 long long
-// 4. main()里的printf改为 %lld
-// 5. main()里输入边时，顶点由字母改为整数
+    // wikioi 1231 最优布线问题, http://www.wikioi.com/problem/1231/
+    // 1. 修改范围
+    const int MAX_NV = 100001; // 顶点数最大值
+    const int MAX_NE = 100000;  // 最大边数
+    // 2. 注释掉 kruskal()里的printf()
+    // 3. sum 类型改为 long long，kruskal()返回值改为 long long
+    // 4. main()里的printf改为 %lld
+    // 5. main()里输入边时，顶点由字母改为整数
 
-// 等价于复制粘贴，这里为了节约篇幅，使用include，在OJ上提交时请用复制粘贴
-#include "kruskal.cpp"  // 见“图->最小生成树->Kruskal算法”这节
+    // 等价于复制粘贴，这里为了节约篇幅，使用include，在OJ上提交时请用复制粘贴
+    #include "kruskal.cpp"  // 见“图->最小生成树->Kruskal算法”这节
 \end{Codex}
 
 \subsubsection{相关的题目}
@@ -1282,139 +1304,121 @@ $S$ & $(v_0,v_2)$ & $(v_0,v_2,v_4)$ & $(v_0,v_2,v_3,v_4)$ & $(v_0,v_2,v_3,v_4,v_
 \end{tabular}
 \end{center}
 
-Dijkstra算法的C++语言实现如下。
-
-\subsubsection{代码}
-
+Dijkstra算法的C++语言实现如下
 \begin{Codex}[label=al_graph_dijkstra.cpp]
-#include <iostream>
-#include <queue>
-#include <map>
-#include <utility>
-#include <climits>
+    #include <iostream>
+    #include <queue>
+    #include <map>
+    #include <utility>
+    #include <climits>
 
-using namespace std;
+    using namespace std;
 
-/** 边的权值类型，可以为int, float, double. */
-typedef int graph_weight_t;
+    /** 边的权值类型，可以为int, float, double. */
+    typedef int graph_weight_t;
 
-/** 顶点的编号，可以为char, int, string等. */
-typedef char graph_vertex_id_t;
+    /** 顶点的编号，可以为char, int, string等. */
+    typedef char graph_vertex_id_t;
 
-/**
- * @struct 图，用邻接表(Adjacency List).
- */
-struct graph_t {
-    int nv; // 顶点数
-    int ne; // 边数
-    // 邻接表，存放边的信息，如权重等
-    map<graph_vertex_id_t, map<graph_vertex_id_t, graph_weight_t> > matrix;
-};
+    /**
+     * @struct 图，用邻接表(Adjacency List).
+     */
+    struct graph_t {
+        int nv; // 顶点数
+        int ne; // 边数
+        // 邻接表，存放边的信息，如权重等
+        map<graph_vertex_id_t, map<graph_vertex_id_t, graph_weight_t> > matrix;
+    };
 
 
-/**
- * @brief Dijkstra算法求单源最短路径.
- * @param[in] g 图
- * @param[in] start 起点
- * @param[out] dist dist[v]存放的是起点到v的最短路径长度
- * @param[out] father father[v]存放的是最短路径上指向v的上一个顶点
- * @return 无
- */
-void dijkstra(const graph_t &g, graph_vertex_id_t start,
-        map<graph_vertex_id_t, graph_weight_t> &distance,
-        map<graph_vertex_id_t, graph_vertex_id_t> &father) {
-    /* 起点到顶点的最短距离. */
-    typedef pair<graph_weight_t, graph_vertex_id_t> to_dist_t;
+    // @brief Dijkstra算法求单源最短路径.
+    void dijkstra(const graph_t &g, graph_vertex_id_t start,
+            map<graph_vertex_id_t, graph_weight_t> &distance,
+            map<graph_vertex_id_t, graph_vertex_id_t> &father) {
+        /* 起点到顶点的最短距离. */
+        typedef pair<graph_weight_t, graph_vertex_id_t> to_dist_t;
 
-    // 小根堆
-    priority_queue<to_dist_t, vector<to_dist_t>, greater<to_dist_t> > q;
-    distance[start] = 0;  // 自己到自己，距离为0
-    q.push(to_dist_t(0, start));
-    while (!q.empty()) {
-        const to_dist_t u = q.top(); q.pop();
-        if (g.matrix.find(u.second) == g.matrix.end()) continue;
+        // 小根堆
+        priority_queue<to_dist_t, vector<to_dist_t>, greater<to_dist_t> > q;
+        distance[start] = 0;  // 自己到自己，距离为0
+        q.push(to_dist_t(0, start));
+        while (!q.empty()) {
+            const to_dist_t u = q.top(); q.pop();
+            if (g.matrix.find(u.second) == g.matrix.end()) continue;
 
-        for (map<graph_vertex_id_t, graph_weight_t>::const_iterator iter =
-                g.matrix.at(u.second).begin();
-                iter != g.matrix.at(u.second).end(); ++iter) {
-            const graph_vertex_id_t v = iter->first;
-            const graph_weight_t w = iter->second;
+            for (map<graph_vertex_id_t, graph_weight_t>::const_iterator iter =
+                    g.matrix.at(u.second).begin();
+                    iter != g.matrix.at(u.second).end(); ++iter) {
+                const graph_vertex_id_t v = iter->first;
+                const graph_weight_t w = iter->second;
 
-            if (!distance.count(v) || distance[u.second] + w < distance[v]) {
-                distance[v] = distance[u.second] + w;
-                father[v] = u.second;
-                q.push(to_dist_t(distance[v], v));
+                if (!distance.count(v) || distance[u.second] + w < distance[v]) {
+                    distance[v] = distance[u.second] + w;
+                    father[v] = u.second;
+                    q.push(to_dist_t(distance[v], v));
+                }
             }
         }
+        return;
     }
-    return;
-}
 
-/**
- * @brief 打印从起点到终点的最短路径
- * @param[in] father Dijkstra计算好的father数组
- * @param[in] end 终点
- * @return 无
- */
-void print_path(const map<graph_vertex_id_t, graph_vertex_id_t> &father,
-        graph_vertex_id_t end) {
-    if (!father.count(end)) {
-        cout << end;
-    } else {
-        print_path(father, father.at(end));
-        cout << "->" << end;
-    }
-}
-
-/** 读取输入，构建图. */
-void read_graph(graph_t &g) {
-    cin >> g.ne;
-    for (int i = 0; i < g.ne; ++i) {
-        graph_vertex_id_t from, to;
-        graph_weight_t weight;
-        cin >> from >> to >> weight;
-        g.matrix[from][to] = weight;
-    }
-}
-
-/* test
-
-输入数据:
-8
-A C 10
-A E 30
-A F 100
-B C 5
-C D 50
-D F 10
-E D 20
-E F 60
-
-输出:
-A->C
-A->E->D
-A->E
-A->E->D->F
-*/
-int main() {
-    graph_t g;
-    map<graph_vertex_id_t, graph_weight_t> distance;
-    map<graph_vertex_id_t, graph_vertex_id_t> father;
-
-    read_graph(g);
-
-    dijkstra(g, 'A', distance, father);
-
-    // 输出所有路径
-    for(map<graph_vertex_id_t, graph_vertex_id_t>::const_iterator iter =
-            father.begin(); iter != father.end();  ++iter) {
-        if (iter->first != 'A') {
-            print_path(father, iter->first);
-            cout << endl;
+    // @brief 打印从起点到终点的最短路径
+    void print_path(const map<graph_vertex_id_t, graph_vertex_id_t> &father,
+            graph_vertex_id_t end) {
+        if (!father.count(end)) {
+            cout << end;
+        } else {
+            print_path(father, father.at(end));
+            cout << "->" << end;
         }
     }
-    return 0;
-}
+
+    /** 读取输入，构建图. */
+    void read_graph(graph_t &g) {
+        cin >> g.ne;
+        for (int i = 0; i < g.ne; ++i) {
+            graph_vertex_id_t from, to;
+            graph_weight_t weight;
+            cin >> from >> to >> weight;
+            g.matrix[from][to] = weight;
+        }
+    }
+        int main() {
+        graph_t g;
+        map<graph_vertex_id_t, graph_weight_t> distance;
+        map<graph_vertex_id_t, graph_vertex_id_t> father;
+
+        read_graph(g);
+
+        dijkstra(g, 'A', distance, father);
+
+        // 输出所有路径
+        for(map<graph_vertex_id_t, graph_vertex_id_t>::const_iterator iter =
+                father.begin(); iter != father.end();  ++iter) {
+            if (iter->first != 'A') {
+                print_path(father, iter->first);
+                cout << endl;
+            }
+        }
+        return 0;
+    }
+
+    输入数据:
+        8
+        A C 10
+        A E 30
+        A F 100
+        B C 5
+        C D 50
+        D F 10
+        E D 20
+        E F 60
+
+    输出:
+        A->C
+        A->E->D
+        A->E
+        A->E->D->F
 \end{Codex}
 
 \subsubsection{算法分析}
@@ -1478,160 +1482,128 @@ D^{(k)}[i][j] &=& \min\left\{D^{(k-1)}[i][j], D^{(k-1)}[i][k] + D^{(k-1)}[k][j]\
 \end{tabular}
 \end{center}
 
-Floyd算法的C语言实现如下。
-
-
-\subsubsection{代码}
-
+Floyd算法的C语言实现如下：
 \begin{Codex}[label=am_graph_floyd.cpp]
-#include <iostream>
-#include <climits>  /* for INT_MAX */
+    #include <iostream>
+    #include <climits>  /* for INT_MAX */
 
-using namespace std;
+    using namespace std;
 
-const int MAX_NV = 100; // 顶点数的最大值
-/** 边的权值. */
-typedef int graph_weight_t;
-const int GRAPH_INF = INT_MAX / 2;   // 确保加法不溢出
+    const int MAX_NV = 100; // 顶点数的最大值
+    /** 边的权值. */
+    typedef int graph_weight_t;
+    const int GRAPH_INF = INT_MAX / 2;   // 确保加法不溢出
 
-/**
- *@struct 图，用邻接矩阵.
- */
-struct graph_t {
-    int nv; // 顶点数
-    int ne; // 边数
-    // 邻接矩阵，存放边的权重
-    graph_weight_t matrix[MAX_NV][MAX_NV];
-};
+    /** 图，用邻接矩阵.*/
+    struct graph_t {
+        int nv; // 顶点数
+        int ne; // 边数
+        // 邻接矩阵，存放边的权重
+        graph_weight_t matrix[MAX_NV][MAX_NV];
+    };
 
-
-graph_t g;
-/** dist[i][j]是顶点i和j之间最短路径长度 */
-graph_weight_t dist[MAX_NV][MAX_NV];
-/** path[i][j]是最短路径上i和j之间的顶点 */
-int path[MAX_NV][MAX_NV];
+    graph_t g;
+    /** dist[i][j]是顶点i和j之间最短路径长度 */
+    graph_weight_t dist[MAX_NV][MAX_NV];
+    /** path[i][j]是最短路径上i和j之间的顶点 */
+    int path[MAX_NV][MAX_NV];
 
 
-/*
-  * @brief Floyd算法求每点之间最短路径.
-  * @param[in] g 图对象的指针
-  * @param[out] dist dist[i][j]是顶点i和j之间最短路径长度
-  * @param[out] path path[i][j]是最短路径上i和j之间的顶点
-  * @return 无
-  */
-void floyd(const graph_t &g,
-       graph_weight_t dist[][MAX_NV],
-       int path[][MAX_NV]) {
-    int i, j, k;
-    const int n = g.nv;
+    // @brief Floyd算法求每点之间最短路径.
+    void floyd(const graph_t &g,
+           graph_weight_t dist[][MAX_NV],
+           int path[][MAX_NV]) {
+        int i, j, k;
+        const int n = g.nv;
 
-    for(i = 0; i < n; i++) {
-        for(j = 0; j < n; j++) {
-            if(i != j) {
-                dist[i][j] = g.matrix[i][j];
-                path[i][j] = i;
-            } else {
-                dist[i][j] = 0;
-                path[i][j] = -1;
-            }
-        }
-    }
-    for(k = 0; k < n; k++) {
         for(i = 0; i < n; i++) {
             for(j = 0; j < n; j++) {
-                // i到j的路径上加入顶点k可以缩短路径长度
-                if(dist[i][k] + dist[k][j] < dist[i][j]) {
-                    dist[i][j] = dist[i][k] + dist[k][j];
-                    path[i][j] = k;
+                if(i != j) {
+                    dist[i][j] = g.matrix[i][j];
+                    path[i][j] = i;
+                } else {
+                    dist[i][j] = 0;
+                    path[i][j] = -1;
+                }
+            }
+        }
+        for(k = 0; k < n; k++) {
+            for(i = 0; i < n; i++) {
+                for(j = 0; j < n; j++) {
+                    // i到j的路径上加入顶点k可以缩短路径长度
+                    if(dist[i][k] + dist[k][j] < dist[i][j]) {
+                        dist[i][j] = dist[i][k] + dist[k][j];
+                        path[i][j] = k;
+                    }
                 }
             }
         }
     }
-}
 
-/*
- * @brief 打印从u到v的最短路径
- * @param[in] u 起点
- * @param[in] v 终点
- * @param[in] path Floyd 计算好的path
- * @return 无
- */
-static void print_path_r(int u, int v, const int path[][MAX_NV]) {
-    if (path[u][v] == -1) {
-        cout << (char)('A' + u);
-    } else {
-        print_path_r(u, path[u][v], path);
-        cout << "->" << (char)('A' + v);
+    static void print_path_r(int u, int v, const int path[][MAX_NV]) {
+        if (path[u][v] == -1) {
+            cout << (char)('A' + u);
+        } else {
+            print_path_r(u, path[u][v], path);
+            cout << "->" << (char)('A' + v);
+        }
     }
-}
 
-/**
- * @brief 打印 u到其他所有点的最短路径
- * @param[in] path Dijkstra计算好的path
- * @param[in] n path的长度
- * @return 无
- */
-void print_path(const graph_t &g, const int path[][MAX_NV]) {
-    for (int i = 0; i < g.nv; i++) {
-        for (int j = 0; j < g.nv; j++) {
-            if (i != j) {
-                print_path_r(i, j, path);
-                cout << endl;
+    void print_path(const graph_t &g, const int path[][MAX_NV]) {
+        for (int i = 0; i < g.nv; i++) {
+            for (int j = 0; j < g.nv; j++) {
+                if (i != j) {
+                    print_path_r(i, j, path);
+                    cout << endl;
+                }
+            }
+            cout << endl;
+        }
+    }
+
+    void read_graph(graph_t &g) {
+        cin >> g.nv >> g.ne;
+
+        // 初始化图，所有节点间距离为无穷大
+        for (int i = 0; i < g.nv; i++) {
+            for (int j = 0; j < g.nv; j++) {
+                g.matrix[i][j] = GRAPH_INF;
             }
         }
-        cout << endl;
-    }
-}
 
-/**
- * @brief 读取输入，构建图.
- */
-void read_graph(graph_t &g) {
-    cin >> g.nv >> g.ne;
+        for (int k = 0; k < g.ne; k++) { // 读取边信息
+            char chx, chy;
+            graph_weight_t w;
 
-    // 初始化图，所有节点间距离为无穷大
-    for (int i = 0; i < g.nv; i++) {
-        for (int j = 0; j < g.nv; j++) {
-            g.matrix[i][j] = GRAPH_INF;
+            cin >> chx >> chy >> w;
+            g.matrix[chx - 'A'][chy - 'A'] = w;
         }
     }
-
-    for (int k = 0; k < g.ne; k++) { // 读取边信息
-        char chx, chy;
-        graph_weight_t w;
-
-        cin >> chx >> chy >> w;
-        g.matrix[chx - 'A'][chy - 'A'] = w;
+    int main() {
+        read_graph(g);
+        /* 求两两之间的最短路径 */
+        floyd(g, dist, path);
+        print_path(g, path);
+        return 0;
     }
-}
 
-/* test
+    输入数据:
+        3 5
+        A B 4
+        A C 11
+        B A 6
+        B C 2
+        C A 3
 
-输入数据:
-3 5
-A B 4
-A C 11
-B A 6
-B C 2
-C A 3
+    输出:
+        A->B
+        A->B->C
 
-输出:
-A->B
-A->B->C
+        B->C->A
+        B->C
 
-B->C->A
-B->C
-
-C->A
-C->A->B
-*/
-int main() {
-    read_graph(g);
-    /* 求两两之间的最短路径 */
-    floyd(g, dist, path);
-    print_path(g, path);
-    return 0;
-}
+        C->A
+        C->A->B
 \end{Codex}
 
 \subsubsection{算法分析}
@@ -1644,75 +1616,72 @@ Dijkstra算法权值不能为负，Floyd权值可以为负，但环路之和不�
 【解题思路】
 在每年的校赛里，所有进入决赛的同学都会获得一件很漂亮的t-shirt。但是每当我们的工作人员把上百件的衣服从商店运回到赛场的时候，却是非常累的！所以现在他们想要寻找最短的从商店到赛场的路线，你可以帮助他们吗？
 
-\subsubsection{输入}
+【输入】
 输入包括多组数据。每组数据第一行是两个整数$N,M(N \leq 100,M \leq 10000)$，$N$表示成都的大街上有几个路口，标号为1的路口是商店所在地，标号为$N$的路口是赛场所在地，$M$则表示在成都有几条路。$N=M=0$表示输入结束。接下来$M$行，每行包括3个整数$A,B,C(1 \leq A,B \leq N,1 \leq C \leq 1000)$,表示在路口$A$与路口$B$之间有一条路，我们的工作人员需要$C$分钟的时间走过这条路。
 输入保证至少存在1条商店到赛场的路线。
 
-\subsubsection{输出}
+【输出】
 对于每组输入，输出一行，表示工作人员从商店走到赛场的最短时间
 
-\subsubsection{样例输入}
+【样例输入】
 \begin{Code}
-2 1
-1 2 3
-3 3
-1 2 5
-2 3 5
-3 1 2
-0 0
+    2 1
+    1 2 3
+    3 3
+    1 2 5
+    2 3 5
+    3 1 2
+    0 0
 \end{Code}
 
-\subsubsection{样例输出}
+【样例输出】
 \begin{Code}
-3
-2
+    3
+    2
 \end{Code}
 
-\subsubsection{分析}
+【解题思路】
 单源最短路径，用Dijkstra算法，将第\S\ref{sec:dijkstra}节中的代码稍加修改即可。
 
 注意，街道是双向的，所以给边赋值时要对称赋值。
 
-\subsubsection{代码}
 \begin{Codex}[label=hdu_2544.cpp]
-// HDU 2544 最短路, http://acm.hdu.edu.cn/showproblem.php?pid=2544
-/** 边的权值类型. */
-typedef int graph_weight_t;
+    // HDU 2544 最短路, http://acm.hdu.edu.cn/showproblem.php?pid=2544
+    /** 边的权值类型. */
+    typedef int graph_weight_t;
 
-/** 顶点的编号，可以为char, int, string等. */
-typedef int graph_vertex_id_t;
+    /** 顶点的编号，可以为char, int, string等. */
+    typedef int graph_vertex_id_t;
 
-// 等价于复制粘贴，这里为了节约篇幅，使用include，在OJ上提交时请用复制粘贴
-#include "al_graph_dijkstra.cpp"  // 见“图->最短路径” 这节
+    // 等价于复制粘贴，这里为了节约篇幅，使用include，在OJ上提交时请用复制粘贴
+    #include "al_graph_dijkstra.cpp"  // 见“图->最短路径” 这节
 
-/** 读取输入，构建图. */
-void read_graph(graph_t &g) {
-    cin >> g.nv >> g.ne;
-    for (int i = 0; i < g.ne; ++i) {
-        graph_vertex_id_t from, to;
-        graph_weight_t weight;
-        cin >> from >> to >> weight;
-        g.matrix[from][to] = weight;
-        g.matrix[to][from] = weight;  // 街道是双向的
-    }
-}
-
-
-int main() {
-    while(true) {
-        graph_t g;
-        map<graph_vertex_id_t, graph_weight_t> distance;
-        map<graph_vertex_id_t, graph_vertex_id_t> father;
-
-        read_graph(g);
-        if (g.nv == 0 && g.ne == 0) break;
-
-        dijkstra(g, 1, distance, father);
-        cout << distance[g.nv] << endl;
+    /** 读取输入，构建图. */
+    void read_graph(graph_t &g) {
+        cin >> g.nv >> g.ne;
+        for (int i = 0; i < g.ne; ++i) {
+            graph_vertex_id_t from, to;
+            graph_weight_t weight;
+            cin >> from >> to >> weight;
+            g.matrix[from][to] = weight;
+            g.matrix[to][from] = weight;  // 街道是双向的
+        }
     }
 
-    return 0;
-}
+    int main() {
+        while(true) {
+            graph_t g;
+            map<graph_vertex_id_t, graph_weight_t> distance;
+            map<graph_vertex_id_t, graph_vertex_id_t> father;
+
+            read_graph(g);
+            if (g.nv == 0 && g.ne == 0) break;
+
+            dijkstra(g, 1, distance, father);
+            cout << distance[g.nv] << endl;
+        }
+        return 0;
+    }
 \end{Codex}
 
 \subsubsection{相关的题目}
@@ -1732,129 +1701,128 @@ int main() {
 
 \subsection{POJ 1125 Stockbroker Grapevine}
 【解题思路】
-Stockbrokers are known to overreact to rumours. You have been contracted to develop a method of spreading disinformation amongst the stockbrokers to give your employer the tactical edge in the stock market. For maximum effect, you have to spread the rumours in the fastest possible way. 
+Stockbrokers are known to overreact to rumours. You have been contracted to develop a method of spreading disinformation amongst the stockbrokers to give your employer the tactical edge in the stock market. For maximum effect, you have to spread the rumours in the fastest possible way.
 
 Unfortunately for you, stockbrokers only trust information coming from their "Trusted sources" This means you have to take into account the structure of their contacts when starting a rumour. It takes a certain amount of time for a specific stockbroker to pass the rumour on to each of his colleagues. Your task will be to write a program that tells you which stockbroker to choose as your starting point for the rumour, as well as the time it will take for the rumour to spread throughout the stockbroker community. This duration is measured as the time needed for the last person to receive the information.
 
-\subsubsection{输入}
-Your program will input data for different sets of stockbrokers. Each set starts with a line with the number of stockbrokers. Following this is a line for each stockbroker which contains the number of people who they have contact with, who these people are, and the time taken for them to pass the message to each person. The format of each stockbroker line is as follows: The line starts with the number of contacts ($n$), followed by n pairs of integers, one pair for each contact. Each pair lists first a number referring to the contact (e.g. a '1' means person number one in the set), followed by the time in minutes taken to pass a message to that person. There are no special punctuation symbols or spacing rules. 
+【输入】
+Your program will input data for different sets of stockbrokers. Each set starts with a line with the number of stockbrokers. Following this is a line for each stockbroker which contains the number of people who they have contact with, who these people are, and the time taken for them to pass the message to each person. The format of each stockbroker line is as follows: The line starts with the number of contacts ($n$), followed by n pairs of integers, one pair for each contact. Each pair lists first a number referring to the contact (e.g. a '1' means person number one in the set), followed by the time in minutes taken to pass a message to that person. There are no special punctuation symbols or spacing rules.
 
-Each person is numbered 1 through to the number of stockbrokers. The time taken to pass the message on will be between 1 and 10 minutes (inclusive), and the number of contacts will range between 0 and one less than the number of stockbrokers. The number of stockbrokers will range from 1 to 100. The input is terminated by a set of stockbrokers containing 0 (zero) people. 
+Each person is numbered 1 through to the number of stockbrokers. The time taken to pass the message on will be between 1 and 10 minutes (inclusive), and the number of contacts will range between 0 and one less than the number of stockbrokers. The number of stockbrokers will range from 1 to 100. The input is terminated by a set of stockbrokers containing 0 (zero) people.
 
-\subsubsection{输出}
-For each set of data, your program must output a single line containing the person who results in the fastest message transmission, and how long before the last person will receive any given message after you give it to this person, measured in integer minutes. 
+【输出】
+For each set of data, your program must output a single line containing the person who results in the fastest message transmission, and how long before the last person will receive any given message after you give it to this person, measured in integer minutes.
 
 It is possible that your program will receive a network of connections that excludes some persons, i.e. some people may be unreachable. If your program detects such a broken network, simply output the message "disjoint". Note that the time taken to pass the message from person A to person B is not necessarily the same as the time taken to pass it from B to A, if such transmission is possible at all.
 
-\subsubsection{样例输入}
+【样例输入】
 \begin{Code}
-3
-2 2 4 3 5
-2 1 2 3 6
-2 1 2 2 2
-5
-3 4 4 2 8 5 3
-1 5 8
-4 1 6 4 10 2 7 5 2
-0
-2 2 5 1 5
-7        
-2 2 6 7 1
-0  
-3 1 5 2 8 4 7
-0
-2 2 9 4 10
-2 3 8 4 7
-2 5 8 6 3
-7        
-2 2 6 7 8
-0  
-3 1 5 2 8 4 7
-0
-2 2 9 4 10
-2 3 8 4 7
-2 5 8 6 3
-0
+    3
+    2 2 4 3 5
+    2 1 2 3 6
+    2 1 2 2 2
+    5
+    3 4 4 2 8 5 3
+    1 5 8
+    4 1 6 4 10 2 7 5 2
+    0
+    2 2 5 1 5
+    7
+    2 2 6 7 1
+    0
+    3 1 5 2 8 4 7
+    0
+    2 2 9 4 10
+    2 3 8 4 7
+    2 5 8 6 3
+    7
+    2 2 6 7 8
+    0
+    3 1 5 2 8 4 7
+    0
+    2 2 9 4 10
+    2 3 8 4 7
+    2 5 8 6 3
+    0
 \end{Code}
 
-\subsubsection{样例输出}
+【样例输出】
 \begin{Code}
-3 2  
-3 10
-1 12
-7 17
+    3 2
+    3 10
+    1 12
+    7 17
 \end{Code}
 
-\subsubsection{分析}
+【解题思路】
 用Floyd算法求出每点之间的最短路径，输出距离最大的。
 
-\subsubsection{代码}
+
 \begin{Codex}[label=poj_1125.cpp]
-// poj 1125 Stockbroker Grapevine, http://poj.org/problem?id=1125
+    // poj 1125 Stockbroker Grapevine, http://poj.org/problem?id=1125
+    // 等价于复制粘贴，这里为了节约篇幅，使用include，在OJ上提交时请用复制粘贴
+    #include "am_graph_floyd.cpp"  // 见“图->最短路径”这节
 
-// 等价于复制粘贴，这里为了节约篇幅，使用include，在OJ上提交时请用复制粘贴
-#include "am_graph_floyd.cpp"  // 见“图->最短路径”这节
+    // 1. 修改范围
+    const int MAX_NV = 100; // 顶点数的最大值
+    // 2. 添加 max_len 数组
+    /** 存放每个点的最短路径的最长者 */
+    graph_weight_t max_len[MAX_NV];
+    // 3. 重写 read_graph()
+    // 4. 重写 main()
 
-// 1. 修改范围
-const int MAX_NV = 100; // 顶点数的最大值
-// 2. 添加 max_len 数组
-/** 存放每个点的最短路径的最长者 */
-graph_weight_t max_len[MAX_NV];
-// 3. 重写 read_graph()
-// 4. 重写 main()
+    /** 读取输入，构建图. */
+    void read_graph(graph_t &g) {
+        cin >> g.nv;
+        g.ne = 0;
 
-/** 读取输入，构建图. */
-void read_graph(graph_t &g) {
-    cin >> g.nv;
-    g.ne = 0;
-
-    /* 初始化图，所有节点间距离为无穷大 */
-    for (int i = 0; i < g.nv; i++) {
-        for (int j = 0; j < g.nv; j++) {
-            g.matrix[i][j] = GRAPH_INF;
-        }
-    }
-
-    /* 读取边信息 */
-    for (int i = 0; i < g.nv; i++) {
-        int m;
-        cin >> m;
-        g.ne += m;
-        while (m--) {
-            int j;
-            graph_weight_t w;
-            cin >> j >> w;
-            --j;
-            g.matrix[i][j] = w;
-        }
-    }
-}
-
-int main() {
-    while (true) {
-        read_graph(g);
-        if (g.nv == 0) break;
-
-        /* 求两两之间的最短路径 */
-        floyd(g, dist, path);
-
-        /* 找最短路径的最长着 */
+        /* 初始化图，所有节点间距离为无穷大 */
         for (int i = 0; i < g.nv; i++) {
-            max_len[i] = dist[i][distance(&dist[i][0],
-                    max_element(&dist[i][0], &dist[i][0] + g.nv))];
+            for (int j = 0; j < g.nv; j++) {
+                g.matrix[i][j] = GRAPH_INF;
+            }
         }
-        /* 找 max_len 的最小者　*/
-        const int min_pos = distance(&max_len[0],
-                min_element(&max_len[0], &max_len[0] + g.nv));
 
-        if (max_len[min_pos] == GRAPH_INF) {
-            cout << "disjoint" << endl;
-        } else {
-            cout << min_pos + 1 << " " << max_len[min_pos] << endl;
+        /* 读取边信息 */
+        for (int i = 0; i < g.nv; i++) {
+            int m;
+            cin >> m;
+            g.ne += m;
+            while (m--) {
+                int j;
+                graph_weight_t w;
+                cin >> j >> w;
+                --j;
+                g.matrix[i][j] = w;
+            }
         }
     }
-    return 0;
-}
+
+    int main() {
+        while (true) {
+            read_graph(g);
+            if (g.nv == 0) break;
+
+            /* 求两两之间的最短路径 */
+            floyd(g, dist, path);
+
+            /* 找最短路径的最长着 */
+            for (int i = 0; i < g.nv; i++) {
+                max_len[i] = dist[i][distance(&dist[i][0],
+                        max_element(&dist[i][0], &dist[i][0] + g.nv))];
+            }
+            /* 找 max_len 的最小者　*/
+            const int min_pos = distance(&max_len[0],
+                    min_element(&max_len[0], &max_len[0] + g.nv));
+
+            if (max_len[min_pos] == GRAPH_INF) {
+                cout << "disjoint" << endl;
+            } else {
+                cout << min_pos + 1 << " " << max_len[min_pos] << endl;
+            }
+        }
+        return 0;
+    }
 \end{Codex}
 
 \subsubsection{相关的题目}
@@ -1886,124 +1854,108 @@ int main() {
 \end{enumerate}
 重复以上两步，直至全部顶点输出，或当前图中不存在无前驱的顶点为止（这种情况说明图中存在环）。
 
-拓扑排序的C语言实现如下。
-
-\subsubsection{代码}
-
+拓扑排序的C语言实现如下：
 \begin{Codex}[label=am_graph_topo_sort.cpp]
-#include <iostream>
-#include <climits>  // for INT_MAX
-#include <stack>
+    #include <iostream>
+    #include <climits>  // for INT_MAX
+    #include <stack>
 
-using namespace std;
+    using namespace std;
 
-/** 顶点数的最大值*/
-const int MAX_NV = 100;
-/** 边的权值，对无权图，用0或1表示是否相邻；对有权图，则为权值. */
-typedef int graph_weight_t;
-const graph_weight_t GRAPH_INF = INT_MAX;
+    /** 顶点数的最大值*/
+    const int MAX_NV = 100;
+    /** 边的权值，对无权图，用0或1表示是否相邻；对有权图，则为权值. */
+    typedef int graph_weight_t;
+    const graph_weight_t GRAPH_INF = INT_MAX;
 
-/**
- *@struct
- *@brief 邻接矩阵.
- */
-struct graph_t {
-    int nv; // 顶点数
-    int ne; // 边数
-    // 邻接矩阵，存放边的信息，如权重等
-    graph_weight_t matrix[MAX_NV][MAX_NV];
-};
+    struct graph_t {
+        int nv; // 顶点数
+        int ne; // 边数
+        // 邻接矩阵，存放边的信息，如权重等
+        graph_weight_t matrix[MAX_NV][MAX_NV];
+    };
 
-graph_t g;
-/** 拓扑排序的结果. */
-int topological[MAX_NV];
+    graph_t g;
+    /** 拓扑排序的结果. */
+    int topological[MAX_NV];
 
-/*
-  * @brief 拓扑排序.
-  * @param[in] g 图对象的指针
-  * @param[out] topological 保存拓扑排序的结果
-  * @return 无环返回 true，有环返回 false
-  */
-bool topo_sort(const graph_t &g, int topological[]) {
-    const int n = g.nv;
-    int *in_degree = new int[n](); // in_degree[i]是顶点i的入度
+    // @brief 拓扑排序.
+    bool topo_sort(const graph_t &g, int topological[]) {
+        const int n = g.nv;
+        int *in_degree = new int[n](); // in_degree[i]是顶点i的入度
 
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            if (g.matrix[i][j] < GRAPH_INF)
-                in_degree[j]++;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (g.matrix[i][j] < GRAPH_INF)
+                    in_degree[j]++;
+            }
+        }
+
+        stack<int> s;
+        for(int i = 0; i < n; i ++) {
+            if(in_degree[i] == 0)
+                s.push(i);
+        }
+
+        int count = 0; /* 拓扑序列的元素个数*/
+        while(!s.empty()) {
+            const int u = s.top(); s.pop();
+            topological[count++] = u;
+            for (int i = 0; i < n; i++) if (g.matrix[u][i] < GRAPH_INF) {
+                if(--in_degree[i] == 0) s.push(i);
+            }
+        }
+
+        delete[] in_degree;
+        if(count != n) { /* 有环*/
+            return false;
+        } else { /* 无环*/
+            return true;
         }
     }
 
-    stack<int> s;
-    for(int i = 0; i < n; i ++) {
-        if(in_degree[i] == 0)
-            s.push(i);
-    }
+    /** 读取输入，构建图. */
+    void read_graph() {
+        /* 读取节点和边的数目 */
+        cin >> g.nv >> g.ne;
 
-    int count = 0; /* 拓扑序列的元素个数*/
-    while(!s.empty()) {
-        const int u = s.top(); s.pop();
-        topological[count++] = u;
-        for (int i = 0; i < n; i++) if (g.matrix[u][i] < GRAPH_INF) {
-            if(--in_degree[i] == 0) s.push(i);
+        /* 初始化图，所有节点间距离为无穷大 */
+        for (int i = 0; i < g.nv; i++) {
+            for (int j = 0; j < g.nv; j++) {
+                g.matrix[i][j] = GRAPH_INF;
+            }
+        }
+
+        /* 读取边信息 */
+        for (int k = 0; k < g.ne; k++) {
+            char chx, chy;
+            graph_weight_t w;
+            cin >> chx >> chy >> w;
+            g.matrix[chx - 'A'][chy - 'A'] = w;
         }
     }
-
-    delete[] in_degree;
-    if(count != n) { /* 有环*/
-        return false;
-    } else { /* 无环*/
-        return true;
-    }
-}
-
-/** 读取输入，构建图. */
-void read_graph() {
-    /* 读取节点和边的数目 */
-    cin >> g.nv >> g.ne;
-
-    /* 初始化图，所有节点间距离为无穷大 */
-    for (int i = 0; i < g.nv; i++) {
-        for (int j = 0; j < g.nv; j++) {
-            g.matrix[i][j] = GRAPH_INF;
+    int main() {
+        read_graph();
+        /* 拓扑排序 */
+        topo_sort(g, topological);
+        for (int i = 0; i < g.nv; i++) {
+            cout << (char)('A' + topological[i]) << " ";
         }
+        return 0;
     }
 
-    /* 读取边信息 */
-    for (int k = 0; k < g.ne; k++) {
-        char chx, chy;
-        graph_weight_t w;
-        cin >> chx >> chy >> w;
-        g.matrix[chx - 'A'][chy - 'A'] = w;
-    }
-}
+    输入数据:
+        6 8
+        A C 10
+        A E 30
+        A F 100
+        B C 5
+        C D 50
+        D 5 10
+        E D 20
+        E F 60
 
-/* test
-
-输入数据:
-6 8
-A C 10
-A E 30
-A F 100
-B C 5
-C D 50
-D 5 10
-E D 20
-E F 60
-
-输出:
-B A E F C D
-*/
-int main() {
-    read_graph();
-    /* 拓扑排序 */
-    topo_sort(g, topological);
-    for (int i = 0; i < g.nv; i++) {
-        cout << (char)('A' + topological[i]) << " ";
-    }
-    return 0;
-}
+    输出:B A E F C D
 \end{Codex}
 
 \subsubsection{算法分析}
@@ -2016,187 +1968,179 @@ int main() {
 【解题思路】
 An ascending sorted sequence of distinct values is one in which some form of a less-than operator is used to order the elements from smallest to largest. For example, the sorted sequence $A, B, C, D$ implies that $A < B, B < C$ and $C < D$. in this problem, we will give you a set of relations of the form $A < B$ and ask you to determine whether a sorted order has been specified or not.
 
-\subsubsection{输入}
+【输入】
 Input consists of multiple problem instances. Each instance starts with a line containing two positive integers $n$ and $m$. the first value indicated the number of objects to sort, where $2 \leq n \leq 26$. The objects to be sorted will be the first $n$ characters of the uppercase alphabet. The second value $m$ indicates the number of relations of the form $A < B$ which will be given in this problem instance. Next will be $m$ lines, each containing one such relation consisting of three characters: an uppercase letter, the character "<" and a second uppercase letter. No letter will be outside the range of the first $n$ letters of the alphabet. Values of $n = m = 0$ indicate end of input.
 
-\subsubsection{输出}
-For each problem instance, output consists of one line. This line should be one of the following three: 
+【输出】
+For each problem instance, output consists of one line. This line should be one of the following three:
 
 Sorted sequence determined after $xxx$ relations: $yyy...y$.
 
-Sorted sequence cannot be determined. 
+Sorted sequence cannot be determined.
 
 Inconsistency found after $xxx$ relations.
 
 where $xxx$ is the number of relations processed at the time either a sorted sequence is determined or an inconsistency is found, whichever comes first, and $yyy...y$ is the sorted, ascending sequence.
 
-\subsubsection{样例输入}
+【样例输入】
 \begin{Code}
-4 6
-A<B
-A<C
-B<C
-C<D
-B<D
-A<B
-3 2
-A<B
-B<A
-26 1
-A<Z
-6 6
-A<F
-B<D
-C<E
-F<D
-D<E
-E<F
-0 0
+    4 6
+    A<B
+    A<C
+    B<C
+    C<D
+    B<D
+    A<B
+    3 2
+    A<B
+    B<A
+    26 1
+    A<Z
+    6 6
+    A<F
+    B<D
+    C<E
+    F<D
+    D<E
+    E<F
+    0 0
 \end{Code}
 
-\subsubsection{样例输出}
+【样例输出】
 \begin{Code}
-Sorted sequence determined after 4 relations: ABCD.
-Inconsistency found after 2 relations.
-Sorted sequence cannot be determined.
-Inconsistency found after 6 relations.
+    Sorted sequence determined after 4 relations: ABCD.
+    Inconsistency found after 2 relations.
+    Sorted sequence cannot be determined.
+    Inconsistency found after 6 relations.
 \end{Code}
 
-\subsubsection{分析}
+【解题思路】
 根据题目的要求，我们要每输入一次就要进行一次拓扑排序\fn{topological_sort()}，这样才能做到不成功（即发现有环）时，能知道是哪步不成功，并且给出输出。
 
 还有要注意的就是如果我们可以提前判断结果了，但后面还有输入没完成，那么我们必须继续完成输入，不然剩下的输入会影响下一次case的输入。
 
-\subsubsection{代码}
 \begin{Codex}[label=poj_1094.cpp]
-// POJ 1094 Sorting It All Out, http://poj.org/problem?id=1094
-#include <iostream>
-#include <climits>  // for INT_MAX
-#include <stack>
+    // POJ 1094 Sorting It All Out, http://poj.org/problem?id=1094
+    #include <iostream>
+    #include <climits>  // for INT_MAX
+    #include <stack>
 
-using namespace std;
+    using namespace std;
 
-/** 顶点数的最大值*/
-const int MAX_NV  = 26;
-/** 边的权值. */
-typedef int graph_weight_t;
-const int GRAPH_INF = INT_MAX;
+    /** 顶点数的最大值*/
+    const int MAX_NV  = 26;
+    /** 边的权值. */
+    typedef int graph_weight_t;
+    const int GRAPH_INF = INT_MAX;
 
-/**
- *@struct 邻接矩阵.
- */
-struct graph_t {
-    int nv; // 顶点数
-    int ne; // 边数
-    // 邻接矩阵，存放边的信息，如权重等
-    graph_weight_t matrix[MAX_NV][MAX_NV];
-};
+    /** 邻接矩阵. */
+    struct graph_t {
+        int nv; // 顶点数
+        int ne; // 边数
+        // 邻接矩阵，存放边的信息，如权重等
+        graph_weight_t matrix[MAX_NV][MAX_NV];
+    };
 
-graph_t g;
-/** 拓扑排序的结果. */
-int topological[MAX_NV];
+    graph_t g;
+    /** 拓扑排序的结果. */
+    int topological[MAX_NV];
 
-/**
-  * @brief 拓扑排序.
-  * @param[in] g 图对象的指针
-  * @param[out] topological 保存拓扑排序的结果
-  * @return 无环返回 1，有环返回 0，条件不足返回 -1
-  */
-int topo_sort(const graph_t *g, int topological[]) {
-    const int n = g->nv;
+    // @brief 拓扑排序.
+    int topo_sort(const graph_t *g, int topological[]) {
+        const int n = g->nv;
 
-    /* in_degree[i]是顶点i的入度 */
-    int *in_degree = new int[n]();
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            if (g->matrix[i][j] < GRAPH_INF)
-                in_degree[j]++;
-        }
-    }
-
-    stack<int> s;
-    for(int i = 0; i < n; i ++) {
-        if(in_degree[i] == 0) {
-            s.push(i);
-        }
-    }
-
-    int count = 0; // 拓扑序列的元素个数
-    bool insufficient = false;  // 条件不足
-    while(!s.empty()) {
-        // 栈内应该始终只有一个元素
-        if (s.size() > 1) insufficient = true;
-        // 删除顶点u
-        const int u = s.top(); s.pop();
-        topological[count++] = u;
-        --in_degree[u];  // 变成 -1，表示已经输出
-        // 更新入度
-        for (int i = 0; i < n; i++) if (g->matrix[u][i] < GRAPH_INF) {
-            --in_degree[i];
-        }
-        // 选择入度为0的顶点
-        for (int i = 0; i < n; i++) if (g->matrix[u][i] < GRAPH_INF) {
-            if (in_degree[i] == 0) s.push(i);
-        }
-    }
-
-    delete[] in_degree;
-    if(count < n) { // 有环
-        return 0;
-    } else { // 无环
-        if (insufficient) {  // 有孤立点，说明条件不足
-            return -1;
-        } else {
-            return 1;
-        }
-    }
-}
-
-int main() {
-    int m;  // m不一定是边的数目，因为输入边可能有重复
-
-    /* 读取节点和边的数目 */
-    while ((cin >> g.nv >> m) && g.nv > 0 && m > 0) {
-        bool finished = false;  // 排序完成，结束，发现有环，可以提前结束
-
-        // 初始化图，所有节点间距离为无穷大
-        for (int i = 0; i < g.nv; i++)
-            for (int j = 0; j < g.nv; j++)
-                g.matrix[i][j] = GRAPH_INF;
-
-        // 读取边信息
-        for (int k = 0; k < m; k++) {
-            string s;
-            cin >> s;
-            g.matrix[s[0] - 'A'][s[2] - 'A'] = 1;
-
-            if (finished) continue;    // 完成，则 continue，消耗输入
-
-            // 是否有环，0 表示有环
-            const int ok = topo_sort(&g, topological);
-
-            if (ok == 0) {  // 有环存在
-                cout << "Inconsistency found after " << k+1 <<
-                        " relations." << endl;
-                finished = true;  // 提前结束，记住要继续消耗输入
+        /* in_degree[i]是顶点i的入度 */
+        int *in_degree = new int[n]();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (g->matrix[i][j] < GRAPH_INF)
+                    in_degree[j]++;
             }
-            if (ok == 1 && k) {
-                cout << "Sorted sequence determined after " << k+1
-                        << " relations: ";
-                for (int i = 0; i < g.nv; i++) {
-                    cout << (char)('A' + topological[i]);
+        }
+
+        stack<int> s;
+        for(int i = 0; i < n; i ++) {
+            if(in_degree[i] == 0) {
+                s.push(i);
+            }
+        }
+
+        int count = 0; // 拓扑序列的元素个数
+        bool insufficient = false;  // 条件不足
+        while(!s.empty()) {
+            // 栈内应该始终只有一个元素
+            if (s.size() > 1) insufficient = true;
+            // 删除顶点u
+            const int u = s.top(); s.pop();
+            topological[count++] = u;
+            --in_degree[u];  // 变成 -1，表示已经输出
+            // 更新入度
+            for (int i = 0; i < n; i++) if (g->matrix[u][i] < GRAPH_INF) {
+                --in_degree[i];
+            }
+            // 选择入度为0的顶点
+            for (int i = 0; i < n; i++) if (g->matrix[u][i] < GRAPH_INF) {
+                if (in_degree[i] == 0) s.push(i);
+            }
+        }
+
+        delete[] in_degree;
+        if(count < n) { // 有环
+            return 0;
+        } else { // 无环
+            if (insufficient) {  // 有孤立点，说明条件不足
+                return -1;
+            } else {
+                return 1;
+            }
+        }
+    }
+
+    int main() {
+        int m;  // m不一定是边的数目，因为输入边可能有重复
+
+        /* 读取节点和边的数目 */
+        while ((cin >> g.nv >> m) && g.nv > 0 && m > 0) {
+            bool finished = false;  // 排序完成，结束，发现有环，可以提前结束
+
+            // 初始化图，所有节点间距离为无穷大
+            for (int i = 0; i < g.nv; i++)
+                for (int j = 0; j < g.nv; j++)
+                    g.matrix[i][j] = GRAPH_INF;
+
+            // 读取边信息
+            for (int k = 0; k < m; k++) {
+                string s;
+                cin >> s;
+                g.matrix[s[0] - 'A'][s[2] - 'A'] = 1;
+
+                if (finished) continue;    // 完成，则 continue，消耗输入
+
+                // 是否有环，0 表示有环
+                const int ok = topo_sort(&g, topological);
+
+                if (ok == 0) {  // 有环存在
+                    cout << "Inconsistency found after " << k+1 <<
+                            " relations." << endl;
+                    finished = true;  // 提前结束，记住要继续消耗输入
                 }
-                cout << "." << endl;
-                finished = true;
+                if (ok == 1 && k) {
+                    cout << "Sorted sequence determined after " << k+1
+                            << " relations: ";
+                    for (int i = 0; i < g.nv; i++) {
+                        cout << (char)('A' + topological[i]);
+                    }
+                    cout << "." << endl;
+                    finished = true;
+                }
+                // ok==-1, continue
             }
-            // ok==-1, continue
+            if (!finished) {
+                cout << "Sorted sequence cannot be determined." << endl;
+            }
         }
-        if (!finished) {
-            cout << "Sorted sequence cannot be determined." << endl;
-        }
+        return 0;
     }
-    return 0;
-}
 \end{Codex}
 
 \subsubsection{相关的题目}
@@ -2266,186 +2210,165 @@ $v_6$ & 8 &                               & 8 &                             & $a
 
 邻接矩阵上的关键路径的C语言实现如下。
 
-\subsubsection{代码}
-
 \begin{Codex}[label=am_graph_critical_path.cpp]
-#include <iostream>
-#include <climits>  /* for INT_MAX */
-#include <stack>
-#include <algorithm>
+    #include <iostream>
+    #include <climits>  /* for INT_MAX */
+    #include <stack>
+    #include <algorithm>
 
-using namespace std;
+    using namespace std;
 
-/** 顶点数的最大值*/
-const int MAX_NV = 100;
-/** 边的权值，对无权图，用0或1表示是否相邻；对有权图，则为权值. */
-typedef int graph_weight_t;
-const graph_weight_t GRAPH_INF = INT_MAX;
+    /** 顶点数的最大值*/
+    const int MAX_NV = 100;
+    /** 边的权值，对无权图，用0或1表示是否相邻；对有权图，则为权值. */
+    typedef int graph_weight_t;
+    const graph_weight_t GRAPH_INF = INT_MAX;
 
-/**
- *@struct 邻接矩阵.
- */
-struct graph_t {
-    int nv; /* 顶点数*/
-    int ne; /* 边数*/
-    /* 邻接矩阵，存放边的信息，如权重等*/
-    graph_weight_t matrix[MAX_NV][MAX_NV];
-};
+    /** 邻接矩阵. */
+    struct graph_t {
+        int nv; /* 顶点数*/
+        int ne; /* 边数*/
+        /* 邻接矩阵，存放边的信息，如权重等*/
+        graph_weight_t matrix[MAX_NV][MAX_NV];
+    };
 
-graph_t g;
-/** 拓扑排序的结果. */
-int topological[MAX_NV];
-/** 关键路径，其余顶点为-1. */
-int path[MAX_NV];
+    graph_t g;
+    /** 拓扑排序的结果. */
+    int topological[MAX_NV];
+    /** 关键路径，其余顶点为-1. */
+    int path[MAX_NV];
 
-/*
-  * @brief 按照拓扑排序的顺序，计算所有顶点的最早发生时间 ve.
-  * @param[in] g 图对象的指针
-  * @param[out] topological 保存拓扑排序的结果
-  * @param[out] ve 所有事件的最早发生时间
-  * @return 无环返回 true，有环返回 false
-  */
-static bool toposort_ve(const graph_t &g, int topological[],
-        graph_weight_t ve[]) {
-    const int n = g.nv;
+    // @brief 按照拓扑排序的顺序，计算所有顶点的最早发生时间 ve.
+    static bool toposort_ve(const graph_t &g, int topological[],
+            graph_weight_t ve[]) {
+        const int n = g.nv;
 
-    /* in_degree[i]是顶点i的入度 */
-    int *in_degree = new int[n]();
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            if (g.matrix[i][j] < GRAPH_INF)
-                in_degree[j]++;
-        }
-    }
-
-    stack<int> s;
-    for(int i = 0; i < n; i ++) {
-        if(in_degree[i] == 0) {
-            s.push(i);
-        }
-    }
-    fill(ve, ve + n, 0);
-
-    int count = 0; // 拓扑序列的元素个数
-    while(!s.empty()) {
-        // 删除顶点u
-        const int u = s.top(); s.pop();
-        topological[count++] = u;
-        --in_degree[u];  // 变成 -1，表示已经输出
-        // 更新入度
-        for (int i = 0; i < n; i++) if (g.matrix[u][i] < GRAPH_INF) {
-            --in_degree[i];
-        }
-        // 更新邻接点的 ve
-        for (int i = 0; i < n; i++) if (g.matrix[u][i] < GRAPH_INF) {
-            if (ve[i] < ve[u] + g.matrix[u][i])
-                ve[i] = ve[u] + g.matrix[u][i];
-        }
-        // 选择入度为0的顶点
-        for (int i = 0; i < n; i++) if (g.matrix[u][i] < GRAPH_INF) {
-            if (in_degree[i] == 0) s.push(i);
-        }
-    }
-
-    delete[] in_degree;
-
-    if(count < n) return false; // 有环
-    else          return true;  // 无环
-}
-
-/**
-  * @brief 求关键路径，第一个顶点为起点，最后一个顶点为终点.
-  * @param[in] g 图对象的指针
-  * @param[out] ve 所有事件的最早发生时间
-  * @param[inout] path 关键路径
-  * @return 无环返回关键路径的顶点个数，有环返回 0
-  */
-int critical_path(const graph_t &g, int path[MAX_NV]) {
-    int count = 0;    // 关键路径的顶点个数
-    graph_weight_t *ve = new graph_weight_t[g.nv];
-    graph_weight_t *vl = new graph_weight_t[g.nv];
-
-    if (!toposort_ve(g, topological, ve)) return 0;  // 有环
-
-    for (int i = 0; i < MAX_NV; i++) path[i] = -1;
-    // 初始化 vl 为最大
-    for (int i = 0; i < g.nv; i++) vl[i] = ve[g.nv-1];
-
-    // 逆序计算vl
-    for (int i = g.nv-1; i >=0; i--) {
-        const int k = topological[i];
-        for (int j = 0; j < g.nv; j++) {
-            if (g.matrix[j][k] < GRAPH_INF) {
-                if (vl[j] > vl[k] - g.matrix[j][k])
-                    vl[j] = vl[k] - g.matrix[j][k];
+        /* in_degree[i]是顶点i的入度 */
+        int *in_degree = new int[n]();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (g.matrix[i][j] < GRAPH_INF)
+                    in_degree[j]++;
             }
         }
+
+        stack<int> s;
+        for(int i = 0; i < n; i ++) {
+            if(in_degree[i] == 0) {
+                s.push(i);
+            }
+        }
+        fill(ve, ve + n, 0);
+        int count = 0; // 拓扑序列的元素个数
+        while(!s.empty()) {
+            // 删除顶点u
+            const int u = s.top(); s.pop();
+            topological[count++] = u;
+            --in_degree[u];  // 变成 -1，表示已经输出
+            // 更新入度
+            for (int i = 0; i < n; i++) if (g.matrix[u][i] < GRAPH_INF) {
+                --in_degree[i];
+            }
+            // 更新邻接点的 ve
+            for (int i = 0; i < n; i++) if (g.matrix[u][i] < GRAPH_INF) {
+                if (ve[i] < ve[u] + g.matrix[u][i])
+                    ve[i] = ve[u] + g.matrix[u][i];
+            }
+            // 选择入度为0的顶点
+            for (int i = 0; i < n; i++) if (g.matrix[u][i] < GRAPH_INF) {
+                if (in_degree[i] == 0) s.push(i);
+            }
+        }
+
+        delete[] in_degree;
+
+        if(count < n) return false; // 有环
+        else          return true;  // 无环
     }
-    for (int i = 0; i < g.nv; i++) {
-        for (int j = 0; j < g.nv; j++) {
-            const int e = ve[i];
-            const int l = vl[j] - g.matrix[i][j];
-            if (e == l) {
-                if (i == 0) {
-                    path[count++] = i;
-                    path[count++] = j;
-                } else {
-                    path[count++] = j;
+
+    // @brief 求关键路径，第一个顶点为起点，最后一个顶点为终点.
+    int critical_path(const graph_t &g, int path[MAX_NV]) {
+        int count = 0;    // 关键路径的顶点个数
+        graph_weight_t *ve = new graph_weight_t[g.nv];
+        graph_weight_t *vl = new graph_weight_t[g.nv];
+
+        if (!toposort_ve(g, topological, ve)) return 0;  // 有环
+
+        for (int i = 0; i < MAX_NV; i++) path[i] = -1;
+        // 初始化 vl 为最大
+        for (int i = 0; i < g.nv; i++) vl[i] = ve[g.nv-1];
+
+        // 逆序计算vl
+        for (int i = g.nv-1; i >=0; i--) {
+            const int k = topological[i];
+            for (int j = 0; j < g.nv; j++) {
+                if (g.matrix[j][k] < GRAPH_INF) {
+                    if (vl[j] > vl[k] - g.matrix[j][k])
+                        vl[j] = vl[k] - g.matrix[j][k];
                 }
             }
         }
+        for (int i = 0; i < g.nv; i++) {
+            for (int j = 0; j < g.nv; j++) {
+                const int e = ve[i];
+                const int l = vl[j] - g.matrix[i][j];
+                if (e == l) {
+                    if (i == 0) {
+                        path[count++] = i;
+                        path[count++] = j;
+                    } else {
+                        path[count++] = j;
+                    }
+                }
+            }
+        }
+
+        delete[] ve;
+        delete[] vl;
+        return count;
     }
 
-    delete[] ve;
-    delete[] vl;
-    return count;
-}
+    /** 读取输入，构建图. */
+    void read_graph() {
+        cin>> g.nv >> g.ne;
 
-/** 读取输入，构建图. */
-void read_graph() {
-    cin>> g.nv >> g.ne;
+        // 初始化图，所有节点间距离为无穷大
+        for (int i = 0; i < g.nv; i++)
+            for (int j = 0; j < g.nv; j++)
+                g.matrix[i][j] = GRAPH_INF;
 
-    // 初始化图，所有节点间距离为无穷大
-    for (int i = 0; i < g.nv; i++)
-        for (int j = 0; j < g.nv; j++)
-            g.matrix[i][j] = GRAPH_INF;
-
-    for (int k = 0; k < g.ne; k++) {  // 读取边信息
-        char chx, chy;
-        graph_weight_t w;
-        cin >> chx >> chy >> w;
-        g.matrix[chx - 'A'][chy - 'A'] = w;
+        for (int k = 0; k < g.ne; k++) {  // 读取边信息
+            char chx, chy;
+            graph_weight_t w;
+            cin >> chx >> chy >> w;
+            g.matrix[chx - 'A'][chy - 'A'] = w;
+        }
     }
-}
-
-/* test
-
-输入数据:
-6 8
-A B 3
-A C 2
-C D 4
-B D 2
-C F 3
-B E 3
-E F 1
-D F 2
-
-输出: A C D F
-
-*/
-int main() {
-    read_graph();
-    /* 拓扑排序 */
-    const int count = critical_path(g, path);
-    for (int i = 0; i < count; i++) {
-        cout << (char)('A' + path[i]) << " ";
+    int main() {
+        read_graph();
+        /* 拓扑排序 */
+        const int count = critical_path(g, path);
+        for (int i = 0; i < count; i++) {
+            cout << (char)('A' + path[i]) << " ";
+        }
+        return 0;
     }
-    return 0;
-}
+
+    输入数据:
+        6 8
+        A B 3
+        A C 2
+        C D 4
+        B D 2
+        C F 3
+        B E 3
+        E F 1
+        D F 2
+
+    输出: A C D F
 \end{Codex}
 
-\subsubsection{算法分析}
+【解题思路】
 一次正向，复杂度为$O(n^2)$，一次逆向，复杂度为$O(n^2)$，因此，该算法的复杂度为$O(n^2)$。
 
 
@@ -2481,16 +2404,11 @@ Visually, the graph looks like the following:
 \end{Code}
 
 
-\subsubsection{分析}
-广度优先遍历或深度优先遍历都可以。
-
-
-\subsubsection{DFS}
+【DFS】
 \begin{Code}
 	// LeetCode, Clone Graph
 	// DFS，时间复杂度O(n)，空间复杂度O(n)
 	class Solution {
-		public:
 		UndirectedGraphNode *cloneGraph(const UndirectedGraphNode *node) {
 			if(node == nullptr) return nullptr;
 			// key is original node，value is copied node
@@ -2517,12 +2435,11 @@ Visually, the graph looks like the following:
 \end{Code}
 
 
-\subsubsection{BFS}
+【BFS】
 \begin{Code}
 	// LeetCode, Clone Graph
 	// BFS，时间复杂度O(n)，空间复杂度O(n)
 	class Solution {
-		public:
 		UndirectedGraphNode *cloneGraph(const UndirectedGraphNode *node) {
 			if (node == nullptr) return nullptr;
 			// key is original node，value is copied node
@@ -2554,8 +2471,3 @@ Visually, the graph looks like the following:
 };
 \end{Code}
 
-
-\subsubsection{相关题目}
-\begindot
-\item 无
-\myenddot

@@ -1,9 +1,9 @@
 \chapter{Object Oriented Design}
 
 \section{Robot}
-Design a robot that will take your order and make sandwiches for you. 
+Design a robot that will take your order and make sandwiches for you.
 
-Once I was done with this, I was supposed to extend it to have multiple robots doing this job like an assembly line handling multiple sandwiches and other edible items 
+Once I was done with this, I was supposed to extend it to have multiple robots doing this job like an assembly line handling multiple sandwiches and other edible items
 
 Once I handled that, he asked me to create a web service for this that will handle online ordering. He also wanted me to implement fulfillment centers
 
@@ -14,35 +14,35 @@ Once I handled that, he asked me to create a web service for this that will hand
 4. Robat as client,for accepting order,it will have list of orders,And will prepare items calling item's prepare method.
 
 \section{sumBill}
-Given an abstract class A having a function sumBill(int a, int b). Now assume that you have 3 or 4 class extending class A and implementing their version of sumBill. And in 
-various locations in the code you are making calls to sumBill with integer parameters. 
-Later on it is identified that the parameters need to be of type double rather than int. So now one has to go refactor all the places which make a call to sumBill to pass 
-parameters of double data type. 
-So the question is what could the developer had done better to avoid such a problem in the first place. 
+Given an abstract class A having a function sumBill(int a, int b). Now assume that you have 3 or 4 class extending class A and implementing their version of sumBill. And in
+various locations in the code you are making calls to sumBill with integer parameters.
+Later on it is identified that the parameters need to be of type double rather than int. So now one has to go refactor all the places which make a call to sumBill to pass
+parameters of double data type.
+So the question is what could the developer had done better to avoid such a problem in the first place.
 
 \subsection{分析}
 1. Method overloading：
 
-Having an abstract overloaded method sumBill which accepts double parameter types and let derived classes override the method. It causes less flexibility to the developers as this 
-technique will require the changes in every derived class. 
+Having an abstract overloaded method sumBill which accepts double parameter types and let derived classes override the method. It causes less flexibility to the developers as this
+technique will require the changes in every derived class.
 
 2. Encapsulation：
 
-Box the primitive type integer or double in a user defined object and the object self sufficient to know the underlying the primitive data type. 
+Box the primitive type integer or double in a user defined object and the object self sufficient to know the underlying the primitive data type.
 
-class A{ 
-	sumBill(summableObject s1, summableObject s2); 
-} 
+class A{
+	sumBill(summableObject s1, summableObject s2);
+}
 
-3. Using Java.lang.Number class, you could pass any Integer, Double etc objects.. 
-class A{ 
-	sumBill(Number s1, Number s2); 
-} 
+3. Using Java.lang.Number class, you could pass any Integer, Double etc objects..
+class A{
+	sumBill(Number s1, Number s2);
+}
 
 \section{WebCrawler}
-Design the algorithm and the system for a WebCrawler. 
-The webcralwler will be provided millions of URLs. The webpage will be downloaded and then parsed for more URLs. If more URLs are found then they should also be downloaded and 
-parsed. 
+Design the algorithm and the system for a WebCrawler.
+The webcralwler will be provided millions of URLs. The webpage will be downloaded and then parsed for more URLs. If more URLs are found then they should also be downloaded and
+parsed.
 
 He was interested in: \\
 1. Scale to handle millions of URLs \\
@@ -53,24 +53,24 @@ Here is my design: \\
 1, "Download worker". input: URL, output: URL \& documentation \\
 2, "URL extract worker". Input: documentation, output: URLs \\
 3, "URL feed". it accept URLs and then prepare to dispatch URLs to works. you can choose message queue or any technology. \\
-4, "URL judgement". "URL extract worker" parse the document and output URLs. URL judgement component will lookup DB/memcache/... and decide if we need add all or parts fo URLs to 
+4, "URL judgement". "URL extract worker" parse the document and output URLs. URL judgement component will lookup DB/memcache/... and decide if we need add all or parts fo URLs to
 "URL feed". \\
 5, URL key and value storage. the value can includes URL expiration time, URL downloaded document location, size, ... we can use memcache, DB... \\
-6, background thread. it can check the URL key and value storage periodically. if a URL expired, we send the URL to "URL feeder" to update the documents and URLs 
+6, background thread. it can check the URL key and value storage periodically. if a URL expired, we send the URL to "URL feeder" to update the documents and URLs
 
 \section{Vending Machine}
 Design a vending machine
 
 \subsection{分析}
-class Item < describes the various items in the vending machine> 
+class Item < describes the various items in the vending machine>
 
-class ProductCode < to select which drink/snack you want> 
+class ProductCode < to select which drink/snack you want>
 
-class Coin < to accept coins> 
+class Coin < to accept coins>
 
-class Refund < to return remainder coins> 
+class Refund < to return remainder coins>
 
-class Stock < to keep track of the vending machine stock for each product> 
+class Stock < to keep track of the vending machine stock for each product>
 
 class Bagel, Donut, Energy bar, Chocolates extends class Item
 
@@ -157,7 +157,7 @@ Design a valet parking system. Requirements of the valet parking system should b
 				return t;
 			}
 			return null;
-		} 
+		}
 		
 		public Vehicle Unpark(Ticket ticket) {
 			if (ticket != null && ticketRemainder.ContainsKey(ticket)) {
@@ -214,15 +214,15 @@ Design a valet parking system. Requirements of the valet parking system should b
 Implement << operator. What are the differences of implementation as a member function and a non-member function
 
 \section{Like Functionality}
-Design a system like friend's functionality in facebook. should have all features of facebook's friends functionality. like for each person , he can have any number of friends , 
+Design a system like friend's functionality in facebook. should have all features of facebook's friends functionality. like for each person , he can have any number of friends ,
 he will get suggestions for new firends , showing common friends if we visits any other profile . algo should be scalable , robust .
 
 \subsection{分析}
-Basically a friends network is an undirected graph. Each person is a vertex of the graph and friendship is an edge between the two vertices. We can represent the graph by by 
+Basically a friends network is an undirected graph. Each person is a vertex of the graph and friendship is an edge between the two vertices. We can represent the graph by by
 maintaining an adjacency list. \\
-- Like: Each person maintains a list of Posts. Lets say person A puts a post, persons who are connected to person A will be notified about the post (observer pattern). Friend B 
+- Like: Each person maintains a list of Posts. Lets say person A puts a post, persons who are connected to person A will be notified about the post (observer pattern). Friend B
 can like a post which increase the 'Like' count. \\
-- Friends Suggestion: For person A find all nodes X that is at distance 2 from node A. (Now this is scalable as the requirements can tell what is the depth we want to look for 
+- Friends Suggestion: For person A find all nodes X that is at distance 2 from node A. (Now this is scalable as the requirements can tell what is the depth we want to look for
 making suggestions.) \\
 - Common Friends: When A visits person B. Find all nodes X that are at distance 1 from node A.
 
@@ -231,14 +231,14 @@ To design classes and methods for casino cards games, what would you consider wh
 
 \subsection{分析}
 \begin{Code}
-	//Suit: 
-	//	Club = 0 
-	//	Diamond = 1 
-	//	Heart = 2 
-	//	Spade = 3 
+	//Suit:
+	//	Club = 0
+	//	Diamond = 1
+	//	Heart = 2
+	//	Spade = 3
 	//
-	//Color: 
-	//	Black = 0 
+	//Color:
+	//	Black = 0
 	//	Red = 1
 	//	
 	class Cards {
@@ -252,7 +252,7 @@ To design classes and methods for casino cards games, what would you consider wh
 			m_suit = s ;
 		}
 		
-		int getRank ( ) { 
+		int getRank ( ) {
 			return m_rank ;
 		}
 		
@@ -336,7 +336,7 @@ To design classes and methods for casino cards games, what would you consider wh
 \end{Code}
 
 \section{Logger}
-Design a logger class for your application? The log messages can be printed in a log file. 
+Design a logger class for your application? The log messages can be printed in a log file.
 Suppose you may want to provide the user the option whether he wants to print the messages in a log file or into database at runtime. How would you modify your earlier design?
 
 \subsection{分析}
@@ -345,7 +345,7 @@ Suppose you may want to provide the user the option whether he wants to print th
 		private:
 		bool db_flag;
 		string log_name;
-		static Logger *m_pInstance; 
+		static Logger *m_pInstance;
 		Logger (){};
 		Logger(const Logger &);
 		Logger &( operator =(const Logger &) {};
@@ -354,14 +354,14 @@ Suppose you may want to provide the user the option whether he wants to print th
 		public:
 		static Logger * Instance() {};
 		bool openlogfile(bool flag,string logname);
-		void writetoLog();      
+		void writetoLog();
 		bool closeLog();
 		
 	}
 	
 	Logger * Logger::m_pInstance = NULL;
 	Logger * Logger :: Instance(bool flag,string logname) {
-		if (!m_pInstance) 
+		if (!m_pInstance)
 		m_pInstance = new Logger(flag,logname);
 		
 		return m_pInstance;
@@ -378,8 +378,8 @@ Suppose you may want to provide the user the option whether he wants to print th
 \end{Code}
 
 \section{Tree Serialize and Deserialize}
-Given a tree - not necessarily a binary tree - the serialize method should create a string for the tree. The deserialize method should be able to reproduce the same tree using the 
-string derived from the serialize method. 
+Given a tree - not necessarily a binary tree - the serialize method should create a string for the tree. The deserialize method should be able to reproduce the same tree using the
+string derived from the serialize method.
 
 Basically, serialize() takes in a tree and returns a string, deserialize() takes in a string and returns the tree.
 
@@ -420,7 +420,7 @@ Basically, serialize() takes in a tree and returns a string, deserialize() takes
 \end{Code}
 
 \section{Furniture}
-A furniture can be made of material like metal, wood, .... Also there are different furniture types chair, table, sofa. A wood furniture should be tested against choaking. metal 
+A furniture can be made of material like metal, wood, .... Also there are different furniture types chair, table, sofa. A wood furniture should be tested against choaking. metal
 furniture is tested against fire, etc. Design these in OOAD.
 
 \subsection{分析}
@@ -497,26 +497,26 @@ furniture is tested against fire, etc. Design these in OOAD.
 Design a Pool class and write down any interfaces that you could think? A Pool class could be a Thread Pool or memory pool, that can store resources.
 
 \subsection{分析}
-This is a contextual question and is specially based on the architecture of the component or the product you are using. However, assuming the general structure, I would classify 
-as follows. 
+This is a contextual question and is specially based on the architecture of the component or the product you are using. However, assuming the general structure, I would classify
+as follows.
 
 Class Pool having members as \\
 1> Number_of_resources. \\
 2> Thread_count / memory_constraints. \\
 3> semaphore_variable // to lock \& unlock No_of_resources . \\
-etc. 
+etc.
 
-Now for that interface would be like. 
+Now for that interface would be like.
 
 1> getSystemthread() // which will give a new thread if possible. \\
-2> releaseThread(threadID ). 
+2> releaseThread(threadID ).
 
 
-This question goes on with the discussion panel as the question have a vast scope. like Singleton design Pattern should control the thread access and mechanism to overcome 
+This question goes on with the discussion panel as the question have a vast scope. like Singleton design Pattern should control the thread access and mechanism to overcome
 deadlock using semaphore has to be designed with.
 
 \section{C++ Class}
-What are general guidelines you follow while creating new classes in C++ 
+What are general guidelines you follow while creating new classes in C++
 
 \subsection{分析}
 My answer: \\
@@ -524,16 +524,16 @@ My answer: \\
 2. Use reference counting to do mem management, he asked me to use shared_ptr within the class\\
 
 My understanding is as following apart from the above answers. Please correct me if you think something is not feasible. \\
-1. We need to think whether we want to create an abstract class (making some of its method as pure virtual). If there is a possibility of extending the behaviors of this class we 
+1. We need to think whether we want to create an abstract class (making some of its method as pure virtual). If there is a possibility of extending the behaviors of this class we
 can make some of its member function as virtual. \\
-2. On the other hand, if the class has to used with different data types and there is not much change in the behavior (i.e. member functions) for data types, we can create a 
-template class. For example while writing any container class we may think of making it a template class, so that different data types can be stored inside the container class. 
+2. On the other hand, if the class has to used with different data types and there is not much change in the behavior (i.e. member functions) for data types, we can create a
+template class. For example while writing any container class we may think of making it a template class, so that different data types can be stored inside the container class.
 This would depend upon the business use case for which we are designing/writing the class.
 
 1. What's the class used for? You cannot include everything or too much in one class. \\
 2. You are going to create an abstract class or a class inheriting another? \\
 3. Namespace, Constructors, Members, Properties, Methods, etc. \\
-4. The role of this class in your design/architecture/model. 
+4. The role of this class in your design/architecture/model.
 
 1.private variables. \\
 2.public get and set methods  \\
@@ -543,14 +543,14 @@ This would depend upon the business use case for which we are designing/writing 
 6.Do I need virtual functions or an abstract class or just a simple class?
 
 \section{Game}
-It has different types of monsters and different weapons. hero would shoot monster. each monster would have some initial health. Each weapon would do some predefined damage to 
+It has different types of monsters and different weapons. hero would shoot monster. each monster would have some initial health. Each weapon would do some predefined damage to
 monster. when its health gets 0, monster would die/disappear. and there would be multiple levels. based on level, monster and their behavior would change.
 
 \subsection{分析}
 \begin{Code}
-	public class Weapon{ 
+	public class Weapon{
 		String name;
-		int damagingEffect; 
+		int damagingEffect;
 		int bulletsLeft;
 		
 		public Weapon(name, damagingEffect, bulletsLeft) {// initialize all}
@@ -574,10 +574,10 @@ monster. when its health gets 0, monster would die/disappear. and there would be
 		Weapon currentWeapon;
 		
 		public Hero(Set<Weapon> weapons) {
-			for(Weapon weapon:weapons) 
+			for(Weapon weapon:weapons)
 			this.weapons.put(weapon.name(), weapon);
 			currentWeapon = weapons.get(0);
-		}       
+		}
 		
 		public void setCurrentWeapon(String name) {
 			if (!weapons.contains(name)) {
@@ -608,9 +608,9 @@ monster. when its health gets 0, monster would die/disappear. and there would be
 			return isDead();
 		}
 		
-		public boolean isDead() { 
+		public boolean isDead() {
 			return health<=0;
-		} 
+		}
 	}
 	
 	public class Game {
@@ -627,14 +627,14 @@ monster. when its health gets 0, monster would die/disappear. and there would be
 			if (monster.isDead()) {
 				monsters.remove(monsterName);
 			}
-		} 
+		}
 		
 		public void misFire() {
 			hero.fire(); // didn't hit any monster
 		}
 		
 		public LevelResult getLevelResult() {
-			if (mosters.isEmpty()) { 
+			if (mosters.isEmpty()) {
 				return LevelResult.WON;
 			} else if (hero.isUnArmed()) {
 			return LevelResult.LOST;
@@ -646,7 +646,7 @@ monster. when its health gets 0, monster would die/disappear. and there would be
 \end{Code}
 
 \section{Elevator}
-How to design an elevator system. Main thing to worry about is how would you notify the elevator that it needs to move up or down. and also if you are going to have a centralized 
+How to design an elevator system. Main thing to worry about is how would you notify the elevator that it needs to move up or down. and also if you are going to have a centralized
 class to control this behavior and how could you distribute the control.
 
 \subsection{分析}
@@ -861,7 +861,7 @@ Design a multiple elevators system of skyscraper. Design an algorithm to let per
 		Mutexlock lock(elevLock);
 		
 		// Logic to find if the elevator can process the request
-		if ((this->state == STATIONARY) || 
+		if ((this->state == STATIONARY) ||
 		((this->state == UP) && (hallcall.direction == UP) && (this->currFloor < hallcall.floor)) ||
 		((this->state == DOWN) && (hallcall.direction == DOWN) && (this->currFloor > hallcall.floor))){
 			this->lDestFloorList_->push_back(hallcall.floor);
@@ -1011,15 +1011,15 @@ Design Coffee Shop? Follow up: Extend this to handle multiple coffee shops (Ex l
 		void removeWaiter ();
 		void addCashier();
 		void removeCashier ();
-		//similar for other employees, like manager 
+		//similar for other employees, like manager
 		
 		void addTable ();
 		void removeTable():
 		
 		void getOrder (Table tableId, Item itemID, int quantity); // this will order object and place in map
 		
-		double getBill (Table tableId){ 
-			Order order = orders[tableId]; 
+		double getBill (Table tableId){
+			Order order = orders[tableId];
 			order.getBill ();
 		}
 	}
@@ -1032,16 +1032,16 @@ Design a class for Game of card. You can use any design pattern or data structur
 
 \subsection{fen'xi分析}
 \begin{Code}
-	#include <iostream> 
+	#include <iostream>
 	#include <algorithm>
 	#include <vector>
 	
-	using namespace std; 
+	using namespace std;
 	
 	enum CardSuite{
-		CARD_CLUB, 
+		CARD_CLUB,
 		CARD_HEART,
-		CARD_SPADE, 
+		CARD_SPADE,
 		CARD_DIAMOND
 	};
 	
@@ -1053,7 +1053,7 @@ Design a class for Game of card. You can use any design pattern or data structur
 		CARD_FIVE,
 		CARD_SIX,
 		CARD_SEVEN,
-		CARD_EIGHT, 
+		CARD_EIGHT,
 		CARD_NINE,
 		CARD_TEN,
 		CARD_JACK,
@@ -1064,7 +1064,7 @@ Design a class for Game of card. You can use any design pattern or data structur
 	class OneCard{
 		CardSuite eSuite_;
 		CardNumber eNumber_;
-	public : 
+	public :
 		OneCard(CardSuite suite, CardNumber num){
 			eSuite_ = suite;
 			eNumber_=num;
@@ -1081,7 +1081,7 @@ Design a class for Game of card. You can use any design pattern or data structur
 	};
 	
 	class CardDeck{
-		vector <OneCard> cardDecks_; 
+		vector <OneCard> cardDecks_;
 		public:
 		CardDeck(){
 			CardSuite suite;
@@ -1108,12 +1108,12 @@ Design a class for Game of card. You can use any design pattern or data structur
 	};
 	
 	
-	int main( ){ 
+	int main( ){
 		CardDeck oneCardDeck;
 		oneCardDeck.Decompile();
 		oneCardDeck.RandomizeCards();
 		oneCardDeck.Decompile();
-		return 0; 
+		return 0;
 	}
 \end{Code}
 
@@ -1204,7 +1204,7 @@ Design a DVD renting library system
 \end{Code}
 
 \section{Dropbox Invitation}
-Design a Dropbox invite system (refer other guys to join and get more space) 
+Design a Dropbox invite system (refer other guys to join and get more space)
 Assume whats required and design.
 
 \begin{Code}
@@ -1214,7 +1214,7 @@ Assume whats required and design.
 		String name;
 		String email;
 		
-		/* total space -- need to add more information about the account 
+		/* total space -- need to add more information about the account
 		but this is enough for this question (available, max, etc)
 		*/
 		int space;
@@ -1223,7 +1223,7 @@ Assume whats required and design.
 	
 	class Invite {
 		String email; //email of the person being invited
-		int    id;    //id of the user who invited him   
+		int    id;    //id of the user who invited him
 		
 		Date   sent_date; //These 2 will allow the system to
 		boolean status;   //track the invite status and send
@@ -1239,11 +1239,11 @@ Assume whats required and design.
 		void sendInvite(User from, String to) {...}
 		
 		//When the invited party accepts the invitation
-		//this function is triggered and: 
+		//this function is triggered and:
 		//1. Creates a new User and adds to users.
 		//2. Finds the user that invited him from the invites list
 		//   (according to email and id) and calls add_space
-		void accept(String email) {...}          
+		void accept(String email) {...}
 	}
 \end{Code}
 
@@ -1260,16 +1260,16 @@ Implement Poker game
 
 \section{Three Stacks}
  Implement three stacks using single array.
- 
+
  \section{C++Garbage}
  Design garbage collector of C++
- 
+
  \section{Alarm Clock}
  design an alarm clock for a deaf person.
- 
+
  \begin{Code}
- 	//Vibrator, light \& pillow vibrator. To cover minimal to severely deaf. 
- 	//Vibrator + Light = Normal deaf. 
+ 	//Vibrator, light \& pillow vibrator. To cover minimal to severely deaf.
+ 	//Vibrator + Light = Normal deaf.
  	//Pillow vibrator + Light = severely deaf.
  	Class Clock
 	 	Set the time.
@@ -1297,4 +1297,4 @@ Implement Poker game
  	Light
 	 	On
 	 	Off
- \end{Code}
+ \end{Code} 

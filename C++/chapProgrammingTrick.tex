@@ -4,12 +4,12 @@
 输入数据一般放在全局变量，且在运行过程中不要修改这些变量。
 
 
-在判断两个浮点数 (i.e., 
-float/double) 
-a和b是否相等时，不应该用\fn{a==b}，而是判断二者之差的绝对值\fn{fabs(a-b)}是否小于某个阀值 
-\fn{$\epsilon$=1e-9}。
+在判断两个浮点数 (i.e.,
+float/double)
+a和b是否相等时，不应该用\fn{a==b}，而是判断二者之差的绝对值\fn{fabs(a-b)}是否小于某个阀值
+$\epsilon=1e-9$, $a==b\equiv fabs(a-b)\leq\epsilon$。
 
-判断一个整数是否是为奇数，用\fn{x \% 2 != 0}或\fn{x \& 1 != 0}，不要用\fn{x \% 2 == 
+判断一个整数是否是为奇数，用\fn{x \% 2 != 0}或\fn{x \& 1 != 0}，不要用\fn{x \% 2 ==
 1}，因为x可能是负数。
 
 用\fn{char}的值作为数组下标（例如，统计字符串中每个字符出现的次数），要考虑到\fn{char}可能是负数。有的人考虑到了，先强制转型为\fn{unsigned
@@ -35,11 +35,11 @@ a和b是否相等时，不应该用\fn{a==b}，而是判断二者之差的绝对
 \end{Code}
 \subsubsection{使用reserve来避免不必要的重新分配}
 \subsubsection{用empty来代替检查size()是否为0}
-\subsubsection{确保new|delete和malloc|free的成对出现, 
+\subsubsection{确保new|delete和malloc|free的成对出现,
 使用智能指针shared_ptr和unique_ptr，替代auto_ptr容器}
 \subsubsection{用distance和advance把const_iterator转化成iterator}
 
-\section{数据结构与算法汇总}
+\subsubsection{数据结构与算法汇总}
 
 1、常见数据结构
 

@@ -17,6 +17,7 @@
 Given a BST and a number x, check whether exists two nodes in the BST whose sum equals to x. You can not use one extra array to serialize the BST and do a 2sum solver on it.
 
 【Difference between hashmap and BST】
+【BST Serialize and Deserialize】
 
 \subsubsection{相关题目}
 \begindot
@@ -640,7 +641,7 @@ int main() {
 void build_post(const char * pre, const char *in, const int n, char *post) {
     int left_len = strchr(in, pre[0]) - in;
     if(n <= 0) return;
-    
+
     build_post(pre + 1, in, left_len, post);
     build_post(pre + left_len + 1, in + left_len + 1,
             n - left_len - 1, post + left_len);
@@ -720,7 +721,7 @@ void rebuild_test() {
     bt_node_t *root;
     scanf("%s%s", pre, in);
     n = strlen(pre);
-    
+
     rebuild(pre, in, n, &root);
     print_post_order(root);
 }
@@ -1026,9 +1027,9 @@ Note: Recursive solution is trivial, could you do it iteratively?
 			vector<int> result;
 			TreeNode dummy(-1);
 			TreeNode *cur, *prev = nullptr;
-			std::function < void(const TreeNode*)> visit = 
+			std::function < void(const TreeNode*)> visit =
 			[&result](const TreeNode *node){
-				result.push_back(node->val); 
+				result.push_back(node->val);
 			};
 			
 			dummy.left = root;
@@ -1071,7 +1072,7 @@ static void reverse(TreeNode *from, TreeNode *to) {
 }
 
 // 访问逆转后的路径上的所有结点
-static void visit_reverse(TreeNode* from, TreeNode *to, 
+static void visit_reverse(TreeNode* from, TreeNode *to,
 std::function< void(const TreeNode*) >& visit) {
 	TreeNode *p = to;
 	reverse(from, to);
@@ -1835,7 +1836,7 @@ After calling your function, the tree should look like:
 			if (root == nullptr) return;
 			
 			TreeLinkNode dummy(-1);
-			for (TreeLinkNode *curr = root, *prev = &dummy; 
+			for (TreeLinkNode *curr = root, *prev = &dummy;
 			curr; curr = curr->next) {
 				if (curr->left != nullptr){
 					prev->next = curr->left;
@@ -2023,7 +2024,7 @@ Given $n = 3$, there are a total of 5 unique BST's.
 如果把上例的顺序改一下，就可以看出规律了。
 \begin{Code}
 	1       1           2          3       3
-	\       \         / \        /       / 
+	\       \         / \        /       /
 	3       2       1   3      2       1
 	/         \                /         \
 	2            3              1           2
@@ -2285,7 +2286,7 @@ Given a singly linked list where elements are sorted in ascending order, convert
 			
 			TreeNode* root = new TreeNode (nth_node (head, len / 2 + 1)->val);
 			root->left = sortedListToBST (head, len / 2);
-			root->right = sortedListToBST (nth_node (head, len / 2 + 2), 
+			root->right = sortedListToBST (nth_node (head, len / 2 + 2),
 			(len - 1) / 2);
 			
 			return root;
@@ -2980,7 +2981,7 @@ heap_elem_t heap_top(const heap_t *h) {
 \subsubsection{样例输入}
 \begin{Code}
 5
-1 3 2 4 5 
+1 3 2 4 5
 6 3 4 1 7
 \end{Code}
 
@@ -3278,7 +3279,7 @@ int main() {
 【解题思路】
 Tadu城市有两个黑帮帮派，已知有$N$黑帮分子，从1到$N$编号，每个人至少属于一个帮派。每个帮派至少有一个人。给你$M$条信息，有两类信息：
 \begindot
-\item D a b，明确告诉你，a和b属于不同的帮派 
+\item D a b，明确告诉你，a和b属于不同的帮派
 \item A a b，问你，a和b是否属于不同的帮派
 \myenddot
 
@@ -3448,29 +3449,29 @@ int main() {
 
 \subsection{食物链} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 【解题思路】
-动物王国中有三类动物A,B,C，这三类动物的食物链构成了有趣的环形。A吃B， B吃C，C吃A。 现有$N$个动物，从1到$N$编号。每个动物都是A,B,C中的一种，但是我们并不知道它到底是哪一种。 
+动物王国中有三类动物A,B,C，这三类动物的食物链构成了有趣的环形。A吃B， B吃C，C吃A。 现有$N$个动物，从1到$N$编号。每个动物都是A,B,C中的一种，但是我们并不知道它到底是哪一种。
 
 有人用两种说法对这N个动物所构成的食物链关系进行描述：
 \begindot
-\item 第一种说法是"1 X Y"，表示X和Y是同类。 
-\item 第二种说法是"2 X Y"，表示X吃Y。 
+\item 第一种说法是"1 X Y"，表示X和Y是同类。
+\item 第二种说法是"2 X Y"，表示X吃Y。
 \myenddot
 
-此人对$N$个动物，用上述两种说法，一句接一句地说出$K$句话，这$K$句话有的是真的，有的是假的。当一句话满足下列三条之一时，这句话就是假话，否则就是真话。 
+此人对$N$个动物，用上述两种说法，一句接一句地说出$K$句话，这$K$句话有的是真的，有的是假的。当一句话满足下列三条之一时，这句话就是假话，否则就是真话。
 \begindot
-\item 当前的话与前面的某些真的话冲突，就是假话； 
-\item 当前的话中X或Y比N大，就是假话； 
-\item 当前的话表示X吃X，就是假话。 
+\item 当前的话与前面的某些真的话冲突，就是假话；
+\item 当前的话中X或Y比N大，就是假话；
+\item 当前的话表示X吃X，就是假话。
 \myenddot
 
-你的任务是根据给定的$N(1 \leq N \leq 50,000)$和$K$句话($0 \leq K \leq 100,000$)，输出假话的总数。 
+你的任务是根据给定的$N(1 \leq N \leq 50,000)$和$K$句话($0 \leq K \leq 100,000$)，输出假话的总数。
 
 \subsubsection{输入}
-第一行是两个整数$N$和$K$，以一个空格分隔。 
+第一行是两个整数$N$和$K$，以一个空格分隔。
 
 以下$K$行每行是三个正整数D，X，Y，两数之间用一个空格隔开，其中D表示说法的种类。
 \begindot
-\item 若D=1，则表示X和Y是同类。 
+\item 若D=1，则表示X和Y是同类。
 \item 若D=2，则表示X吃Y。
 \myenddot
 
@@ -3480,12 +3481,12 @@ int main() {
 \subsubsection{样例输入}
 \begin{Code}
 100 7
-1 101 1 
+1 101 1
 2 1 2
-2 2 3 
-2 3 3 
-1 1 3 
-2 3 1 
+2 2 3
+2 3 3
+1 1 3
+2 3 1
 1 5 5
 \end{Code}
 
@@ -3803,11 +3804,11 @@ int main() {
 \subsubsection{样例输入}
 \begin{Code}
 6
-4 
-5 
-6 
-2 
-1 
+4
+5
+6
+2
+1
 3
 4
 1 3 5
@@ -4338,18 +4339,18 @@ bool trie_tree_insert(trie_tree_t *tree, char *word) {
 
 
 【解题思路】
-An encoding of a set of symbols is said to be immediately decodable if no code for one symbol is the prefix of a code for another symbol. We will assume for this problem that all codes are in binary, that no two codes within a set of codes are the same, that each code has at least one bit and no more than ten bits, and that each set has at least two codes and no more than eight. 
+An encoding of a set of symbols is said to be immediately decodable if no code for one symbol is the prefix of a code for another symbol. We will assume for this problem that all codes are in binary, that no two codes within a set of codes are the same, that each code has at least one bit and no more than ten bits, and that each set has at least two codes and no more than eight.
 
 Examples: Assume an alphabet that has symbols \fn{\{A, B, C, D\}}.
 
-The following code is immediately decodable: 
+The following code is immediately decodable:
 \begin{Code}
-A:01 B:10 C:0010 D:0000 
+A:01 B:10 C:0010 D:0000
 \end{Code}
 
-but this one is not: 
+but this one is not:
 \begin{Code}
-A:01 B:10 C:010 D:0000 (Note that A is a prefix of C) 
+A:01 B:10 C:010 D:0000 (Note that A is a prefix of C)
 \end{Code}
 
 

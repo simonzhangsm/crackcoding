@@ -12,16 +12,16 @@
 \subsection{Remove Duplicates from Sorted Array}
 \label{sec:remove-duplicates-from-sorted-array}
 
-Given a sorted array, remove the duplicates in place such that each element 
+Given a sorted array, remove the duplicates in place such that each element
 appear only once and return the new length.
-Do not allocate extra space for another array, you must do this in place with 
+Do not allocate extra space for another array, you must do this in place with
 constant memory.
 For example, given input array $\code{A = [1,1,2]}$,
 Your function should return $length = 2$, and $A$ is now $\code{[1,2]}$.
 
 【解题思路】二指针问题,一前一后扫描。
 
-\subsubsection{Algorithm1}
+【Algorithm】
 \begin{Code}
 	// LeetCode, Remove Duplicates from Sorted Array
 	// 时间复杂度O(n)，空间复杂度O(1)
@@ -29,38 +29,10 @@ Your function should return $length = 2$, and $A$ is now $\code{[1,2]}$.
 		int removeDuplicates(int A[], int n) {
 			if (n==0 || A==nullptr) return 0;
 			int index = 0;
-			for (int i = 1; i < n; i++) 
-				if (A[index] != A[i]) A[++index] = A[i];
+			for (int i = 1; i < n; i++)
+				if (A[index] != A[i])
+                    A[++index] = A[i];
 			return index + 1;
-		}
-	};
-\end{Code}
-\subsubsection{Algorithm2}
-\begin{Code}
-	// LeetCode, Remove Duplicates from Sorted Array
-	// 使用STL，时间复杂度O(n)，空间复杂度O(1)
-	class Solution {
-		int removeDuplicates(int A[], int n) {
-			return distance(A, unique(A, A + n));
-		}
-	};
-\end{Code}
-\subsubsection{Algorithm3}
-\begin{Code}
-	// LeetCode, Remove Duplicates from Sorted Array
-	// 使用STL，时间复杂度O(n)，空间复杂度O(1)
-	class Solution {
-		int removeDuplicates(int A[], int n) {
-			return removeDuplicates(A, A + n, A) - A;
-		}
-		
-		template<typename InIt, typename OutIt>
-		OutIt removeDuplicates(InIt first, InIt last, OutIt output) {
-			while (first != last) {
-				*output++ = *first;
-				first = upper_bound(first, last, *first);
-			}
-			return output;
 		}
 	};
 \end{Code}
@@ -68,7 +40,7 @@ Your function should return $length = 2$, and $A$ is now $\code{[1,2]}$.
 \subsubsection{相关题目}
 
 \begindot
-\item Remove Duplicates from Sorted Array II，见 \S 
+\item Remove Duplicates from Sorted Array II，见 \S
 \ref{sec:remove-duplicates-from-sorted-array-ii}
 \myenddot
 
@@ -87,18 +59,17 @@ your function should return length = 5, and A is now \code{[1,1,2,2,3]}
 【解题思路】
 加一个变量记录一下元素出现的次数即可。这题因为是已经排序的数组，所以一个变量即可解决。如果是没有排序的数组，则需要引入一个hashmap来记录出现次数。
 
-
-\subsubsection{Algorithm1}
+【Sequent Scan】
 \begin{Code}
 	// LeetCode, Remove Duplicates from Sorted Array II
 	// 时间复杂度O(n)，空间复杂度O(1)
-	// @author hex108 (https://github.com/hex108)
+    #define OCCUR 2
 	class Solution {
 		int removeDuplicates(int A[], int n) {
-			if (n <= 2) return n;
-			int index = 2;
-			for (int i = 2; i < n; i++){
-				if (A[i] != A[index - 2])
+			if (n <= OCCUR) return n;
+			int index = OCCUR;
+			for (int i = OCCUR; i < n; i++){
+				if (A[i] != A[index - OCCUR])
 					A[index++] = A[i];
 			}
 			return index;
@@ -107,12 +78,12 @@ your function should return length = 5, and A is now \code{[1,1,2,2,3]}
 \end{Code}
 
 
-\subsubsection{Algorithm2}
-下面是一个更简洁的版本。上面的Algorithm略长，不过扩展性好一些，例如将\fn{occur < 2}改为\fn{occur 
+【Algorithm2】
+
+上面的Algorithm略长，不过扩展性好一些，例如将\fn{occur < 2}改为\fn{occur
 < 3}，就变成了允许重复最多3次。
 \begin{Code}
 	// LeetCode, Remove Duplicates from Sorted Array II
-	// @author 虞航仲 (http://weibo.com/u/1666779725)
 	// 时间复杂度O(n)，空间复杂度O(1)
 	class Solution {
 		int removeDuplicates(int A[], int n) {
@@ -131,10 +102,28 @@ your function should return length = 5, and A is now \code{[1,1,2,2,3]}
 \subsubsection{相关题目}
 
 \begindot
-\item Remove Duplicates from Sorted Array，见 \S 
+\item Remove Duplicates from Sorted Array，见 \S
 \ref{sec:remove-duplicates-from-sorted-array}
 \myenddot
 
+\subsection{Remove Duplicates in Array}
+You're given an array of integers(eg [3,4,7,1,2,9,8]) Find the index of values that satisfy A+B = C+D, where A,B,C and D are integers values in the array.
+Eg: Given [3,4,7,1,2,9,8] array
+The following
+3+7 = 1+ 9 satisfies A+B=C+D
+so print (0,2,3,5)
+
+\subsection{Bar Raiser Round}
+Divide the array(+ve and -ve numbers) into two parts such that the average of both the parts is equal.
+
+Input:
+[1 7 15 29 11 9]
+
+Output:
+[15 9 1 7 11 29]
+
+Explanation:
+The average of first two elements is (15+9)/2 = 12, average of remaining elements is (1+7 +11 +29)/4 = 12
 
 \subsection{Search in Rotated Sorted Array}
 \label{sec:search-in-rotated-sorted-array}
@@ -142,7 +131,7 @@ your function should return length = 5, and A is now \code{[1,1,2,2,3]}
 
 Suppose a sorted array is rotated at some pivot unknown to you beforehand.
 (i.e., \code{0 1 2 4 5 6 7} might become \code{4 5 6 7 0 1 2}).
-You are given a target value to search. If found in the array return its index, 
+You are given a target value to search. If found in the array return its index,
 otherwise return -1.
 You may assume no duplicate exists in the array.
 
@@ -150,7 +139,7 @@ You may assume no duplicate exists in the array.
 二分查找，难度主要在于左右边界的确定。
 
 
-\subsubsection{Algorithm}
+【二分查找】
 \begin{Code}
 	// LeetCode, Search in Rotated Sorted Array
 	// 时间复杂度O(log n)，空间复杂度O(1)
@@ -162,12 +151,14 @@ You may assume no duplicate exists in the array.
 				if (A[mid] == target) return mid;
 				if (A[first] <= A[mid]) {
 					if (A[first] <= target && target < A[mid])
-						last = mid;
-					else	first = mid + 1;
+						last = mid - 1;
+					else	
+                        first = mid + 1;
 				} else {
 					if (A[mid] < target && target <= A[last-1])
 						first = mid + 1;
-					else	last = mid;
+					else	
+                        last = mid - 1;
 				}
 			}
 			return -1;
@@ -179,7 +170,7 @@ You may assume no duplicate exists in the array.
 \subsubsection{相关题目}
 
 \begindot
-\item Search in Rotated Sorted Array II，见 \S 
+\item Search in Rotated Sorted Array II，见 \S
 \ref{sec:search-in-rotated-sorted-array-ii}
 \myenddot
 
@@ -189,7 +180,7 @@ You may assume no duplicate exists in the array.
 
 
 
-Follow up for "Search in Rotated Sorted Array": What if duplicates are 
+Follow up for "Search in Rotated Sorted Array": What if duplicates are
 allowed?
 
 Would this affect the run-time complexity? How and why?
@@ -198,6 +189,7 @@ Write a function to determine if a given target is in the array.
 
 
 【解题思路】
+
 允许重复元素，则上一题中如果\fn{A[m]>=A[l]},那么\fn{[l,m]}为递增序列的假设就不能成立了，比如\code{[1,3,1,1,1]}。
 
 如果\fn{A[m]>=A[l]}不能确定递增，那就把它拆分成两个条件：
@@ -212,18 +204,23 @@ Write a function to determine if a given target is in the array.
 	// 时间复杂度O(n)，空间复杂度O(1)
 	class Solution {
 		bool search(int A[], int n, int target) {
-			int first = 0, last = n;
-			while (first != last) {
+            if(n<1) return false;
+			int first = 0, last = n - 1;
+			while (first <= last) {
 				const int mid = first  + (last - first) / 2;
 				if (A[mid] == target)	return true;
 				if (A[first] < A[mid]) {
-					if (A[first] <= target && target < A[mid])
-						last = mid;
-					else	first = mid + 1;
+                    if(target == A[begin]) return true;
+					if (A[first] < target && target < A[mid])
+						last = mid - 1;
+					else	
+                        first = mid + 1;
 				} else if (A[first] > A[mid]) {
-					if (A[mid] < target && target <= A[last-1])
+                    if(target == A[end]) return true;
+					if (A[mid] < target && target < A[last-1])
 						first = mid + 1;
-					else	last = mid;
+					else	
+                        last = mid - 1;
 				} else //skip duplicate one
 					first++;
 			}
@@ -236,32 +233,46 @@ Write a function to determine if a given target is in the array.
 \subsubsection{相关题目}
 
 \begindot
-\item Search in Rotated Sorted Array，见 \S 
+\item Search in Rotated Sorted Array，见 \S
 \ref{sec:search-in-rotated-sorted-array}
 \myenddot
 
+\subsection{Same Gap from Three Arrays}
+Given three arrays A,B,C containing unsorted numbers. Find three numbers a, b, c from each of array A, B, C such that |a-b|, |b-c| and |c-a| are minimum
+Please provide as efficient code as you can.
+Can you better than this?
+
+\subsection{MinIntNotSum}
+Given a array of positive integers, you have to find the smallest positive integer that can not be formed from the sum of numbers from array.
+
+\subsection{Consecutive Sub-numbers}
+Given a sorted array with some sequenced numbers and some non-sequenced numbers. Write an algorithm that takes this array as an input and returns a list of \{start, end\} of all consecutive numbers. Consecutive numbers have difference of 1 only.
+E.g. of array:
+[4, 5, 6, 7, 8, 9, 12, 15, 16, 17, 18, 20, 22, 23, 24, 27]
+
+\subsection{Count 0s in Array}
+Given a sorted array of 0’s and 1’s. Find out the no. of 0’s in it. Write recursive, iterative versions of the code.
 
 \subsection{Median of Two Sorted Arrays}
 \label{sec:median-of-two-sorted-arrays}
 
 
 
-There are two sorted arrays A and B of size m and n respectively. Find the 
-median of the two sorted arrays. The overall run time complexity should be 
+There are two sorted arrays A and B of size m and n respectively. Find the
+median of the two sorted arrays. The overall run time complexity should be
 $O(\log (m+n))$.
 
 
 【解题思路】
-这是一道非常经典的题。这题更通用的形式是，给定两个已经排序好的数组，找到两者所有元素中第$k$大的元素。
 
-$O(m+n)$的解法比较直观，直接merge两个数组，然后求第$k$大的元素。
+本题通用表述：给定两个已经排序好的数组，找到两者所有元素中第$k$大的元素。
 
-不过我们仅仅需要第$k$大的元素，是不需要“排序”这么复杂的操作的。可以用一个计数器，记录当前已经找到第$m$大的元素了。同时我们使用两个指针\fn{pA}和\fn{pB}，分别指向A和B数组的第一个元素，使用类似于merge
- 
+【解法一】$O(m+n)$的解法比较直观，直接merge两个数组，然后求第$k$大的元素。
+
+【解法二】不过我们仅仅需要第$k$大的元素，是不需要“排序”这么复杂的操作的。可以用一个计数器，记录当前已经找到第$m$大的元素了。同时我们使用两个指针\fn{pA}和\fn{pB}，分别指向A和B数组的第一个元素，使用类似于merge
 sort的原理，如果数组A当前元素小，那么\fn{pA++}，同时\fn{m++}；如果数组B当前元素小，那么\fn{pB++}，同时\fn{m++}。最终当$m$等于$k$的时候，就得到了我们的答案，$O(k)$时间，$O(1)$空间。但是，当$k$很接近$m+n$的时候，这个方法还是$O(m+n)$的。
 
-有没有更好的方案呢？我们可以考虑从$k$入手。如果我们每次都能够删除一个一定在第$k$大元素之前的元素，那么我们需要进行$k$次。但是如果每次我们都删除一半呢？由于A和B都是有序的，我们应该充分利用这里面的信息，类似于二分查找，也是充分利用了“有序”。
-
+【解法三】有没有更好的方案呢？我们可以考虑从$k$入手。如果我们每次都能够删除一个一定在第$k$大元素之前的元素，那么我们需要进行$k$次。但是如果每次我们都删除一半呢？由于A和B都是有序的，我们应该充分利用这里面的信息，类似于二分查找，也是充分利用了“有序”。
 假设A和B的元素个数都大于$k/2$，我们将A的第$k/2$个元素（即\fn{A[k/2-1]}）和B的第$k/2$个元素（即\fn{B[k/2-1]}）进行比较，有以下三种情况（为了简化这里先假设$k$为偶数，所得到的结论对于$k$是奇数也是成立的）：
 \begindot
 \item \fn{A[k/2-1] == B[k/2-1]}
@@ -269,13 +280,11 @@ sort的原理，如果数组A当前元素小，那么\fn{pA++}，同时\fn{m++}�
 \item \fn{A[k/2-1] < B[k/2-1]}
 \myenddot
 
-如果\fn{A[k/2-1] < B[k/2-1]}，意味着\fn{A[0]}到\fn{A[k/2-1}的肯定在$A \cup B$的top 
-k元素的范围内，换句话说，\fn{A[k/2-1}不可能大于$A \cup B$的第$k$大元素。留给读者证明。
-
-因此，我们可以放心的删除A数组的这$k/2$个元素。同理，当\fn{A[k/2-1] > 
+如果\fn{A[k/2-1] < B[k/2-1]}，意味着\fn{A[0]}到\fn{A[k/2-1}的肯定在$A \cup B$的top
+k元素的范围内，换句话说，\fn{A[k/2-1}不可能大于$A \cup B$的第$k$大元素。因此，我们可以放心的删除A数组的这$k/2$个元素。同理，当\fn{A[k/2-1] >
 B[k/2-1]}时，可以删除B数组的$k/2$个元素。
 
-当\fn{A[k/2-1] == 
+当\fn{A[k/2-1] ==
 B[k/2-1]}时，说明找到了第$k$大的元素，直接返回\fn{A[k/2-1]}或\fn{B[k/2-1]}即可。
 
 因此，我们可以写一个递归函数。那么函数什么时候应该终止呢？
@@ -285,8 +294,7 @@ B[k/2-1]}时，说明找到了第$k$大的元素，直接返回\fn{A[k/2-1]}或\
 \item 当\fn{A[k/2-1] == B[k/2-1]}时，返回\fn{A[k/2-1]}或\fn{B[k/2-1]}
 \myenddot
 
-
-\subsubsection{Algorithm}
+【解法三】
 \begin{Code}
 	// LeetCode, Median of Two Sorted Arrays
 	// 时间复杂度O(log(m+n))，空间复杂度O(log(m+n))
@@ -317,26 +325,17 @@ B[k/2-1]}时，说明找到了第$k$大的元素，直接返回\fn{A[k/2-1]}或\
 \end{Code}
 
 
-\subsubsection{相关题目}
-
-\begindot
-\item 无
-\myenddot
-
-
 \subsection{Longest Consecutive Sequence} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \label{sec:longest-consecutive-sequence}
 
 
 
-Given an unsorted array of integers, find the length of the longest consecutive 
+Given an unsorted array of integers, find the length of the longest consecutive
 elements sequence.
-
 For example,
 Given \code{[100, 4, 200, 1, 3, 2]},
-The longest consecutive elements sequence is \code{[1, 2, 3, 4]}. Return its 
+The longest consecutive elements sequence is \code{[1, 2, 3, 4]}. Return its
 length: 4.
-
 Your algorithm should run in $O(n)$ complexity.
 
 
@@ -345,11 +344,11 @@ Your algorithm should run in $O(n)$ complexity.
 
 由于序列里的元素是无序的，又要求$O(n)$，首先要想到用哈希表。
 
-用一个哈希表 \fn{unordered_map<int, bool> 
+用一个哈希表 \fn{unordered_map<int, bool>
 used}记录每个元素是否使用，对每个元素，以该元素为中心，往左右扩张，直到不连续为止，记录下最长的长度。
 
 
-\subsubsection{Algorithm}
+【Hash Cache】
 \begin{Code}
 	// Leet Code, Longest Consecutive Sequence
 	// 时间复杂度O(n)，空间复杂度O(n)
@@ -377,18 +376,16 @@ used}记录每个元素是否使用，对每个元素，以该元素为中心，
 	};
 \end{Code}
 
-\subsubsection{分析2}
-第一直觉是个聚类的操作,应该有union,find的操作.连续序列可以用两端和长度来表示.
-本来用两端就可以表示,但考虑到查询的需求,将两端分别暴露出来.用\fn{unordered_map<int, int> 
-map}来
-存储.原始思路来自于\url{http://discuss.leetcode.com/questions/1070/longest-consecutive-sequence}
+【聚类】
 
-\subsubsection{Algorithm}
+直觉是个聚类的操作，应该有union，find的操作。连续序列可以用两端和长度来表示。
+本来用两端就可以表示，但考虑到查询的需求，将两端分别暴露出来，用\fn{unordered_map<int, int>
+map}来存储。
+
 
 \begin{Code}
 	// Leet Code, Longest Consecutive Sequence
 	// 时间复杂度O(n)，空间复杂度O(n)
-	// Author: @advancedxy
 	class Solution {
 		int longestConsecutive(vector<int> &num) {
 			unordered_map<int, int> map;
@@ -397,9 +394,9 @@ map}来
 			for (int i = 0; i < size; i++) {
 				if (map.find(num[i]) != map.end()) continue;
 				map[num[i]] = 1;
-				if (map.find(num[i] - 1) != map.end()) 
+				if (map.find(num[i] - 1) != map.end())
 					l = max(l, mergeCluster(map, num[i] - 1, num[i]));
-				if (map.find(num[i] + 1) != map.end()) 
+				if (map.find(num[i] + 1) != map.end())
 					l = max(l, mergeCluster(map, num[i], num[i] + 1));
 			}
 			return size == 0 ? 0 : l;
@@ -416,18 +413,49 @@ map}来
 	};
 \end{Code}
 
-\subsubsection{相关题目}
-\begindot
-\item 无
-\myenddot
+【HashMap1】
+\begin{Code}
+class Solution {
+	int longestConsecutive(vector<int> &num) {
+        unordered_map<int,int> s;
+        int longest=1;
+        for(int &i : num){
+            if(s.find(i) == s.end()){
+             s[i] = 1;
+             int left = s.find(i-1) != s.end()? (i-s[i-1]) : i;
+             int right = s.find(i+1) != s.end()? (i+s[i+1]) : i;
+             s[left] = s[right] = right-left+1;
+             longest = s[right]>longest? s[right] : longest;
+            }
+        }
+        return longest;
+    }
+\end{Code}
 
+【HashMap2】The idea is to build a map on the way. The key is the number, the value means the length of the sequence which has the key as one of its borders.
+we iterate each value in the num array, if it resides in the map, just ignore. Else, we find the two adjcent sequences from left and right, and combine them into one seq. after that, we update the value of the borders of the new seq to the length of the seq.
+\begin{Code}
+    class Solution {
+        int longestConsecutive(vector<int> &num) {
+            int res = 0;
+            unordered_map<int, int> h;
+            for (auto& x: num) {
+                if (!h[x]) {
+                    h[x] = 1 + h[x+1] + h[x-1];
+                    if (h[x+1]) h[h[x+1]+x] = h[x];
+                    if (h[x-1]) h[x-h[x-1]] = h[x];
+                }
+                res = max(h[x], res);
+            }
+            return res;
+        }
+    };
+\end{Code}
 
 \subsection{$k$Sum} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \label{sec:ksum}
 
-
-
-Given an array of integers, find $k$ numbers such that they add up to a 
+Given an array of integers, find $k$ numbers such that they add up to a
 specific target number.
 
 Find k elements in set A, where $\sum_{i=0}^k{A_i}=target$
@@ -459,20 +487,19 @@ Compute a sorted list $S$ of all sum of $\frac{k-1}{2}$ elements in $A$. For eac
 
 方法1： Brute Force: Find all $k$ pairs of numbers and calculate their sum, if it equals the target return their index in increasing order. Running time = $O(n^k)$.
 
-方法2： Sort + Double Pointer: First, sort the array in $O(nlog(n))$ time. Then use two pointers $p$ and $q$, $p$ scans from left to right, and $q$ scans from right to left.unning 
-time = 
+方法2： Sort + Double Pointer: First, sort the array in $O(nlog(n))$ time. Then use two pointers $p$ and $q$, $p$ scans from left to right, and $q$ scans from right to left.unning
+time =
 $O(n\log n)$
 
 方法3：Hash Map: We can do even better, by using hash map. First we create a hash map, where
 $[key, value] = [target - A[i], i]$.
-This requires $O(n)$. Then, we iterate the array. If $A[j]$ contains in map, which means $A[j] = target - A[i]$, we return $i$ and $j$. This solution has a running time $O(n)$, 
-and its space 
+This requires $O(n)$. Then, we iterate the array. If $A[j]$ contains in map, which means $A[j] = target - A[i]$, we return $i$ and $j$. This solution has a running time $O(n)$,
+and its space
 complicity is $O(n)$. We used $O(n)$ space to reduce the running time.
 Note, one number may be used twice, therefore, we need to check $j != map.get(A[j])$
 
 Note： Handle duplicate elements in the result.
 
-\subsubsection{Algorithm}
 \begin{Code}
 	//LeetCode, KSum
 	// 方法3：hash。用一个哈希表，存储每个数对应的下标
@@ -535,11 +562,11 @@ Note： Handle duplicate elements in the result.
 
 
 
-Given an array of integers, find two numbers such that they add up to a 
+Given an array of integers, find two numbers such that they add up to a
 specific target number.
 
-The function twoSum should return indices of the two numbers such that they add 
-up to the target, where index1 must be less than index2. Please note that your 
+The function twoSum should return indices of the two numbers such that they add
+up to the target, where index1 must be less than index2. Please note that your
 returned answers (both index1 and index2) are not zero-based.
 
 You may assume that each input would have exactly one solution.
@@ -550,15 +577,16 @@ Output: \code{index1=1, index2=2}
 
 
 【解题思路】
+
 方法1：暴力，复杂度$O(n^2)$，会超时
 
 方法2：hash。用一个哈希表，存储每个数对应的下标，复杂度$O(n)$.
 
-方法3：先排序，然后左右夹逼，注意跳过重复的数，排序$O(n\log n)$，左右夹逼$O(n)$，最终$O(n\log 
+方法3：先排序，然后左右夹逼，注意跳过重复的数，排序$O(n\log n)$，左右夹逼$O(n)$，最终$O(n\log
 n)$。但是注意，这题需要返回的是下标，而不是数字本身，因此这个方法行不通。
 
 
-\subsubsection{Algorithm}
+【方法二】
 \begin{Code}
 	//LeetCode, Two Sum
 	// 方法2：hash。用一个哈希表，存储每个数对应的下标
@@ -567,7 +595,7 @@ n)$。但是注意，这题需要返回的是下标，而不是数字本身，�
 		vector<int> twoSum(vector<int> &num, int target) {
 			unordered_map<int, int> mapping;
 			vector<int> result;
-			for (int i = 0; i < num.size(); i++) 
+			for (int i = 0; i < num.size(); i++)
 				mapping[num[i]] = i;
 			for (int i = 0; i < num.size(); i++) {
 				const int gap = target - num[i];
@@ -592,20 +620,62 @@ n)$。但是注意，这题需要返回的是下标，而不是数字本身，�
 \myenddot
 
 \subsection{2Sum on BSTree}
-You have a binary search tree and you have to return the two nodes such that there sum equal to ‘K’ using O(n) time and O(1) space.
+Given a binary search tree of n nodes, find two nodes whose sum is equal to a given number $k$ in O(n) time and constant space.
+
+【Algorithm】
+\begin{Code}
+	//Two Sum in BST
+	// 时间复杂度O(n)，空间复杂度O(n)
+	class Solution {
+		vector<Node*> twoNodeSum(Node *root, int k) {
+			if(root == nullptr) return false;
+            vector<Node*> res;
+        	if( 2*root->value > sum)
+        		twoNodeSum(root->left, root, sum, res);
+        	else if(2*root->value < sum)
+        		twoNodeSum(root, root->right, sum, res);
+        	else // this case occurs when 2*root == value
+        		twoNodeSum(root->left, root->right, sum, res);
+            return res;
+		}
+
+        bool twoNodeSum( Node *left, Node *right, int target, vector<Node*> &res){
+	       assert(left && right);
+	       if(left.value + right.value > sum){
+		      if(twoNodeSum(left->left, right, sum, res))
+			     return true;
+		      if(twoNodeSum(left, right->left, sum, res))
+			     return true;	
+	       }
+	
+	       if(left->value + right->value < sum){
+		      if(twoNodeSum(left->right, right, sum, res))
+			     return true;
+		      if(twoNodeSum(left, right->right, sum, res))
+			     return true;
+	       }
+
+	       if(left->value + right->value == sum){
+                res.push_back(left);
+                res.push_back(right);
+                return true;
+            }
+            return false;
+        }
+	};
+\end{Code}
+
 
 \subsection{3Sum} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \label{sec:3sum}
 
-
-
-Given an array $S$ of $n$ integers, are there elements $a, b, c$ in $S$ such 
-that $a + b + c = 0$? Find all unique triplets in the array which gives the sum 
+Given an array $S$ of $n$ integers, are there elements $a, b, c$ in $S$ such
+that $a + b + c = 0$? Find all unique triplets in the array which gives the sum
 of zero.
 
 Note:
 \begindot
-\item Elements in a triplet $(a,b,c)$ must be in non-descending order. (ie, $a 
+\item Elements in a triplet $(a,b,c)$ must be in non-descending order. (ie, $a
 \leq b \leq c$)
 \item The solution set must not contain duplicate triplets.
 \myenddot
@@ -620,13 +690,13 @@ A solution set is:
 
 
 【解题思路】
+
 先排序，然后左右夹逼，复杂度 $O(n^2)$。
 
-这个方法可以推广到$k$-sum，先排序，然后做$k-2$次循环，在最内层循环左右夹逼，时间复杂度是 
+这个方法可以推广到$k$-sum，先排序，然后做$k-2$次循环，在最内层循环左右夹逼，时间复杂度是
 $O(\max\{n \log n, n^{k-1}\})$。
 
 
-\subsubsection{Algorithm}
 \begin{Code}
 	// LeetCode, 3Sum
 	// 先排序，然后左右夹逼，注意跳过重复的数，时间复杂度O(n^2)，空间复杂度O(1)
@@ -659,6 +729,7 @@ $O(\max\{n \log n, n^{k-1}\})$。
 	};
 \end{Code}
 
+【DuplicateCase】
 \begin{Code}
 	// LeetCode, 3Sum
 	// 先排序，然后左右夹逼，注意跳过重复的数，时间复杂度O(n^2)，空间复杂度O(1)
@@ -708,8 +779,8 @@ $O(\max\{n \log n, n^{k-1}\})$。
 
 
 
-Given an array $S$ of $n$ integers, find three integers in $S$ such that the 
-sum is closest to a given number, target. Return the sum of the three integers. 
+Given an array $S$ of $n$ integers, find three integers in $S$ such that the
+sum is closest to a given number, target. Return the sum of the three integers.
 You may assume that each input would have exactly one solution.
 
 For example, given array \code{S = \{-1 2 1 -4\}}, and \code{target = 1}.
@@ -721,7 +792,7 @@ The sum that is closest to the target is 2. (\code{-1 + 2 + 1 = 2}).
 先排序，然后左右夹逼，复杂度 $O(n^2)$。
 
 
-\subsubsection{Algorithm}
+【左右夹逼】
 \begin{Code}
 	// LeetCode, 3Sum Closest
 	// 先排序，然后左右夹逼，时间复杂度O(n^2)，空间复杂度O(1)
@@ -764,18 +835,18 @@ The sum that is closest to the target is 2. (\code{-1 + 2 + 1 = 2}).
 
 
 
-Given an array $S$ of $n$ integers, are there elements $a, b, c$, and $d$ in 
-$S$ such that $a + b + c + d = target$? Find all unique quadruplets in the 
+Given an array $S$ of $n$ integers, are there elements $a, b, c$, and $d$ in
+$S$ such that $a + b + c + d = target$? Find all unique quadruplets in the
 array which gives the sum of target.
 
 Note:
 \begindot
-\item Elements in a quadruplet $(a,b,c,d)$ must be in non-descending order. 
+\item Elements in a quadruplet $(a,b,c,d)$ must be in non-descending order.
 (ie, $a \leq b \leq c \leq d$)
 \item The solution set must not contain duplicate quadruplets.
 \myenddot
 
-For example, given array \code{S = \{1 0 -1 0 -2 2\}}, and \code{target = 0}. 
+For example, given array \code{S = \{1 0 -1 0 -2 2\}}, and \code{target = 0}.
 
 A solution set is:
 \begin{Code}
@@ -791,7 +862,7 @@ A solution set is:
 可以用一个hashmap先缓存两个数的和，最终复杂度$O(n^3)$。这个策略也适用于 3Sum 。
 
 
-\subsubsection{左右夹逼}
+【左右夹逼】
 \begin{Code}
 	// LeetCode, 4Sum
 	// 先排序，然后左右夹逼，时间复杂度O(n^3)，空间复杂度O(1)
@@ -826,7 +897,7 @@ A solution set is:
 \end{Code}
 
 
-\subsubsection{map做缓存}
+【map做缓存】
 \begin{Code}
 	// LeetCode, 4Sum
 	// 用一个hashmap先缓存两个数的和
@@ -838,7 +909,7 @@ A solution set is:
 			sort(num.begin(), num.end());
 			unordered_map<int, vector<pair<int, int> > > cache;
 			for (size_t a = 0; a < num.size(); ++a) {
-				for (size_t b = a + 1; b < num.size(); ++b) 
+				for (size_t b = a + 1; b < num.size(); ++b)
 					cache[num[a] + num[b]].push_back(pair<int, int>(a, b));
 			}
 			
@@ -862,7 +933,7 @@ A solution set is:
 \end{Code}
 
 
-\subsubsection{multimap}
+【multimap】
 \begin{Code}
 	// LeetCode, 4Sum
 	// 用一个 hashmap 先缓存两个数的和
@@ -901,7 +972,7 @@ A solution set is:
 \end{Code}
 
 
-\subsubsection{方法4}
+【方法4】
 \begin{Code}
 	// LeetCode, 4Sum
 	// 先排序，然后左右夹逼，时间复杂度O(n^3logn)，空间复杂度O(1)，会超时
@@ -951,18 +1022,13 @@ A solution set is:
 
 
 
-Given an array and a value, remove all instances of that value in place and 
+Given an array and a value, remove all instances of that value in place and
 return the new length.
 
-The order of elements can be changed. It doesn't matter what you leave beyond 
+The order of elements can be changed. It doesn't matter what you leave beyond
 the new length.
 
-
-【解题思路】
-无
-
-
-\subsubsection{Algorithm1}
+【Algorithm1】
 \begin{Code}
 	// LeetCode, Remove Element
 	// 时间复杂度O(n)，空间复杂度O(1)
@@ -970,7 +1036,7 @@ the new length.
 		int removeElement(int A[], int n, int elem) {
 			int index = 0;
 			for (int i = 0; i < n; ++i) {
-				if (A[i] != elem) 
+				if (A[i] != elem)
 					A[index++] = A[i];
 			}
 			return index;
@@ -979,7 +1045,7 @@ the new length.
 \end{Code}
 
 
-\subsubsection{Algorithm2}
+【Algorithm2】
 \begin{Code}
 	// LeetCode, Remove Element
 	// 使用remove()，时间复杂度O(n)，空间复杂度O(1)
@@ -991,26 +1057,20 @@ the new length.
 \end{Code}
 
 
-\subsubsection{相关题目}
-\begindot
-\item 无
-\myenddot
-
-
 \subsection{Next Permutation} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \label{sec:next-permutation}
 
 
 
-Implement next permutation, which rearranges numbers into the lexicographically 
+Implement next permutation, which rearranges numbers into the lexicographically
 next greater permutation of numbers.
 
-If such arrangement is not possible, it must rearrange it as the lowest 
+If such arrangement is not possible, it must rearrange it as the lowest
 possible order (ie, sorted in ascending order).
 
 The replacement must be in-place, do not allocate extra memory.
 
-Here are some examples. Inputs are in the left-hand column and its 
+Here are some examples. Inputs are in the left-hand column and its
 corresponding outputs are in the right-hand column.
 \begin{Code}
 	1,2,3 → 1,3,2
@@ -1028,7 +1088,7 @@ corresponding outputs are in the right-hand column.
 \end{center}
 
 
-\subsubsection{Algorithm}
+【Algorithm】
 \begin{Code}
 	// LeetCode, Next Permutation
 	// 时间复杂度O(n)，空间复杂度O(1)
@@ -1122,11 +1182,11 @@ Note: Given $n$ will be between 1 and 9 inclusive.
 
 暴力枚举法把前 $k$个排列都求出来了，比较浪费，而我们只需要第$k$个排列。
 
-利用康托编码的思路，假设有$n$个不重复的元素，第$k$个排列是$a_1, a_2, a_3, ..., 
+利用康托编码的思路，假设有$n$个不重复的元素，第$k$个排列是$a_1, a_2, a_3, ...,
 a_n$，那么$a_1$是哪一个位置呢？
 
 我们把$a_1$去掉，那么剩下的排列为
-$a_2, a_3, ..., a_n$, 共计$n-1$个元素，$n-1$个元素共有$(n-1)!$个排列，于是就可以知道 
+$a_2, a_3, ..., a_n$, 共计$n-1$个元素，$n-1$个元素共有$(n-1)!$个排列，于是就可以知道
 $a_1 = k / (n-1)!$。
 
 同理，$a_2, a_3, ..., a_n$的值推导如下：
@@ -1141,7 +1201,7 @@ $a_1 = k / (n-1)!$。
 \end{eqnarray}
 
 
-\subsubsection{使用next_permutation()}
+【使用next_permutation()】
 \begin{Code}
 	// LeetCode, Permutation Sequence
 	// 使用next_permutation()，TLE
@@ -1163,7 +1223,7 @@ $a_1 = k / (n-1)!$。
 \end{Code}
 
 
-\subsubsection{康托编码}
+【康托编码】
 \begin{Code}
 	// LeetCode, Permutation Sequence
 	// 康托编码，时间复杂度O(n)，空间复杂度O(1)
@@ -1218,11 +1278,10 @@ $a_1 = k / (n-1)!$。
 \label{sec:valid-sudoku}
 
 
-
-Determine if a Sudoku is valid, according to: Sudoku Puzzles - The Rules 
+Determine if a Sudoku is valid, according to: Sudoku Puzzles - The Rules
 \myurl{http://sudoku.com.au/TheRules.aspx} .
 
-The Sudoku board could be partially filled, where empty cells are filled with 
+The Sudoku board could be partially filled, where empty cells are filled with
 the character \fn{'.'}.
 
 \begin{center}
@@ -1234,7 +1293,7 @@ the character \fn{'.'}.
 细节实现题。
 
 
-\subsubsection{Algorithm}
+【Algorithm】
 \begin{Code}
 	// LeetCode, Valid Sudoku
 	// 时间复杂度O(n^2)，空间复杂度O(1)
@@ -1288,10 +1347,10 @@ the character \fn{'.'}.
 
 
 
-Given $n$ non-negative integers representing an elevation map where the width 
+Given $n$ non-negative integers representing an elevation map where the width
 of each bar is 1, compute how much water it is able to trap after raining.
 
-For example, 
+For example,
 Given \code{[0,1,0,2,1,0,1,3,2,1,2,1]}, return 6.
 
 \begin{center}
@@ -1301,7 +1360,7 @@ Given \code{[0,1,0,2,1,0,1,3,2,1,2,1]}, return 6.
 
 
 【解题思路】
-对于每个柱子，找到其左右两边最高的柱子，该柱子能容纳的面积就是\code{min(max_left, 
+对于每个柱子，找到其左右两边最高的柱子，该柱子能容纳的面积就是\code{min(max_left,
 max_right) - height}。所以，
 \begin{enumerate}
 	\item 从左往右扫描一遍，对于每个柱子，求取左边最大值；
@@ -1317,7 +1376,7 @@ max_right) - height}。所以，
 \end{enumerate}
 
 
-\subsubsection{Algorithm1}
+【Algorithm1】
 \begin{Code}
 	// LeetCode, Trapping Rain Water
 	// 思路1，时间复杂度O(n)，空间复杂度O(n)
@@ -1345,8 +1404,7 @@ max_right) - height}。所以，
 	};
 \end{Code}
 
-
-\subsubsection{Algorithm2}
+【Algorithm2】
 \begin{Code}
 	// LeetCode, Trapping Rain Water
 	// 思路2，时间复杂度O(n)，空间复杂度O(1)
@@ -1369,7 +1427,7 @@ max_right) - height}。所以，
 \end{Code}
 
 
-\subsubsection{Algorithm3}
+【Algorithm3】
 第三种解法，用一个栈辅助，小于栈顶的元素压入，大于等于栈顶就把栈里所有小于或等于当前值的元素全部出栈处理掉。
 \begin{Code}
 	// LeetCode, Trapping Rain Water
@@ -1403,7 +1461,7 @@ max_right) - height}。所以，
 \subsubsection{相关题目}
 \begindot
 \item Container With Most Water, 见 \S \ref{sec:container-with-most-water}
-\item Largest Rectangle in Histogram, 见 \S 
+\item Largest Rectangle in Histogram, 见 \S
 \ref{sec:largest-rectangle-in-histogram}
 \myenddot
 
@@ -1433,8 +1491,7 @@ Could you do this in-place?
 
 或者，首先沿着水平中线翻转一次，然后沿着主对角线翻转一次。
 
-
-\subsubsection{Algorithm1}
+【Algorithm1】
 \begin{Code}
 	// LeetCode, Rotate Image
 	// 思路 1，时间复杂度O(n^2)，空间复杂度O(1)
@@ -1451,7 +1508,7 @@ Could you do this in-place?
 	};
 \end{Code}
 
-\subsubsection{Algorithm2}
+【Algorithm2】
 \begin{Code}
 	// LeetCode, Rotate Image
 	// 思路 2，时间复杂度O(n^2)，空间复杂度O(1)
@@ -1475,11 +1532,6 @@ Could you do this in-place?
 \myenddot
 
 
-\subsection{Plus One} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\label{sec:plus-one}
-
-
-
 Given a number represented as an array of digits, plus one to the number.
 
 
@@ -1487,7 +1539,7 @@ Given a number represented as an array of digits, plus one to the number.
 高精度加法。
 
 
-\subsubsection{Algorithm1}
+【Algorithm1】
 \begin{Code}
 	// LeetCode, Plus One
 	// 时间复杂度O(n)，空间复杂度O(1)
@@ -1511,7 +1563,7 @@ Given a number represented as an array of digits, plus one to the number.
 \end{Code}
 
 
-\subsubsection{Algorithm2}
+【Algorithm2】
 \begin{Code}
 	// LeetCode, Plus One
 	// 时间复杂度O(n)，空间复杂度O(1)
@@ -1535,10 +1587,6 @@ Given a number represented as an array of digits, plus one to the number.
 \end{Code}
 
 
-\subsubsection{相关题目}
-\begindot
-\item 无
-\myenddot
 
 
 \subsection{Climbing Stairs} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1548,7 +1596,7 @@ Given a number represented as an array of digits, plus one to the number.
 
 You are climbing a stair case. It takes $n$ steps to reach to the top.
 
-Each time you can either climb 1 or 2 steps. In how many distinct ways can you 
+Each time you can either climb 1 or 2 steps. In how many distinct ways can you
 climb to the top?
 
 
@@ -1564,11 +1612,11 @@ climb to the top?
 
 方法1，递归，太慢；方法2，迭代。
 
-方法3，数学公式。斐波那契数列的通项公式为 
+方法3，数学公式。斐波那契数列的通项公式为
 $a_n=\dfrac{1}{\sqrt{5}}\left[\left(\dfrac{1+\sqrt{5}}{2}\right)^n-\left(\dfrac{1-\sqrt{5}}{2}\right)^n\right]$。
 
 
-\subsubsection{迭代}
+【迭代】
 \begin{Code}
 	// LeetCode, Climbing Stairs
 	// 迭代，时间复杂度O(n)，空间复杂度O(1)
@@ -1587,7 +1635,7 @@ $a_n=\dfrac{1}{\sqrt{5}}\left[\left(\dfrac{1+\sqrt{5}}{2}\right)^n-\left(\dfrac{
 \end{Code}
 
 
-\subsubsection{数学公式}
+【数学公式】
 \begin{Code}
 	// LeetCode, Climbing Stairs
 	// 数学公式，时间复杂度O(1)，空间复杂度O(1)
@@ -1611,10 +1659,10 @@ $a_n=\dfrac{1}{\sqrt{5}}\left[\left(\dfrac{1+\sqrt{5}}{2}\right)^n-\left(\dfrac{
 
 
 
-The gray code is a binary numeral system where two successive values differ in 
+The gray code is a binary numeral system where two successive values differ in
 only one bit.
 
-Given a non-negative integer $n$ representing the total number of bits in the 
+Given a non-negative integer $n$ representing the total number of bits in the
 code, print the sequence of gray code. A gray code sequence must begin with 0.
 
 For example, given $n = 2$, return \fn{[0,1,3,2]}. Its gray code sequence is:
@@ -1628,9 +1676,9 @@ For example, given $n = 2$, return \fn{[0,1,3,2]}. Its gray code sequence is:
 Note:
 \begindot
 \item For a given $n$, a gray code sequence is not uniquely defined.
-\item For example, \fn{[0,2,3,1]} is also a valid gray code sequence according 
+\item For example, \fn{[0,2,3,1]} is also a valid gray code sequence according
 to the above definition.
-\item For now, the judge is able to judge based on one instance of gray code 
+\item For now, the judge is able to judge based on one instance of gray code
 sequence. Sorry about that.
 \myenddot
 
@@ -1652,17 +1700,17 @@ sequence. Sorry about that.
 
 方法1，最简单的方法，利用数学公式，对从 $0\sim2^n-1$的所有整数，转化为格雷码。
 
-方法2，$n$比特的格雷码，可以递归地从$n-1$比特的格雷码生成。如图\S 
+方法2，$n$比特的格雷码，可以递归地从$n-1$比特的格雷码生成。如图\S
 \ref{fig:gray-code-construction}所示。
 
 \begin{center}
 	\includegraphics[width=160pt]{gray-code-construction.png}\\
-	\figcaption{The first few steps of the reflect-and-prefix 
+	\figcaption{The first few steps of the reflect-and-prefix
 	method.}\label{fig:gray-code-construction}
 \end{center}
 
 
-\subsubsection{数学公式}
+【数学公式】
 \begin{Code}
 	// LeetCode, Gray Code
 	// 数学公式，时间复杂度O(2^n)，空间复杂度O(1)
@@ -1682,7 +1730,7 @@ sequence. Sorry about that.
 	};
 \end{Code}
 
-\subsubsection{Reflect-and-prefix method}
+【Reflect-and-prefix method】
 \begin{Code}
 	// LeetCode, Gray Code
 	// reflect-and-prefix method
@@ -1705,7 +1753,7 @@ sequence. Sorry about that.
 \begin{Code}
 	// LeetCode, Gray Code, By Simon Zhang
 	// reflect-and-prefix method
-	// 时间复杂度O(2^n)，空间复杂度O(1), 
+	// 时间复杂度O(2^n)，空间复杂度O(1),
 	vector<int> grayCode(int n) {
 		vector<int> res;
 		res.push_back(0);
@@ -1720,18 +1768,13 @@ sequence. Sorry about that.
 \end{Code}
 
 
-\subsubsection{相关题目}
-\begindot
-\item 无
-\myenddot
-
 
 \subsection{Set Matrix Zeroes} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \label{sec:set-matrix-zeroes}
 
 
 
-Given a $m \times n$ matrix, if an element is 0, set its entire row and column 
+Given a $m \times n$ matrix, if an element is 0, set its entire row and column
 to 0. Do it in place.
 
 \textbf{Follow up:}
@@ -1750,7 +1793,7 @@ $O(m+n)$空间的方法很简单，设置两个bool数组，记录每行和每�
 想要常数空间，可以复用第一行和第一列。
 
 
-\subsubsection{Algorithm1}
+【Algorithm1】
 \begin{Code}
 	// LeetCode, Set Matrix Zeroes
 	// 时间复杂度O(m*n)，空间复杂度O(m+n)
@@ -1763,7 +1806,7 @@ $O(m+n)$空间的方法很简单，设置两个bool数组，记录每行和每�
 			
 			for (size_t i = 0; i < m; ++i) {
 				for (size_t j = 0; j < n; ++j) {
-					if (matrix[i][j] == 0) 
+					if (matrix[i][j] == 0)
 						row[i] = col[j] = true;
 				}
 			}
@@ -1772,16 +1815,16 @@ $O(m+n)$空间的方法很简单，设置两个bool数组，记录每行和每�
 				if (row[i])
 					fill(&matrix[i][0], &matrix[i][0] + n, 0);
 			}
-			for (size_t j = 0; j < n; ++j) 
-				if (col[j]) 
-					for (size_t i = 0; i < m; ++i) 
+			for (size_t j = 0; j < n; ++j)
+				if (col[j])
+					for (size_t i = 0; i < m; ++i)
 						matrix[i][j] = 0;
 		}
 	};
 \end{Code}
 
 
-\subsubsection{Algorithm2}
+【Algorithm2】
 \begin{Code}
 	// LeetCode, Set Matrix Zeroes
 	// 时间复杂度O(m*n)，空间复杂度O(1)
@@ -1825,25 +1868,19 @@ $O(m+n)$空间的方法很简单，设置两个bool数组，记录每行和每�
 \end{Code}
 
 
-\subsubsection{相关题目}
-\begindot
-\item 无
-\myenddot
-
-
 \subsection{Gas Station} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \label{sec:gas-station}
 
 
 
-There are $N$ gas stations along a circular route, where the amount of gas at 
+There are $N$ gas stations along a circular route, where the amount of gas at
 station $i$ is \fn{gas[i]}.
 
-You have a car with an unlimited gas tank and it costs \fn{cost[i]} of gas to 
-travel from station $i$ to its next station ($i$+1). You begin the journey with 
+You have a car with an unlimited gas tank and it costs \fn{cost[i]} of gas to
+travel from station $i$ to its next station ($i$+1). You begin the journey with
 an empty tank at one of the gas stations.
 
-Return the starting gas station's index if you can travel around the circuit 
+Return the starting gas station's index if you can travel around the circuit
 once, otherwise return -1.
 
 Note:
@@ -1855,8 +1892,7 @@ The solution is guaranteed to be unique.
 
 $O(N)$的解法是，设置两个变量，\fn{sum}判断当前的指针的有效性；\fn{total}则判断整个数组是否有解，有就返回通过\fn{sum}得到的下标，没有则返回-1。
 
-
-\subsubsection{Algorithm}
+【Algorithm】
 \begin{Code}
 	// LeetCode, Gas Station
 	// 时间复杂度O(n)，空间复杂度O(1)
@@ -1878,21 +1914,10 @@ $O(N)$的解法是，设置两个变量，\fn{sum}判断当前的指针的有效
 \end{Code}
 
 
-\subsubsection{相关题目}
-\begindot
-\item 无
-\myenddot
-
-
-\subsection{Candy} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\label{sec:candy}
-
-
-
-There are $N$ children standing in a line. Each child is assigned a rating 
+There are $N$ children standing in a line. Each child is assigned a rating
 value.
 
-You are giving candies to these children subjected to the following 
+You are giving candies to these children subjected to the following
 requirements:
 \begindot
 \item Each child must have at least one candy.
@@ -1902,11 +1927,7 @@ requirements:
 What is the minimum candies you must give?
 
 
-【解题思路】
-无
-
-
-\subsubsection{迭代版}
+【迭代版】
 \begin{Code}
 	// LeetCode, Candy
 	// 时间复杂度O(n)，空间复杂度O(n)
@@ -1934,7 +1955,7 @@ What is the minimum candies you must give?
 \end{Code}
 
 
-\subsubsection{递归版}
+【递归版】
 \begin{Code}
 	// LeetCode, Candy
 	// 备忘录法，时间复杂度O(n)，空间复杂度O(n)
@@ -1961,22 +1982,14 @@ What is the minimum candies you must give?
 \end{Code}
 
 
-\subsubsection{相关题目}
-\begindot
-\item 无
-\myenddot
-
-
 \subsection{Single Number} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \label{sec:single-number}
 
-
-
-Given an array of integers, every element appears twice except for one. Find 
+Given an array of integers, every element appears twice except for one. Find
 that single one.
 
 Note:
-Your algorithm should have a linear runtime complexity. Could you implement it 
+Your algorithm should have a linear runtime complexity. Could you implement it
 without using extra memory?
 
 
@@ -1984,7 +1997,7 @@ without using extra memory?
 异或，不仅能处理两次的情况，只要出现偶数次，都可以清零。
 
 
-\subsubsection{Algorithm1}
+【Algorithm1】
 \begin{Code}
 	// LeetCode, Single Number
 	// 时间复杂度O(n)，空间复杂度O(1)
@@ -1999,7 +2012,7 @@ without using extra memory?
 \end{Code}
 
 
-\subsubsection{Algorithm2}
+【Algorithm2】
 \begin{Code}
 	// LeetCode, Single Number
 	// 时间复杂度O(n)，空间复杂度O(1)
@@ -2022,11 +2035,11 @@ without using extra memory?
 
 
 
-Given an array of integers, every element appears three times except for one. 
+Given an array of integers, every element appears three times except for one.
 Find that single one.
 
 Note:
-Your algorithm should have a linear runtime complexity. Could you implement it 
+Your algorithm should have a linear runtime complexity. Could you implement it
 without using extra memory?
 
 
@@ -2035,11 +2048,11 @@ without using extra memory?
 
 方法1：创建一个长度为\fn{sizeof(int)}的数组\fn{count[sizeof(int)]}，\fn{count[i]}表示在在$i$位出现的1的次数。如果\fn{count[i]}是3的整数倍，则忽略；否则就把该位取出来组成答案。
 
-方法2：用\fn{one}记录到当前处理的元素为止，二进制1出现“1次”（mod 3 之后的 
-1）的有哪些二进制位；用\fn{two}记录到当前计算的变量为止，二进制1出现“2次”（mod 3 之后的 
+方法2：用\fn{one}记录到当前处理的元素为止，二进制1出现“1次”（mod 3 之后的
+1）的有哪些二进制位；用\fn{two}记录到当前计算的变量为止，二进制1出现“2次”（mod 3 之后的
 2）的有哪些二进制位。当\fn{one}和\fn{two}中的某一位同时为1时表示该二进制位上1出现了3次，此时需要清零。即\textbf{用二进制模拟三进制运算}。最终\fn{one}记录的是最终结果。
 
-\subsubsection{Algorithm1}
+【Algorithm1】
 \begin{Code}
 	// LeetCode, Single Number II
 	// 方法1，时间复杂度O(n)，空间复杂度O(1)
@@ -2064,7 +2077,7 @@ without using extra memory?
 \end{Code}
 
 
-\subsubsection{Algorithm2}
+【Algorithm2】
 \begin{Code}
 	// LeetCode, Single Number II
 	// 方法2，时间复杂度O(n)，空间复杂度O(1)
@@ -2091,22 +2104,24 @@ without using extra memory?
 
 \subsection{Vector Class}
 
-Implement a vector-like data structure from scratch. 
+Implement a vector-like data structure from scratch.
 
-This question was to be done in C or C++. 
+This question was to be done in C or C++.
 
-Discussion topics: 
-1. Dealing with out of bounds accesses. 
-2. What happens when you need to increase the vector's size? 
-3. How many copies does the structure perform to insert n elements? That is, n 
+Discussion topics:
+1. Dealing with out of bounds accesses.
+2. What happens when you need to increase the vector's size?
+3. How many copies does the structure perform to insert n elements? That is, n
 calls to vector.push_back
 
 \subsection{N Parking Slots for N-1 Cars Sorting}
 \label{sec:npark}
 
-There are N parking slots and N-1 cars. Everytime you can move one car. How to move these cars into one given order. 
+There are N parking slots and N-1 cars. Everytime you can move one car. How to move these cars into one given order.
 BTW: I got this question from internet but i could not figure it out partially because the description is kind of incomplete to me. Anyone knowing this question or the solution?
+
 【解题思路】
+
 Sorting with O(1) space, e.g., insertsorting, selectsorting
 
 \subsection{Word Search}
@@ -2114,7 +2129,7 @@ Sorting with O(1) space, e.g., insertsorting, selectsorting
 
 Given a 2D board and a word, find if the word exists in the grid.
 
-The word can be constructed from letters of sequentially adjacent cell, where "adjacent" cells are those horizontally or vertically neighboring. The same letter cell may not be 
+The word can be constructed from letters of sequentially adjacent cell, where "adjacent" cells are those horizontally or vertically neighboring. The same letter cell may not be
 used more than once.
 
 For example,
@@ -2149,7 +2164,7 @@ The idea of this question is as follows:
 \end{enumerate}
 Note: A mask matrix is needed to store the positions where have already been visited. Details can be found in code.
 
-\subsubsection{Algorithm}
+【Algorithm】
 \begin{Code}
 	// LeetCode, Word Search
 	class Solution {
@@ -2173,7 +2188,7 @@ Note: A mask matrix is needed to store the positions where have already been vis
 			for(int i=0; i<board.size();i++){
 				for(int j=0;j<board[i].size();j++){
 					if (board[i][j] == word[0]){
-						vector<vector<char> > tmp (board);  
+						vector<vector<char> > tmp (board);
 						if(search(tmp, i, j, word, 0))
 							return true;
 					}
@@ -2212,7 +2227,7 @@ Above is a 3 x 7 grid. How many possible unique paths are there?
 【解题思路】
 一维DP。 Step[i][j] = Step[i-1][j] + Step[i][j-1];
 
-\subsubsection{Algorithm}
+【Algorithm】
 \begin{Code}
 	// LeetCode, Robot Unique Paths
 	class Solution {
@@ -2238,6 +2253,93 @@ Above is a 3 x 7 grid. How many possible unique paths are there?
 \subsection{FibonacciFun}
 Implement a Fibonacci function.
 
+\subsection{A+B=C+D}
+You're given an array of integers(eg [3,4,7,1,2,9,8]). Find the index of values that satisfy A+B = C+D, where A,B,C and D are integers values in the array.
+
+Eg: Given [3,4,7,1,2,9,8] array
+The following
+3+7 = 1+ 9 satisfies A+B=C+D
+so print (0,2,3,5)
+
+\subsection{Move Zeros at the rear of Array}
+Given a number in an array form, come up with an algorithm to push all the zeros to the end.
+Expectation : O(n) solution.
+
+\subsection{Set Zero Row, Col and Depth}
+Given a 3-D array, if any m[r][c][d] is <=0 mark all the cells in the entire row,col and depth as zero and return the o/p array
+
+\subsection{Josephus Problem}
+Delete every third element of an array until only one element is remaining. Tell the index of that remaining element in O(1) time complexity.
+
+【解题思路】
+
+This is the Josephus problem. There is a formula to calculate result directly only when $k=2$. For other cases, there are solutions with $O(n)$ or $O(klogn)$ time complexities. In the following, $n$ denotes the number of array in the initial circle, and $k$ denotes the count for each step, that is, $k-1$ people are skipped and the $k$-th is deleted. The people in the circle are numbered from $1$ to $n$.
+
+The easiest way to solve this problem in the general case is to use dynamic programming by performing the first step and then using the solution of the remaining problem. When the index starts from one, then the person at $s$ shifts from the first person is in position $(s-1)\%n+1$, where $n$ is the total number of persons. Let $f(n,k)$ denote the position of the survivor. After the $k$-th person is killed, we're left with a circle of $n-1$, and we start the next count with the person whose number in the original problem was $(k\%n)+1$. The position of the survivor in the remaining circle would be $f(n-1,k)$ if we start counting at $1$; shifting this to account for the fact that we're starting at $k\%n+1$ yields the recurrence
+$f(n,k)=(f(n-1,k)+k-1)\%n+1$, with $f(1,k)=1$, which takes the simpler form $g(n,k)=(g(n-1,k)+k)\%n$, with $g(1,k)=0$. If we number the position from $0$ to $n-1$ instead.
+
+
+【Algorithm】
+\begin{Code}
+    int surviveWithK(int n, int k){
+        return (N-pow(k-1,floor(logN/log(k-1))))+1;
+    }
+\end{Code}
+
+\subsection{Absent Number in Array}
+You are given an array of n integers which can contain integers from 1 to n only . Some elements can be repeated multiple times and some other elements can be absent from the array . Write a running code on paper which takes O(1) space apart from the input array and O(n) time to print which elements are not present in the array and the count of every element which is there in the array along with the element number .
+NOTE: The array isn't necessarily sorted.
+
+\subsection{Minimal Multiply Sum in Two Arrays}
+Given two arrays of same size, arrange the arrays such that a1*b1 + a2*b2 + .... + an*bn should ne minimum.
+
+\subsection{Divide Array into Two Half of Arrays}
+Given a array of size n. Divide the array in to two arrays of size n/2,n/2. such that average of two arrays is equal.
+
+\subsection{ maximum-sum subarray}
+Find the maximum-sum subarray of an array.
+
+\subsection{Top $k$-th Number}
+Find the $k$-th maximal number in the given array.
+
+\subsection{Array Indexing}
+Given an array with huge number of elements. Following two operations can be performed on the array at any time\\
+1. Find cumulative sum of first x numbers when x is input by user\\
+2. Add/subtract value 't' from any index i of the array.
+
+Find the most optimal way such that both the above requirements are optimized.
+
+\subsection{Majority Element}
+Find the majority element which occurs more than n/2 times in an array of n size, which contains duplicate elements in minimum time and space complexity.
+
+\subsection{Pair Sum}
+Array Pair Sum. Solve it in O(N) time complexity
+
+\begin{Code}
+    vector< pair<int, int> > pair_sum(vector<int> arr, int s){
+    	vector< pair<int, int> > result;
+    	unordered_map< int, bool> present;
+    	for(int i=0; i<arr.size(); i++){
+    		if(present.count(s-arr[i]) != 0)
+    			result.push_back( make_pair(arr[i], s-arr[i]) );
+    		present[arr[i]] = true;	
+    	}
+    	return result;
+    }
+\end{Code}
+
+\subsection{Gap in 2D Array}
+Given an $n x n$ matrix $A(i,j)$ of integers, find maximum value $A(c,d) - A(a,b)$ over all choices of indexes such that both $c > a$ and $d > b$ in $O(n^2)$.
+
+\subsection{2D Array Union and Intersection}
+Given two array of integers write two functions that will return an Union and Intersection
+
+\subsection{Interleaving Sorting}
+Given an array sort all the elements in even positions in ascending order and odd positions in descending order
+
+\subsection{Pythogorean Triplets}
+Given an array of numbers (integers) find all pythogorean triplets ($a^2 + b^2 = c^2$). print a,b an c and the indexes.
+
 \section{单链表} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 单链表节点的定义如下：
@@ -2250,7 +2352,7 @@ Implement a Fibonacci function.
 	};
 \end{Code}
 
-\subsection{Fabonacci数列}
+【Fabonacci数列】
 Fabonacci数列为：$a_0=1,a_1=1,a_n=a_{n-1}+a_{n-2}$
 快速幂优化
 
@@ -2259,8 +2361,8 @@ Fabonacci数列为：$a_0=1,a_1=1,a_n=a_{n-1}+a_{n-2}$
 
 
 
-You are given two linked lists representing two non-negative numbers. The 
-digits are stored in reverse order and each of their nodes contain a single 
+You are given two linked lists representing two non-negative numbers. The
+digits are stored in reverse order and each of their nodes contain a single
 digit. Add the two numbers and return it as a linked list.
 
 Input: {\small \fontspec{Latin Modern Mono} (2 -> 4 -> 3) + (5 -> 6 -> 4)}
@@ -2272,7 +2374,7 @@ Output: {\small \fontspec{Latin Modern Mono} 7 -> 0 -> 8}
 跟Add Binary（见 \S \ref{sec:add-binary}）很类似
 
 
-\subsubsection{Algorithm}
+【Algorithm】
 \begin{Code}
 	// LeetCode, Add Two Numbers
 	// 跟Add Binary 很类似
@@ -2329,7 +2431,7 @@ $1 \leq m \leq  n \leq $ length of list.
 这题非常繁琐，有很多边界检查，15分钟内做到bug free很有难度！
 
 
-\subsubsection{Algorithm}
+【Algorithm】
 \begin{Code}
 	// LeetCode, Reverse Linked List II
 	// 迭代版，时间复杂度O(n)，空间复杂度O(1)
@@ -2358,33 +2460,22 @@ $1 \leq m \leq  n \leq $ length of list.
 \end{Code}
 
 
-\subsubsection{相关题目}
-
-\begindot
-\item 无
-\myenddot
-
-
 \subsection{Partition List}
 \label{sec:partition-list}
 
 
 
-Given a linked list and a value $x$, partition it such that all nodes less than 
+Given a linked list and a value $x$, partition it such that all nodes less than
 $x$ come before nodes greater than or equal to $x$.
 
-You should preserve the original relative order of the nodes in each of the two 
+You should preserve the original relative order of the nodes in each of the two
 partitions.
 
 For example,
 Given \code{1->4->3->2->5->2} and \code{x = 3}, return \code{1->2->2->4->3->5}.
 
 
-【解题思路】
-无
-
-
-\subsubsection{Algorithm}
+【Algorithm】
 \begin{Code}
 	// LeetCode, Partition List
 	// 时间复杂度O(n)，空间复杂度O(1)
@@ -2415,19 +2506,12 @@ Given \code{1->4->3->2->5->2} and \code{x = 3}, return \code{1->2->2->4->3->5}.
 \end{Code}
 
 
-\subsubsection{相关题目}
-
-\begindot
-\item 无
-\myenddot
-
-
 \subsection{Remove Duplicates from Sorted List}
 \label{sec:remove-duplicates-from-sorted-list}
 
 
 
-Given a sorted linked list, delete all duplicates such that each element appear 
+Given a sorted linked list, delete all duplicates such that each element appear
 only once.
 
 For example,
@@ -2437,11 +2521,7 @@ Given \code{1->1->2}, return \code{1->2}.
 Given \code{1->1->2->3->3}, return \code{1->2->3}.
 
 
-【解题思路】
-无
-
-
-\subsubsection{递归版}
+【递归版】
 \begin{Code}
 	// LeetCode, Remove Duplicates from Sorted List
 	// 递归版，时间复杂度O(n)，空间复杂度O(1)
@@ -2470,7 +2550,7 @@ Given \code{1->1->2->3->3}, return \code{1->2->3}.
 \end{Code}
 
 
-\subsubsection{迭代版}
+【迭代版】
 \begin{Code}
 	// LeetCode, Remove Duplicates from Sorted List
 	// 迭代版，时间复杂度O(n)，空间复杂度O(1)
@@ -2478,7 +2558,7 @@ Given \code{1->1->2->3->3}, return \code{1->2->3}.
 		ListNode *deleteDuplicates(ListNode *head) {
 			if (head == nullptr) return nullptr;
 			
-			for (ListNode *prev = head, *cur = head->next; cur; cur = 
+			for (ListNode *prev = head, *cur = head->next; cur; cur =
 				cur->next) {
 				if (prev->val == cur->val) {
 					prev->next = cur->next;
@@ -2496,7 +2576,7 @@ Given \code{1->1->2->3->3}, return \code{1->2->3}.
 \subsubsection{相关题目}
 
 \begindot
-\item Remove Duplicates from Sorted List II，见 \S 
+\item Remove Duplicates from Sorted List II，见 \S
 \ref{sec:remove-duplicates-from-sorted-list-ii}
 \myenddot
 
@@ -2506,7 +2586,7 @@ Given \code{1->1->2->3->3}, return \code{1->2->3}.
 
 
 
-Given a sorted linked list, delete all nodes that have duplicate numbers, 
+Given a sorted linked list, delete all nodes that have duplicate numbers,
 leaving only distinct numbers from the original list.
 
 For example,
@@ -2516,11 +2596,7 @@ Given \code{1->2->3->3->4->4->5}, return \code{1->2->5}.
 Given \code{1->1->1->2->3}, return \code{2->3}.
 
 
-【解题思路】
-无
-
-
-\subsubsection{递归版}
+【递归版】
 \begin{Code}
 	// LeetCode, Remove Duplicates from Sorted List II
 	// 递归版，时间复杂度O(n)，空间复杂度O(1)
@@ -2545,8 +2621,7 @@ Given \code{1->1->1->2->3}, return \code{2->3}.
 };
 \end{Code}
 
-
-\subsubsection{迭代版}
+【迭代版】
 \begin{Code}
 	// LeetCode, Remove Duplicates from Sorted List II
 	// 迭代版，时间复杂度O(n)，空间复杂度O(1)
@@ -2585,7 +2660,7 @@ Given \code{1->1->1->2->3}, return \code{2->3}.
 \subsubsection{相关题目}
 
 \begindot
-\item Remove Duplicates from Sorted List，见 \S 
+\item Remove Duplicates from Sorted List，见 \S
 \ref{sec:remove-duplicates-from-sorted-list}
 \myenddot
 
@@ -2595,20 +2670,20 @@ Given \code{1->1->1->2->3}, return \code{2->3}.
 
 
 
-Given a list, rotate the list to the right by $k$ places, where $k$ is 
+Given a list, rotate the list to the right by $k$ places, where $k$ is
 non-negative.
 
 For example:
-Given \code{1->2->3->4->5->nullptr} and \code{k = 2}, return 
+Given \code{1->2->3->4->5->nullptr} and \code{k = 2}, return
 \code{4->5->1->2->3->nullptr}.
 
 
 【解题思路】
-先遍历一遍，得出链表长度$len$，注意$k$可能大于$len$，因此令$k \%= 
+先遍历一遍，得出链表长度$len$，注意$k$可能大于$len$，因此令$k \%=
 len$。将尾节点next指针指向首节点，形成一个环，接着往后跑$len-k$步，从这里断开，就是要求的结果了。
 
 
-\subsubsection{Algorithm}
+【Algorithm】
 \begin{Code}
 	// LeetCode, Remove Rotate List
 	// 时间复杂度O(n)，空间复杂度O(1)
@@ -2625,7 +2700,7 @@ len$。将尾节点next指针指向首节点，形成一个环，接着往后跑
 			k = len - k % len;
 			
 			p->next = head; // 首尾相连
-			for(int step = 0; step < k; step++) 
+			for(int step = 0; step < k; step++)
 				p = p->next;  //接着往后跑
 			
 			head = p->next; // 新的首节点
@@ -2636,24 +2711,17 @@ len$。将尾节点next指针指向首节点，形成一个环，接着往后跑
 \end{Code}
 
 
-\subsubsection{相关题目}
-
-\begindot
-\item 无
-\myenddot
-
-
 \subsection{Remove Nth Node From End of List}
 \label{sec:remove-nth-node-from-end-of-list}
 
 
 
-Given a linked list, remove the $n^{th}$ node from the end of list and return 
+Given a linked list, remove the $n^{th}$ node from the end of list and return
 its head.
 
 For example, Given linked list: \code{1->2->3->4->5}, and $n$ = 2.
 
-After removing the second node from the end, the linked list becomes 
+After removing the second node from the end, the linked list becomes
 \code{1->2->3->5}.
 
 Note:
@@ -2667,7 +2735,7 @@ Note:
 设两个指针$p,q$，让$q$先走$n$步，然后$p$和$q$一起走，直到$q$走到尾节点，删除\fn{p->next}即可。
 
 
-\subsubsection{Algorithm}
+【Algorithm】
 \begin{Code}
 	// LeetCode, Remove Nth Node From End of List
 	// 时间复杂度O(n)，空间复杂度O(1)
@@ -2692,13 +2760,6 @@ Note:
 \end{Code}
 
 
-\subsubsection{相关题目}
-
-\begindot
-\item 无
-\myenddot
-
-
 \subsection{Swap Nodes in Pairs}
 \label{sec:swap-nodes-in-pairs}
 
@@ -2709,15 +2770,11 @@ Given a linked list, swap every two adjacent nodes and return its head.
 For example,
 Given \code{1->2->3->4}, you should return the list as \code{2->1->4->3}.
 
-Your algorithm should use only constant space. You may \emph{not} modify the 
+Your algorithm should use only constant space. You may \emph{not} modify the
 values in the list, only nodes itself can be changed.
 
 
-【解题思路】
-无
-
-
-\subsubsection{Algorithm}
+【Algorithm】
 \begin{Code}
 	// LeetCode, Swap Nodes in Pairs
 	// 时间复杂度O(n)，空间复杂度O(1)
@@ -2766,10 +2823,10 @@ values in the list, only nodes itself can be changed.
 
 
 
-Given a linked list, reverse the nodes of a linked list k at a time and return 
+Given a linked list, reverse the nodes of a linked list k at a time and return
 its modified list.
 
-If the number of nodes is not a multiple of $k$ then left-out nodes in the end 
+If the number of nodes is not a multiple of $k$ then left-out nodes in the end
 should remain as it is.
 
 You may not alter the values in the nodes, only nodes itself may be changed.
@@ -2783,12 +2840,7 @@ For $k = 2$, you should return: \code{2->1->4->3->5}
 
 For $k = 3$, you should return: \code{3->2->1->4->5}
 
-
-【解题思路】
-无
-
-
-\subsubsection{递归版}
+【递归版】
 \begin{Code}
 	// LeetCode, Reverse Nodes in k-Group
 	// 递归版，时间复杂度O(n)，空间复杂度O(1)
@@ -2820,7 +2872,7 @@ For $k = 3$, you should return: \code{3->2->1->4->5}
 \end{Code}
 
 
-\subsubsection{迭代版}
+【迭代版】
 \begin{Code}
 	// LeetCode, Reverse Nodes in k-Group
 	// 迭代版，时间复杂度O(n)，空间复杂度O(1)
@@ -2866,17 +2918,13 @@ For $k = 3$, you should return: \code{3->2->1->4->5}
 
 
 
-A linked list is given such that each node contains an additional random 
+A linked list is given such that each node contains an additional random
 pointer which could point to any node in the list or null.
 
 Return a deep copy of the list.
 
 
-【解题思路】
-无
-
-
-\subsubsection{Algorithm}
+【Algorithm】
 \begin{Code}
 	// LeetCode, Copy List with Random Pointer
 	// 两遍扫描，时间复杂度O(n)，空间复杂度O(1)
@@ -2909,12 +2957,6 @@ Return a deep copy of the list.
 \end{Code}
 
 
-\subsubsection{相关题目}
-\begindot
-\item 无
-\myenddot
-
-
 \subsection{Linked List Cycle}
 \label{sec:Linked-List-Cycle}
 
@@ -2926,14 +2968,14 @@ Can you solve it without using extra space?
 
 
 【解题思路】
-最容易想到的方法是，用一个哈希表\fn{unordered_map<int, bool> 
+最容易想到的方法是，用一个哈希表\fn{unordered_map<int, bool>
 visited}，记录每个元素是否被访问过，一旦出现某个元素被重复访问，说明存在环。空间复杂度$O(n)$，时间复杂度$O(N)$。
 
 最好的方法是时间复杂度$O(n)$，空间复杂度$O(1)$的。设置两个指针，一个快一个慢，快的指针每次走两步，慢的指针每次走一步，如果快指针和慢指针相遇，则说明有环。参考\myurl{
  http://leetcode.com/2010/09/detecting-loop-in-singly-linked-list.html}
 
 
-\subsubsection{Algorithm}
+【Algorithm】
 \begin{Code}
 	//LeetCode, Linked List Cycle
 	// 时间复杂度O(n)，空间复杂度O(1)
@@ -2962,13 +3004,13 @@ visited}，记录每个元素是否被访问过，一旦出现某个元素被重
 \label{sec:Linked-List-Cycle-II}
 
 
-Given a linked list, return the node where the cycle begins. If there is no 
+Given a linked list, return the node where the cycle begins. If there is no
 cycle, return \fn{null}.
 Follow up:
 Can you solve it without using extra space?
 
 【解题思路】
-当fast与slow相遇时，slow肯定没有遍历完链表，而fast已经在环内循环了$n$圈($1 \leq 
+当fast与slow相遇时，slow肯定没有遍历完链表，而fast已经在环内循环了$n$圈($1 \leq
 n$)。假设slow走了$s$步，则fast走了$2s$步（fast步数还等于$s$加上在环上多转的$n$圈），设环长为$r$，则：
 \begin{eqnarray}
 	2s &=& s + nr \nonumber \\
@@ -2981,10 +3023,10 @@ n$)。假设slow走了$s$步，则fast走了$2s$步（fast步数还等于$s$加�
 	x &=& (n-1)r + (L – x – a) \nonumber
 \end{eqnarray}
 
-$L – x – 
+$L – x –
 a$为相遇点到环入口点的距离，由此可知，从链表头到环入口点等于$n-1$圈内环+相遇点到环入口点，于是我们可以从\fn{head}开始另设一个指针\fn{slow2}，两个慢指针每次前进一步，它俩一定会在环入口点相遇。
 
-\subsubsection{Algorithm}
+【Algorithm】
 \begin{Code}
 	//LeetCode, Linked List Cycle II
 	// 时间复杂度O(n)，空间复杂度O(1)
@@ -3020,9 +3062,9 @@ a$为相遇点到环入口点的距离，由此可知，从链表头到环入口
 
 
 
-Given a singly linked list $L: L_0 \rightarrow L_1 \rightarrow \cdots 
+Given a singly linked list $L: L_0 \rightarrow L_1 \rightarrow \cdots
 \rightarrow L_{n-1} \rightarrow L_n$,
-reorder it to: $L_0 \rightarrow L_n \rightarrow L_1 \rightarrow L_{n-1} 
+reorder it to: $L_0 \rightarrow L_n \rightarrow L_1 \rightarrow L_{n-1}
 \rightarrow L_2 \rightarrow L_{n-2} \rightarrow \cdots$
 
 You must do this in-place without altering the nodes' values.
@@ -3036,8 +3078,7 @@ Given \fn{\{1,2,3,4\}}, reorder it to \fn{\{1,4,2,3\}}.
 
 可以找到中间节点，断开，把后半截单链表reverse一下，再合并两个单链表。
 
-
-\subsubsection{Algorithm}
+【Algorithm】
 \begin{Code}
 	// LeetCode, Reorder List
 	// 时间复杂度O(n)，空间复杂度O(1)
@@ -3070,7 +3111,7 @@ Given \fn{\{1,2,3,4\}}, reorder it to \fn{\{1,4,2,3\}}.
 			if (head == nullptr || head->next == nullptr) return head;
 			ListNode *prev = head;
 			for (ListNode *curr = head->next, *next = curr->next; curr;
-				prev = curr, curr = next, next = next ? next->next : nullptr) 
+				prev = curr, curr = next, next = next ? next->next : nullptr)
 				curr->next = prev;
 			head->next = nullptr;
 			return prev;
@@ -3079,25 +3120,19 @@ Given \fn{\{1,2,3,4\}}, reorder it to \fn{\{1,4,2,3\}}.
 \end{Code}
 
 
-\subsubsection{相关题目}
-\begindot
-\item 无
-\myenddot
-
-
 \subsection{LRU Cache}
 \label{sec:LRU-Cachet}
 
 
 
-Design and implement a data structure for Least Recently Used (LRU) cache. It 
+Design and implement a data structure for Least Recently Used (LRU) cache. It
 should support the following operations: get and set.
 
-\fn{get(key)} - Get the value (will always be positive) of the key if the key 
+\fn{get(key)} - Get the value (will always be positive) of the key if the key
 exists in the cache, otherwise return -1.
 
-\fn{set(key, value)} - Set or insert the value if the key is not already 
-present. When the cache reached its capacity, it should invalidate the least 
+\fn{set(key, value)} - Set or insert the value if the key is not already
+present. When the cache reached its capacity, it should invalidate the least
 recently used item before inserting a new item.
 
 
@@ -3113,11 +3148,11 @@ recently used item before inserting a new item.
 	\item{越靠近链表头部，表示节点上次访问距离现在时间最短，尾部的节点表示最近访问最少}
 	\item{访问节点时，如果节点存在，把该节点交换到链表头部，同时更新hash表中该节点的地址}
 	\item{插入节点时，如果cache的size达到了上限capacity，则删除尾部节点，同时要在hash表中删除对应的项；新节点插入链表头部}
-	              
+	
 \end{itemize}
 
 
-\subsubsection{Algorithm}
+【Algorithm】
 \begin{Code}
 	// LeetCode, LRU Cache
 	// 时间复杂度O(logn)，空间复杂度O(n)
@@ -3136,7 +3171,7 @@ recently used item before inserting a new item.
 		int get(int key) {
 			if (cacheMap.find(key) == cacheMap.end()) return -1;
 			// 把当前访问的节点移到链表头部，并且更新map中该节点的地址
-			cacheList.splice(cacheList.begin(), cacheList, cacheMap[key]); 
+			cacheList.splice(cacheList.begin(), cacheList, cacheMap[key]);
 			cacheMap[key] = cacheList.begin();
 			return cacheMap[key]->value;
 		}
@@ -3164,11 +3199,16 @@ recently used item before inserting a new item.
 \end{Code}
 
 
-\subsubsection{相关题目}
-\begindot
-\item 无
-\myenddot
-
 \subsection{BST2DLL}
 Convert a BST to sorted Double linked list
 
+
+\subsection{Reverse Lists behind $k$-th Node}
+1. Given number k, for Single linked list, skip k nodes and then reverse k nodes, till the end.\\
+2. Write a program to reverse every K elements of a linked list.
+Example: $K = 3$;
+Input: $1->2->3->4->5->6->7->NULL$
+Output: $3->2->1->6->5->4->7->NULL$
+
+\subsection{Sort Linked List}
+Sort a single linked list in place without using an additional node. 
